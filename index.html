@@ -1,0 +1,1347 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Eduardo Javier Thomson</title>
+<meta name="description" content="Desarrollador full stack con 15 años en infraestructura IT. Sistemas en producción: facturación electrónica Mercado Pago → ARCA, venta de fotos online, fiado digital y streaming de CDs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Overpass:wght@300..800&family=Overpass+Mono:wght@400..700&display=swap">
+<style>
+/* Layout: terminal de aeropuerto. Una pieza fuerte (el tablero de salidas), todo lo demás es señalética sobria. */
+:root{
+  --paper:#E7EBEF; --paper-2:#F5F7F9; --ink:#132030; --muted:#4F5D6F; --line:#C3CCD6;
+  --sign:#F2B705; --sign-ink:#132030; --go:#17784E; --warn:#A35F00; --bad:#B3261E; --route:#1F55B0;
+  --board:#1A1D22; --flap:#262A31; --flap-hi:#2E333B; --flap-amber:#F5BE1F; --flap-white:#EEF1F4; --board-line:#363C45; --board-dim:#8C95A1;
+  --flap-go:#5BD69A; --flap-warn:#F5BE1F;
+  --code-bg:#18202C; --code-fg:#D9E1EA; --code-c:#8BA0B6; --code-k:#F5BE1F; --code-s:#8FD3A8;
+  --font-display:"Archivo","Arial Narrow",Arial,sans-serif;
+  --font-body:"Overpass","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --font-mono:"Overpass Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
+  --wrap:72rem; --gut:clamp(1rem,4vw,2.5rem);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0E1621; --paper-2:#152131; --ink:#E3E9F0; --muted:#97A4B6; --line:#27364B;
+  --go:#4CC38A; --warn:#F0B24A; --bad:#FF7B72; --route:#86AEF5;
+  --board:#1A1D22; --flap:#262A31; --board-line:#363C45;
+  --code-bg:#0A111B; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0E1621; --paper-2:#152131; --ink:#E3E9F0; --muted:#97A4B6; --line:#27364B;
+  --go:#4CC38A; --warn:#F0B24A; --bad:#FF7B72; --route:#86AEF5;
+  --board:#1A1D22; --flap:#262A31; --board-line:#363C45;
+  --code-bg:#0A111B; color-scheme:dark}
+
+html.lang-es .en, html.lang-en .es{display:none!important}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:1.0625rem;line-height:1.6;-webkit-font-smoothing:antialiased}
+img{max-width:100%;height:auto;display:block}
+a{color:var(--route);text-underline-offset:.18em;text-decoration-thickness:1px}
+a:hover{text-decoration-thickness:2px}
+:focus-visible{outline:3px solid var(--sign);outline-offset:2px;border-radius:2px}
+h1,h2,h3,h4{font-family:var(--font-display);line-height:1.05;margin:0;text-wrap:balance}
+p{margin:0}
+.wrap{max-width:var(--wrap);margin-inline:auto;padding-inline:var(--gut)}
+.mono{font-family:var(--font-mono)}
+.skip{position:absolute;left:-999px}.skip:focus{left:1rem;top:1rem;z-index:99;background:var(--sign);color:var(--sign-ink);padding:.5rem 1rem}
+
+/* ---------- header ---------- */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:1rem;min-height:3.5rem}
+.mark{display:flex;align-items:center;gap:.6rem;text-decoration:none;color:var(--ink);font-family:var(--font-display);font-weight:800;font-stretch:75%;font-size:1.15rem;letter-spacing:.01em}
+.mark b{display:grid;place-items:center;width:2rem;height:2rem;background:var(--sign);color:var(--sign-ink);font-size:.95rem;border-radius:3px}
+.nav{display:flex;gap:1.25rem;margin-left:auto}
+.nav a{color:var(--muted);text-decoration:none;font-size:.95rem}
+.nav a:hover{color:var(--ink)}
+.tools{display:flex;gap:.4rem}
+.tbtn{font:600 .8rem var(--font-mono);color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:999px;padding:.35rem .7rem;cursor:pointer;min-height:2.1rem}
+.tbtn:hover{border-color:var(--ink)}
+.tbtn[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.langsw{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.langsw button{font:600 .8rem var(--font-mono);border:0;background:transparent;color:var(--muted);padding:.35rem .65rem;cursor:pointer;min-height:2.1rem}
+.langsw button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+@media (max-width:760px){.nav{display:none}.tools{margin-left:auto}}
+
+/* ---------- hero ---------- */
+.hero{padding-block:clamp(2.5rem,6vw,4.5rem) 2rem}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:clamp(1.5rem,4vw,3.5rem);align-items:end}
+@media (max-width:860px){.hero-grid{grid-template-columns:1fr}}
+.name{font-weight:850;font-stretch:62%;font-size:clamp(3.4rem,10.5vw,7.6rem);line-height:.86;letter-spacing:-.01em}
+.name span{display:block}
+.role{margin-top:1.1rem;font-family:var(--font-display);font-stretch:100%;font-weight:600;font-size:clamp(1.15rem,2.2vw,1.45rem);line-height:1.3}
+.thesis{max-width:34rem;color:var(--muted);font-size:1.075rem}
+.thesis strong{color:var(--ink);font-weight:650}
+.ctas{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.5rem}
+.btn{display:inline-flex;align-items:center;gap:.5rem;font:650 .98rem var(--font-body);text-decoration:none;padding:.7rem 1.15rem;border-radius:4px;border:1.5px solid var(--ink);color:var(--ink);background:transparent;cursor:pointer;min-height:2.75rem}
+.btn:hover{background:var(--ink);color:var(--paper)}
+.btn.primary{background:var(--sign);border-color:var(--sign);color:var(--sign-ink)}
+.btn.primary:hover{filter:brightness(1.06);background:var(--sign);color:var(--sign-ink)}
+.btn svg{width:1.05em;height:1.05em;flex:none}
+
+/* ---------- departures board ---------- */
+.board{margin-top:clamp(2rem,5vw,3rem);background:var(--board);color:var(--flap-white);border-radius:6px;padding:clamp(.9rem,2.4vw,1.5rem);box-shadow:0 1px 0 #ffffff10 inset,0 22px 50px -24px #0b1220aa;border:1px solid var(--board-line)}
+.board-top{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;padding-bottom:.9rem;border-bottom:1px solid var(--board-line);margin-bottom:.7rem}
+.board-title{display:flex;align-items:center;gap:.75rem;font-family:var(--font-display);font-stretch:80%;font-weight:800;font-size:clamp(1.4rem,3.2vw,2rem);color:var(--flap-white)}
+.board-title svg{width:2.1rem;height:2.1rem;background:var(--sign);color:var(--sign-ink);border-radius:3px;padding:.3rem;flex:none}
+.board-title small{font-family:var(--font-body);font-stretch:100%;font-weight:400;font-size:.95rem;color:var(--board-dim)}
+.board-clock{margin-left:auto;font-family:var(--font-mono);color:var(--board-dim);font-size:.9rem;display:flex;gap:.6rem;align-items:baseline}
+.board-clock b{color:var(--flap-amber);font-size:1.35rem;font-weight:600;font-variant-numeric:tabular-nums}
+.board{--fs:clamp(.6rem,1.1vw,.88rem);--cw:calc(1.1*var(--fs) + 2px)}
+.bhead,.brow{display:grid;grid-template-columns:calc(6*var(--cw)) calc(17*var(--cw)) calc(18*var(--cw)) calc(13*var(--cw));gap:.6rem;align-items:center;justify-content:start}
+.bhead{font-size:.78rem;color:var(--board-dim);padding:.2rem .4rem .45rem;font-family:var(--font-body)}
+.brow{width:100%;text-align:left;background:transparent;border:0;border-radius:4px;padding:.42rem .4rem;text-decoration:none;cursor:pointer;color:inherit;font:inherit}
+.brow:hover,.brow:focus-visible{background:#ffffff0d}
+.brow + .brow{border-top:1px dashed #ffffff12}
+.cell{display:flex;gap:2px;min-width:0;overflow:hidden}
+.f{display:inline-grid;place-items:center;width:calc(var(--cw) - 2px);height:1.72em;background:linear-gradient(var(--flap-hi) 0 49%,#111418 49% 52%,var(--flap) 52%);border-radius:2px;font:600 var(--fs)/1 var(--font-mono);color:var(--flap-white);flex:none;text-transform:uppercase}
+.board .f.sp{color:transparent!important}
+.c-code .f{color:var(--flap-amber)}
+.c-st.ok .f{color:var(--flap-go)}
+.c-st.mvp .f{color:var(--flap-warn)}
+.c-st.boarding .f{color:var(--flap-white);background:linear-gradient(#3a3216 0 49%,#111418 49% 52%,#332c12 52%)}
+.c-st.boarding.blink .f{animation:blink 1.4s steps(1) infinite}
+@keyframes blink{50%{color:var(--flap-amber)}}
+@media (prefers-reduced-motion:reduce){.c-st.boarding.blink .f{animation:none}}
+.board-foot{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-top:.8rem;padding-top:.8rem;border-top:1px solid var(--board-line);font-size:.88rem;color:var(--board-dim)}
+@media (max-width:900px){
+  .board{--fs:clamp(.68rem,3.3vw,.95rem)}
+  .bhead{display:none}
+  .brow{grid-template-columns:auto 1fr;grid-template-areas:"dest dest" "code st";row-gap:.35rem;column-gap:.5rem;padding:.6rem .3rem}
+  .c-dest{grid-area:dest}.c-code{grid-area:code}.c-st{grid-area:st}.c-via{display:none}
+}
+
+/* ---------- section signage ---------- */
+section{scroll-margin-top:4rem}
+.sec{padding-block:clamp(3rem,7vw,5.5rem)}
+.sign{display:flex;align-items:center;gap:.8rem;font-weight:800;font-stretch:72%;font-size:clamp(2.1rem,5vw,3.3rem);margin-bottom:.5rem}
+.sign i{display:grid;place-items:center;width:.95em;height:.95em;background:var(--sign);color:var(--sign-ink);border-radius:4px;flex:none}
+.sign i svg{width:68%;height:68%}
+.lede{max-width:40rem;color:var(--muted);font-size:1.1rem}
+
+/* ---------- route (trayectoria) ---------- */
+.route-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:clamp(1.5rem,5vw,4rem);margin-top:2rem}
+@media (max-width:860px){.route-grid{grid-template-columns:1fr}}
+.route-intro p+p{margin-top:1rem}
+.route-intro{color:var(--muted)}
+.route-intro strong{color:var(--ink);font-weight:650}
+.stops{list-style:none;margin:0;padding:0;position:relative}
+.stops::before{content:"";position:absolute;left:5.6rem;top:.6rem;bottom:.6rem;border-left:2px dashed var(--line)}
+.stop{display:grid;grid-template-columns:4.6rem 2rem minmax(0,1fr);align-items:start;padding-block:.55rem}
+.stop .yr{font:600 .88rem/1.7 var(--font-mono);color:var(--muted);font-variant-numeric:tabular-nums;text-align:right}
+.stop .dot{width:.8rem;height:.8rem;border-radius:50%;background:var(--paper);border:2px solid var(--muted);margin:.42rem auto 0;position:relative;z-index:1}
+.stop h3{font-family:var(--font-body);font-weight:700;font-size:1.02rem;line-height:1.45}
+.stop p{color:var(--muted);font-size:.95rem;line-height:1.5}
+.stop.edu h3{font-weight:600}
+.stop.edu .dot{border-style:dotted}
+.stop.now .dot{background:var(--sign);border-color:var(--sign-ink);width:1rem;height:1rem;margin-top:.33rem}
+.stop.now h3{font-family:var(--font-display);font-stretch:80%;font-weight:800;font-size:1.35rem}
+
+/* ---------- case studies ---------- */
+.case{padding-block:clamp(2.5rem,6vw,4rem);border-top:2px solid var(--ink)}
+.case:first-of-type{border-top:0}
+.case-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.4rem 1.5rem;align-items:end}
+.case-flight{font:600 .85rem var(--font-mono);color:var(--muted);display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
+.flight-code{background:var(--board);color:var(--flap-amber);padding:.15rem .45rem;border-radius:3px}
+.pill{display:inline-flex;align-items:center;gap:.4rem;font:600 .82rem var(--font-body);padding:.18rem .6rem;border-radius:999px;border:1.5px solid currentColor}
+.pill::before{content:"";width:.5rem;height:.5rem;border-radius:50%;background:currentColor}
+.pill.ok{color:var(--go)}.pill.mvp{color:var(--warn)}
+.case-title{grid-column:1/-1;font-weight:850;font-stretch:70%;font-size:clamp(2.4rem,6.4vw,4.3rem);line-height:.95;margin-top:.5rem}
+.case-tag{grid-column:1/-1;font-family:var(--font-display);font-weight:500;font-stretch:95%;font-size:clamp(1.12rem,2.2vw,1.4rem);line-height:1.35;max-width:46rem;margin-top:.4rem}
+.case-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.12fr);gap:clamp(1.5rem,4vw,3rem);margin-top:2rem;align-items:start}
+@media (max-width:920px){.case-body{grid-template-columns:1fr}}
+.story{display:grid;gap:1.3rem}
+.story h4{font-family:var(--font-body);font-size:.9rem;font-weight:700;color:var(--muted);margin-bottom:.25rem}
+.story p{max-width:38rem}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:4px;overflow:hidden;margin-top:.3rem}
+.facts div{background:var(--paper-2);padding:.7rem .85rem}
+.facts dt{font:700 1.25rem/1.15 var(--font-display);font-stretch:85%;font-variant-numeric:tabular-nums}
+.facts dd{margin:.2rem 0 0;font-size:.84rem;color:var(--muted);line-height:1.35}
+@media (max-width:480px){.facts{grid-template-columns:1fr}}
+.extlink{display:inline-flex;gap:.4rem;align-items:center;font-weight:650}
+
+/* demo shell */
+.demo{background:var(--board);color:var(--flap-white);border-radius:6px;border:1px solid var(--board-line);overflow:hidden;min-width:0}
+.demo-bar{display:flex;align-items:center;gap:.7rem;padding:.75rem 1rem;border-bottom:1px solid var(--board-line);flex-wrap:wrap}
+.demo-bar h4{font-family:var(--font-body);font-size:.98rem;font-weight:700;color:var(--flap-white)}
+.demo-bar .tagx{margin-left:auto;font:500 .75rem var(--font-mono);color:var(--board-dim);border:1px solid var(--board-line);border-radius:3px;padding:.1rem .4rem}
+.demo-in{padding:1rem}
+.demo-help{font-size:.9rem;color:var(--board-dim);margin-bottom:.9rem;line-height:1.5}
+.dbtns{display:flex;flex-wrap:wrap;gap:.45rem}
+.dbtn{font:600 .85rem var(--font-body);color:var(--flap-white);background:#2C323B;border:1px solid #444C57;border-radius:4px;padding:.5rem .75rem;cursor:pointer;min-height:2.4rem}
+.dbtn:hover{background:#363d48}
+.dbtn.y{background:var(--flap-amber);border-color:var(--flap-amber);color:#1A1D22}
+.dbtn.y:hover{filter:brightness(1.08)}
+.dbtn[aria-pressed="true"]{background:var(--flap-white);color:#1A1D22}
+.dlabel{font-size:.78rem;color:var(--board-dim);margin-bottom:.35rem}
+.dmono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.log{margin-top:.9rem;font:500 .78rem/1.55 var(--font-mono);color:var(--board-dim);background:#111418;border-radius:4px;padding:.6rem .7rem;height:6.6rem;overflow:hidden;display:flex;flex-direction:column-reverse}
+.log div{flex:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.log .hl{color:var(--flap-amber)}.log .okc{color:var(--flap-go)}
+
+/* MP sim */
+.sim{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:.8rem;margin-top:1rem}
+@media (max-width:520px){.sim{grid-template-columns:1fr}}
+.panel{background:#20242A;border:1px solid var(--board-line);border-radius:4px;padding:.65rem;min-width:0}
+.panel.wide{grid-column:1/-1}
+.items{list-style:none;margin:0;padding:0;display:grid;gap:.3rem}
+.it{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:.5rem;align-items:center;font-size:.84rem;background:#191C21;border-radius:3px;padding:.35rem .5rem;animation:pop .35s ease-out}
+@keyframes pop{from{transform:translateY(-4px);opacity:.3}}
+@media (prefers-reduced-motion:reduce){.it{animation:none}}
+.src{font:600 .7rem var(--font-mono);padding:.05rem .35rem;border-radius:2px;background:#2F4A6B;color:#CFE2FF}
+.src.t{background:#4B3B12;color:#FFE08A}
+.it .amt{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.it .why{color:var(--board-dim);font-size:.76rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.acc{display:flex;align-items:baseline;justify-content:space-between;gap:.5rem}
+.acc b{font:600 1.3rem var(--font-mono);color:var(--flap-amber)}
+.jobs .it{grid-template-columns:minmax(0,1fr) auto}
+.st{font:600 .7rem var(--font-mono);padding:.1rem .4rem;border-radius:2px}
+.st.PENDING{background:#3a3f48;color:#d5dbe3}.st.PROCESSING{background:var(--flap-amber);color:#1A1D22}.st.DONE{background:#173d2a;color:var(--flap-go)}
+.worker{display:flex;align-items:center;gap:.5rem;font-size:.8rem;color:var(--board-dim);margin-bottom:.45rem}
+.led{width:.6rem;height:.6rem;border-radius:50%;background:#555}
+.led.on{background:var(--flap-amber);box-shadow:0 0 8px var(--flap-amber)}
+
+/* Eterno lupa */
+.lupa-wrap{position:relative;border-radius:4px;overflow:hidden;background:#111;touch-action:none;cursor:none}
+.lupa-wrap canvas{display:block;width:100%;height:auto;aspect-ratio:16/10}
+.lupa-hint{position:absolute;left:.6rem;bottom:.6rem;font:500 .75rem var(--font-mono);background:#000a;color:#fff;padding:.2rem .45rem;border-radius:3px;pointer-events:none}
+.variants{display:flex;gap:.45rem;flex-wrap:wrap;margin-top:.8rem}
+.vnote{margin-top:.7rem;font-size:.86rem;color:var(--board-dim);min-height:2.6em}
+
+/* Cuaderno FIFO */
+.ledger{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:.8rem;margin-top:1rem}
+@media (max-width:520px){.ledger{grid-template-columns:1fr}}
+.saldo{font:600 1.9rem/1.1 var(--font-mono);font-variant-numeric:tabular-nums}
+.age{display:flex;align-items:center;gap:.5rem;margin-top:.35rem;font-size:.9rem}
+.agebadge{white-space:nowrap;font:700 .75rem var(--font-body);padding:.12rem .5rem;border-radius:999px;background:#173d2a;color:var(--flap-go)}
+.agebadge.a30{background:#4a3a0e;color:#FFD866}.agebadge.a60{background:#5a2e0c;color:#FFB070}.agebadge.a90{background:#5c1714;color:#FF8F87}
+.bug{margin-top:.6rem;padding-top:.6rem;border-top:1px dashed var(--board-line);font-size:.84rem;color:var(--board-dim)}
+.bug b{color:#FF8F87;font-weight:600}
+.queue{display:flex;flex-wrap:wrap;gap:.35rem;min-height:2.2rem}
+.qd{font:600 .78rem var(--font-mono);background:#2C323B;border-radius:3px;padding:.3rem .45rem;border-left:3px solid var(--flap-go)}
+.qd.a30{border-left-color:#FFD866}.qd.a60{border-left-color:#FFB070}.qd.a90{border-left-color:#FF8F87}
+.qd small{display:block;font-weight:400;color:var(--board-dim)}
+.hist{list-style:none;margin:0;padding:0;font-size:.82rem}
+.hist li{display:flex;justify-content:space-between;gap:.5rem;padding:.25rem 0;border-bottom:1px solid #ffffff10}
+.hist .p{color:var(--flap-go)}.hist .d{color:#FF8F87}
+.hist span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* CD player */
+.cdgrid{display:grid;grid-template-columns:auto minmax(0,1fr);gap:1rem;align-items:center}
+@media (max-width:460px){.cdgrid{grid-template-columns:1fr;justify-items:center}}
+.disc{width:7.5rem;height:7.5rem;border-radius:50%;background:radial-gradient(circle,#1A1D22 0 9%,#c9ced6 9.5% 12%,transparent 12.5%),conic-gradient(from 20deg,#d9dde3,#9fb6c9,#e8d9b8,#c7a8d6,#9fd0c4,#d9dde3);box-shadow:inset 0 0 0 1px #0004,0 6px 18px #0006;position:relative}
+.disc::after{content:"";position:absolute;inset:0;border-radius:50%;background:repeating-radial-gradient(circle,#0000 0 3px,#ffffff14 3px 4px)}
+.disc.spin{animation:spin 1.8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.disc.spin{animation:none}}
+.clients{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:1rem}
+.client{background:#111418;border:1px solid var(--board-line);border-radius:6px;padding:.6rem;min-width:0}
+.client .dev{font-size:.72rem;color:var(--board-dim);display:flex;justify-content:space-between}
+.client .tn{font-weight:700;font-size:.92rem;margin-top:.35rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.client .tm{font:600 1.25rem var(--font-mono);color:var(--flap-go);font-variant-numeric:tabular-nums}
+.bar{height:4px;background:#2C323B;border-radius:2px;margin:.35rem 0 .5rem;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--flap-go);width:0}
+.ctrls{display:flex;gap:.3rem}
+.ctrls button{flex:1;background:#2C323B;border:1px solid #444C57;color:var(--flap-white);border-radius:4px;min-height:2.2rem;cursor:pointer;display:grid;place-items:center}
+.ctrls button:hover{background:#363d48}
+.ctrls svg{width:1rem;height:1rem}
+.meters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.5rem;margin-top:.8rem}
+@media (max-width:460px){.meters{grid-template-columns:1fr}}
+.meter{background:#20242A;border:1px solid var(--board-line);border-radius:4px;padding:.45rem .55rem}
+.meter b{display:block;font:600 1rem var(--font-mono);font-variant-numeric:tabular-nums}
+.meter span{font-size:.72rem;color:var(--board-dim)}
+.meter.zero b{color:var(--flap-go)}
+.cdinfo .al{font-weight:700}.cdinfo .ar{color:var(--board-dim);font-size:.9rem}
+.cdinfo .dmono{font-size:.78rem;color:var(--board-dim);margin-top:.3rem}
+
+/* issues, gallery, code */
+.more{margin-top:2.2rem;display:grid;grid-template-columns:minmax(0,1fr);gap:1.8rem}
+.more>*,.story>*,.route-grid>*{min-width:0}
+.more h4{font-family:var(--font-body);font-size:1rem;font-weight:700}
+.issues{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,21rem),1fr));gap:.6rem;margin-top:.7rem}
+details.issue{background:var(--paper-2);border:1px solid var(--line);border-radius:4px}
+details.issue summary{cursor:pointer;list-style:none;padding:.85rem 1rem;font-weight:700;display:flex;gap:.7rem;align-items:flex-start;line-height:1.35}
+details.issue summary::-webkit-details-marker{display:none}
+details.issue summary::before{content:"+";font:600 1.1rem/1.1 var(--font-mono);color:var(--muted);flex:none;width:.8rem}
+details.issue[open] summary::before{content:"–"}
+details.issue .ib{padding:0 1rem 1rem 2.5rem;display:grid;gap:.5rem;font-size:.96rem}
+details.issue .ib p b{font-weight:700}
+.gallery{display:flex;gap:.75rem;overflow-x:auto;padding-bottom:.6rem;margin-top:.7rem;scroll-snap-type:x proximity}
+.gallery figure{margin:0;flex:none;scroll-snap-align:start;width:min-content;max-width:calc(100vw - 2*var(--gut))}
+.gallery figure.diagram img{height:auto;width:min(56rem,calc(100vw - 2*var(--gut) - 2px));max-width:none}
+.gallery button{display:block;padding:0;border:1px solid var(--line);background:var(--board);cursor:zoom-in;border-radius:4px;overflow:hidden}
+.gallery img{height:clamp(220px,32vw,300px);width:auto;max-width:none}
+.gallery figure.wide img{max-width:calc(100vw - 2*var(--gut) - 2px);object-fit:cover;object-position:top left}
+.gallery figcaption{font-size:.82rem;color:var(--muted);max-width:22rem;margin-top:.35rem;line-height:1.4}
+details.code{border:1px solid var(--line);border-radius:4px;background:var(--paper-2)}
+details.code summary{cursor:pointer;padding:.75rem 1rem;font-weight:650}
+details.code pre{margin:0;background:var(--code-bg);color:var(--code-fg);padding:1rem;overflow-x:auto;font:450 .82rem/1.6 var(--font-mono);border-radius:0 0 4px 4px}
+pre .c{color:var(--code-c)}pre .k{color:var(--code-k)}pre .s{color:var(--code-s)}
+.chips{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:.4rem}
+.chips li{font:500 .82rem var(--font-mono);border:1px solid var(--line);border-radius:3px;padding:.2rem .5rem;background:var(--paper-2)}
+
+/* how I work */
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,19rem),1fr));gap:0;margin-top:2rem;border-top:2px solid var(--ink)}
+.rule{padding:1.3rem 1.2rem 1.4rem 0;border-bottom:1px solid var(--line)}
+.rule h3{font-weight:800;font-stretch:78%;font-size:1.55rem;margin-bottom:.4rem}
+.rule p{color:var(--muted);font-size:.98rem;max-width:32rem}
+.rule.ai{background:var(--paper-2);padding-left:1.2rem;border-left:4px solid var(--sign)}
+
+/* skills */
+.skills{display:grid;gap:1.1rem;margin-top:2rem}
+.sk{display:grid;grid-template-columns:10rem minmax(0,1fr);gap:1rem;align-items:baseline;padding-bottom:1.1rem;border-bottom:1px solid var(--line)}
+@media (max-width:640px){.sk{grid-template-columns:1fr;gap:.5rem}}
+.sk h3{font-family:var(--font-body);font-size:.95rem;font-weight:700}
+.skbtns{display:flex;flex-wrap:wrap;gap:.4rem}
+.skb{font:500 .86rem var(--font-mono);color:var(--ink);background:var(--paper-2);border:1px solid var(--line);border-radius:3px;padding:.3rem .6rem;cursor:pointer;min-height:2.1rem}
+.skb:hover{border-color:var(--ink)}
+.skb[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.skout{margin-top:1.4rem;min-height:3.2rem;padding:.9rem 1rem;border-left:4px solid var(--sign);background:var(--paper-2);font-size:.98rem}
+.skout a{font-weight:650}
+
+/* contact */
+.contact{background:var(--board);color:var(--flap-white);padding-block:clamp(3rem,7vw,5rem)}
+.contact .sign{color:var(--flap-white)}
+.contact .lede{color:#B7C0CC}
+.gate{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:2rem;margin-top:2rem;align-items:start}
+@media (max-width:860px){.gate{grid-template-columns:1fr}}
+.mail{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem}
+.mail .addr{font:600 clamp(1.05rem,2.6vw,1.6rem) var(--font-mono);color:var(--flap-amber);user-select:all;word-break:break-all}
+.contact .btn{border-color:#6b7480;color:var(--flap-white)}
+.contact .btn:hover{background:var(--flap-white);color:#1A1D22}
+.contact .btn.primary{color:#1A1D22;border-color:var(--sign)}
+.ticket{border:1px dashed #4A525E;border-radius:6px;padding:1rem 1.1rem;display:grid;gap:.7rem}
+.ticket div{display:grid;grid-template-columns:8.5rem minmax(0,1fr);gap:.6rem;font-size:.95rem}
+.ticket dt{color:var(--board-dim)}.ticket dd{margin:0}
+.links{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.4rem}
+.copied{font-size:.85rem;color:var(--flap-go);min-height:1.2em}
+.phone{color:#B7C0CC;font-size:1rem}.phone .tel{font:600 1.1rem var(--font-mono);color:var(--flap-white);user-select:all}
+footer{background:var(--board);color:var(--board-dim);font-size:.85rem;border-top:1px solid var(--board-line)}
+footer .wrap{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding-block:1.2rem}
+
+/* lightbox */
+dialog.lb{border:0;padding:0;background:transparent;max-width:min(96vw,1400px);max-height:94vh}
+dialog.lb::backdrop{background:#0b1018e6}
+dialog.lb img{max-height:86vh;width:auto;margin:auto;border-radius:4px}
+dialog.lb p{color:#dfe5ec;text-align:center;font-size:.9rem;margin-top:.5rem}
+dialog.lb button{position:fixed;top:1rem;right:1rem;font:600 .9rem var(--font-body);background:var(--sign);color:var(--sign-ink);border:0;border-radius:4px;padding:.5rem .9rem;cursor:pointer}
+</style>
+
+<meta property="og:title" content="Eduardo Javier Thomson · Full Stack Developer">
+<meta property="og:description" content="Sistemas en producción: facturación Mercado Pago → ARCA, venta de fotos online, fiado digital y streaming de CDs. 15 años de infraestructura IT detrás.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/ei-galeria.webp">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23F2B705'/%3E%3Ctext x='16' y='22' font-family='Arial' font-weight='800' font-size='15' text-anchor='middle' fill='%23132030'%3EJT%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+<a class="skip" href="#proyectos"><span class="es">Saltar a los proyectos</span><span class="en">Skip to projects</span></a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="#inicio"><b>JT</b><span>Javier Thomson</span></a>
+    <nav class="nav" aria-label="Secciones">
+      <a href="#proyectos"><span class="es">Proyectos</span><span class="en">Projects</span></a>
+      <a href="#trayectoria"><span class="es">Trayectoria</span><span class="en">Background</span></a>
+      <a href="#como-trabajo"><span class="es">Cómo trabajo</span><span class="en">How I work</span></a>
+      <a href="#contacto"><span class="es">Contacto</span><span class="en">Contact</span></a>
+    </nav>
+    <div class="tools">
+      <div class="langsw" role="group" aria-label="Idioma / Language">
+        <button type="button" id="lang-es" data-lang="es" aria-pressed="true">ES</button>
+        <button type="button" id="lang-en" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <button type="button" class="tbtn" id="themebtn" aria-label="Cambiar tema claro u oscuro">◐</button>
+    </div>
+  </div>
+</header>
+
+<main id="inicio">
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <h1 class="name"><span>Eduardo</span><span>Javier</span><span>Thomson</span></h1>
+        <p class="role"><span class="es">Desarrollador full stack y fundador de Nowagon Software.</span><span class="en">Full stack developer and founder of Nowagon Software.</span></p>
+      </div>
+      <div>
+        <p class="thesis es">Pasé <strong>15 años manteniendo en pie infraestructura crítica</strong>: servidores, redes y bases de datos, los últimos tres en el aeropuerto de Ezeiza. Hoy diseño sistemas completos y <strong>los llevo a producción para negocios reales</strong>: pagos, facturación electrónica, procesamiento de imágenes y streaming.</p>
+        <p class="thesis en">I spent <strong>15 years keeping critical infrastructure running</strong>: servers, networks and databases, the last three at Ezeiza International Airport. Today I design complete systems and <strong>ship them to production for real businesses</strong>: payments, e-invoicing, image processing and streaming.</p>
+        <div class="ctas">
+          <a class="btn primary" href="#proyectos"><span class="es">Ver proyectos</span><span class="en">See projects</span></a>
+          <a class="btn" href="#contacto"><span class="es">Contactarme</span><span class="en">Get in touch</span></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="board" role="region" aria-labelledby="board-t">
+      <div class="board-top">
+        <h2 class="board-title" id="board-t">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M2.5 19h19v2h-19zM22.07 9.64c-.21-.8-1.04-1.28-1.84-1.06L14.92 10l-6.9-6.43-1.93.51 4.14 7.17-4.97 1.33-1.97-1.54-1.45.39 2.59 4.49L21 11.49c.81-.23 1.28-1.05 1.07-1.85z"/></svg>
+          <span><span class="es">Salidas</span><span class="en">Departures</span></span>
+          <small><span class="es">sistemas que diseñé y opero</span><span class="en">systems I designed and run</span></small>
+        </h2>
+        <div class="board-clock" aria-label="Hora en Buenos Aires"><span>EZE · Buenos Aires</span><b id="clock">--:--</b></div>
+      </div>
+      <div class="bhead" aria-hidden="true">
+        <span><span class="es">Vuelo</span><span class="en">Flight</span></span>
+        <span><span class="es">Destino</span><span class="en">Destination</span></span>
+        <span><span class="es">Vía</span><span class="en">Via</span></span>
+        <span><span class="es">Estado</span><span class="en">Status</span></span>
+      </div>
+      <div id="rows"></div>
+      <div class="board-foot">
+        <span><span class="es">Tocá un vuelo para abrir el caso de estudio.</span><span class="en">Tap a flight to open its case study.</span></span>
+        <span>Nowagon Software</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="proyectos" class="sec" style="padding-top:clamp(2rem,5vw,3.5rem)">
+  <div class="wrap">
+    <h2 class="sign"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 8v10H8"/></svg></i><span class="es">Proyectos</span><span class="en">Projects</span></h2>
+    <p class="lede es">Cuatro sistemas construidos de punta a punta, tres de ellos en uso diario por negocios reales. Cada uno trae una demo para probar la idea técnica central y los problemas reales que tuve que resolver.</p>
+    <p class="lede en">Four systems built end to end, three of them in daily use by real businesses. Each one comes with a small demo of its core technical idea and the real problems I had to solve.</p>
+
+    <!-- ===================== MP → ARCA ===================== -->
+    <article class="case" id="mp-arca">
+      <div class="case-head">
+        <div class="case-flight"><span class="flight-code">NW 101</span><span class="pill ok"><span class="es">En producción</span><span class="en">In production</span></span><span>2026</span></div>
+        <h3 class="case-title">Mercado Pago → ARCA</h3>
+        <p class="case-tag es">Detecta cada ingreso de dinero en Mercado Pago y emite sola la factura electrónica en ARCA (la ex AFIP). Reemplazó un proceso que se hacía a mano, factura por factura.</p>
+        <p class="case-tag en">Detects every incoming payment in Mercado Pago and automatically issues the electronic invoice with ARCA, Argentina's tax authority. It replaced a process done by hand, one invoice at a time.</p>
+      </div>
+      <div class="case-body">
+        <div class="story">
+          <div>
+            <h4><span class="es">El problema</span><span class="en">The problem</span></h4>
+            <p class="es">En un comercio la plata entra por muchos caminos: QR, links de cobro y, sobre todo, transferencias al alias. Cada ingreso tiene que terminar facturado. Lo difícil: Mercado Pago no avisa cuando llega una transferencia directa. Hay que descubrirla en un reporte que tarda horas en generarse.</p>
+            <p class="en">Money reaches a shop through many channels: QR codes, payment links and, above all, direct bank transfers. Every one of them must be invoiced. The hard part: Mercado Pago sends no event for direct transfers. They have to be found in a report that takes hours to generate.</p>
+          </div>
+          <div>
+            <h4><span class="es">Lo que construí</span><span class="en">What I built</span></h4>
+            <p class="es">Webhooks firmados para los pagos y sondeo del reporte para las transferencias. Cada ingreso se registra una sola vez, se decide si va en factura individual o en la consolidada del día, y un único worker emite las Facturas B en orden, con PDF y QR fiscal. Es multi-tenant: otro negocio se da de alta solo, sin tocar código.</p>
+            <p class="en">Signed webhooks for payments and report polling for transfers. Each movement is recorded exactly once, routed to an individual invoice or the daily consolidated one, and a single worker issues invoices in strict order, with PDF and fiscal QR code. It's multi-tenant: a new business onboards itself with no code changes.</p>
+          </div>
+          <div>
+            <h4><span class="es">Mi rol</span><span class="en">My role</span></h4>
+            <p class="es">Todo, en solitario: reglas de negocio, API, panel, modelo de datos, Docker y la operación en producción, incluidas las auditorías contra datos reales.</p>
+            <p class="en">All of it, solo: business rules, API, admin panel, data model, Docker and production operations, including audits against real data.</p>
+          </div>
+          <dl class="facts">
+            <div><dt>~5.000</dt><dd><span class="es">líneas de TypeScript en la API</span><span class="en">lines of TypeScript in the API</span></dd></div>
+            <div><dt>7</dt><dd><span class="es">pantallas en el panel Next.js</span><span class="en">screens in the Next.js panel</span></dd></div>
+            <div><dt>40</dt><dd><span class="es">scripts de auditoría de sólo lectura</span><span class="en">read-only audit scripts</span></dd></div>
+          </dl>
+        </div>
+
+        <div class="demo" aria-labelledby="mp-demo-t">
+          <div class="demo-bar"><h4 id="mp-demo-t"><span class="es">Simulá un día de ventas</span><span class="en">Simulate a day of sales</span></h4><span class="tagx"><span class="es">datos de ejemplo</span><span class="en">sample data</span></span></div>
+          <div class="demo-in">
+            <p class="demo-help es">Umbral de ejemplo: $10.000. Lo que lo supera se factura individual; lo menor se acumula para la factura del cierre. Probá reenviar un webhook: no se factura dos veces.</p>
+            <p class="demo-help en">Sample threshold: $10,000. Anything above it gets its own invoice; smaller amounts are batched for the end-of-day invoice. Try resending a webhook: nothing is invoiced twice.</p>
+            <div class="dbtns">
+              <button type="button" class="dbtn y" id="mp-pay"><span class="es">Entra un pago con QR</span><span class="en">QR payment arrives</span></button>
+              <button type="button" class="dbtn" id="mp-trf"><span class="es">Entra una transferencia</span><span class="en">Bank transfer arrives</span></button>
+              <button type="button" class="dbtn" id="mp-dup"><span class="es">Reenviar último webhook</span><span class="en">Resend last webhook</span></button>
+              <button type="button" class="dbtn" id="mp-close"><span class="es">Cierre del día 23:30</span><span class="en">Daily close 23:30</span></button>
+            </div>
+            <div class="sim">
+              <div class="panel">
+                <div class="dlabel"><span class="es">Ingresos detectados</span><span class="en">Detected income</span></div>
+                <ul class="items" id="mp-in"></ul>
+              </div>
+              <div class="panel">
+                <div class="dlabel"><span class="es">Acumulado para el cierre</span><span class="en">Batched for daily close</span></div>
+                <div class="acc"><b id="mp-acc">$0</b><span class="dmono" id="mp-accn" style="font-size:.8rem;color:var(--board-dim)"></span></div>
+                <div class="dlabel" style="margin-top:.8rem"><span class="es">Cola de facturación</span><span class="en">Invoice queue</span></div>
+                <div class="worker"><span class="led" id="mp-led"></span><span id="mp-wk"></span></div>
+                <ul class="items jobs" id="mp-jobs"></ul>
+              </div>
+            </div>
+            <div class="log" id="mp-log" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="more">
+        <div>
+          <h4><span class="es">Problemas que resolví</span><span class="en">Problems I solved</span></h4>
+          <div class="issues">
+            <details class="issue"><summary><span class="es">Facturar en orden estricto con ingresos simultáneos</span><span class="en">Strictly ordered invoicing under concurrent income</span></summary>
+              <div class="ib">
+                <p class="es"><b>Problema.</b> ARCA exige numeración correlativa. Los ingresos llegan en ráfagas y por dos canales a la vez; emitir en paralelo genera rechazos y huecos.</p>
+                <p class="es"><b>Solución.</b> Una cola en una tabla de PostgreSQL y un único worker que toma el trabajo más antiguo y lo marca dentro de la misma transacción. Sin Redis ni RabbitMQ: cero infraestructura extra y el estado se inspecciona con SQL.</p>
+                <p class="en"><b>Problem.</b> ARCA requires sequential invoice numbers. Income arrives in bursts through two channels at once; issuing in parallel causes rejections and gaps.</p>
+                <p class="en"><b>Solution.</b> A queue in a PostgreSQL table and a single worker that claims the oldest job inside the same transaction. No Redis or RabbitMQ: zero extra infrastructure and the state is inspectable with SQL.</p>
+              </div></details>
+            <details class="issue"><summary><span class="es">Una factura con fecha equivocada: el síntoma no era la causa</span><span class="en">An invoice with the wrong date: the symptom wasn't the cause</span></summary>
+              <div class="ib">
+                <p class="es"><b>Problema.</b> El PDF mostraba un día y ARCA tenía autorizada la factura con el siguiente. Parecía un bug de zona horaria ya corregido.</p>
+                <p class="es"><b>Causa.</b> La fecha real enviada a ARCA nunca se guardaba: el PDF la recalculaba con otra fórmula. Corregí la raíz con una única fuente de verdad y consulté a ARCA en modo lectura cada factura histórica para encontrar cualquier otra afectada.</p>
+                <p class="en"><b>Problem.</b> The PDF showed one date while ARCA had authorized the invoice on the next day. It looked like an already-fixed timezone bug.</p>
+                <p class="en"><b>Cause.</b> The actual date sent to ARCA was never stored; the PDF recomputed it with a different formula. I fixed the root with a single source of truth and queried ARCA read-only for every past invoice to find any other affected one.</p>
+              </div></details>
+            <details class="issue"><summary><span class="es">Un contador que se desincronizaba: rediseñar en vez de parchar</span><span class="en">A drifting counter: redesign instead of patching</span></summary>
+              <div class="ib">
+                <p class="es"><b>Problema.</b> Una auditoría con datos reales encontró facturas consolidadas cuyo monto no coincidía con la suma de sus movimientos, tras una caída del servidor.</p>
+                <p class="es"><b>Solución.</b> Eliminé el contador. Ahora el monto se calcula sumando los movimientos reales en la misma transacción del cierre: por construcción no puede desincronizarse. Las correcciones se aplicaron con scripts en dry-run por defecto y nunca se tocó una factura ya emitida.</p>
+                <p class="en"><b>Problem.</b> An audit against real data found consolidated invoices whose amount didn't match the sum of their movements, after a server outage.</p>
+                <p class="en"><b>Solution.</b> I removed the counter. The amount is now computed from the real movements inside the closing transaction, so it cannot drift by construction. Fixes ran through scripts that default to dry-run, and no issued invoice was ever mutated.</p>
+              </div></details>
+            <details class="issue"><summary><span class="es">Dinero que sale no es una venta</span><span class="en">Money going out is not a sale</span></summary>
+              <div class="ib">
+                <p class="es"><b>Problema.</b> Pagos a proveedores y transferencias enviadas se estaban registrando como ingresos. Y en ciertas operaciones Mercado Pago informa como pagador al propio titular.</p>
+                <p class="es"><b>Solución.</b> Clasificar por la forma del payload comparando pagador y cobrador contra la cuenta real, consultar el pago en vivo a la API y reconciliar el histórico con scripts idempotentes sin tocar comprobantes emitidos.</p>
+                <p class="en"><b>Problem.</b> Supplier payments and outgoing transfers were being recorded as income. On some operations Mercado Pago also reports the account owner as the payer.</p>
+                <p class="en"><b>Solution.</b> Classify by payload shape, comparing payer and collector against the real account, query the payment live from the API, and reconcile history with idempotent scripts without touching issued invoices.</p>
+              </div></details>
+          </div>
+        </div>
+        <div>
+          <h4><span class="es">Arquitectura</span><span class="en">Architecture</span></h4>
+          <div class="gallery">
+            <figure class="diagram"><button type="button" data-lb><img src="assets/mp-arquitectura.webp" width="1300" height="728" alt="Diagrama de arquitectura: Mercado Pago, API Fastify, cola en PostgreSQL, worker único y ARCA" loading="lazy"></button>
+              <figcaption><span class="es">El panel productivo maneja datos fiscales reales, por eso muestro la arquitectura y no capturas.</span><span class="en">The production panel holds real tax data, so I show the architecture instead of screenshots.</span></figcaption></figure>
+          </div>
+        </div>
+        <details class="code"><summary><span class="es">Ver código: el worker que toma trabajos de a uno</span><span class="en">View code: the worker that claims one job at a time</span> (worker.ts)</summary>
+<pre><code><span class="c">// Toma el trabajo PENDING más antiguo y lo marca PROCESSING dentro de la
+// misma transacción, para que dos workers nunca tomen el mismo trabajo.</span>
+<span class="k">async function</span> claimNextJob() {
+  <span class="k">return</span> prisma.$transaction(<span class="k">async</span> (tx) =&gt; {
+    <span class="k">const</span> next = <span class="k">await</span> tx.invoiceJob.findFirst({
+      where: { status: <span class="s">"PENDING"</span> },
+      orderBy: { createdAt: <span class="s">"asc"</span> },
+    });
+    <span class="k">if</span> (!next) <span class="k">return null</span>;
+    <span class="k">return</span> tx.invoiceJob.update({
+      where: { id: next.id },
+      data: { status: <span class="s">"PROCESSING"</span> },
+      include: { tenant: <span class="k">true</span>, movements: { select: { occurredAt: <span class="k">true</span> } } },
+    });
+  });
+}
+
+<span class="c">// Si la emisión falla, el job queda en ERROR para revisión humana:
+// reintentar a ciegas un comprobante fiscal puede duplicar una factura.</span></code></pre>
+        </details>
+        <ul class="chips" aria-label="Stack"><li>TypeScript</li><li>Node.js 22</li><li>Fastify</li><li>Next.js</li><li>PostgreSQL 16</li><li>Prisma</li><li>Docker Compose</li><li>Cloudflare Tunnel</li><li>Mercado Pago API</li><li>ARCA WSFEv1</li><li>AES-256-GCM</li></ul>
+      </div>
+    </article>
+
+    <!-- ===================== ETERNO INSTANTE ===================== -->
+    <article class="case" id="eterno-instante">
+      <div class="case-head">
+        <div class="case-flight"><span class="flight-code">NW 102</span><span class="pill ok"><span class="es">En producción</span><span class="en">In production</span></span><span>2026</span></div>
+        <h3 class="case-title">Eterno Instante</h3>
+        <p class="case-tag es">Plataforma para que fotógrafos de playa, calle y eventos vendan sus fotos en el momento: el cliente encuentra su sesión, paga con Mercado Pago y descarga el original.</p>
+        <p class="case-tag en">A platform that lets beach, street and event photographers sell their photos on the spot: customers find their session, pay with Mercado Pago and download the original.</p>
+      </div>
+      <div class="case-body">
+        <div class="story">
+          <div>
+            <h4><span class="es">El problema</span><span class="en">The problem</span></h4>
+            <p class="es">Un fotógrafo de playa saca cientos de fotos por jornada a gente que sigue caminando. Imprimir es caro y lento, mandar por WhatsApp no asegura el cobro, y la mayoría de las ventas se pierde. Además hay que organizar miles de archivos y evitar que alguien se lleve las fotos sin pagar.</p>
+            <p class="en">A beach photographer takes hundreds of shots a day of people who keep walking. Printing is slow and expensive, WhatsApp doesn't guarantee payment, and most sales are lost. On top of that, thousands of files need organizing and nobody should walk away with photos they didn't pay for.</p>
+          </div>
+          <div>
+            <h4><span class="es">Lo que construí</span><span class="en">What I built</span></h4>
+            <p class="es">El fotógrafo marca la sesión desde el celular y vuelca la tarjeta de memoria. Un worker en Python asocia cada foto a su sesión por la hora EXIF y genera cinco variantes. El cliente ve las fotos protegidas con el efecto lupa, paga y descarga con un link firmado que vence. Paneles por rol para fotógrafo, mostrador y sysadmin.</p>
+            <p class="en">The photographer marks the session on their phone and dumps the memory card. A Python worker matches each photo to its session by EXIF time and renders five variants. Customers browse protected previews with a magnifier effect, pay, and download through a signed, expiring link. Role-based panels for photographer, counter staff and sysadmin.</p>
+          </div>
+          <div>
+            <h4><span class="es">Mi rol</span><span class="en">My role</span></h4>
+            <p class="es">Relevamiento, diseño, desarrollo, despliegue, soporte y documentación. Corre en un servidor Ubuntu propio con Docker Compose, Samba y Cloudflare Tunnel, sin puertos abiertos.</p>
+            <p class="en">Requirements, design, development, deployment, support and documentation. It runs on a self-hosted Ubuntu server with Docker Compose, Samba and Cloudflare Tunnel, with no open ports.</p>
+          </div>
+          <dl class="facts">
+            <div><dt>~7.700</dt><dd><span class="es">líneas en Node, React y Python</span><span class="en">lines across Node, React and Python</span></dd></div>
+            <div><dt>5</dt><dd><span class="es">roles con permisos por ruta</span><span class="en">roles with per-route permissions</span></dd></div>
+            <div><dt>~1.500</dt><dd><span class="es">fotos por jornada, en paralelo</span><span class="en">photos per day, processed in parallel</span></dd></div>
+          </dl>
+          <p><a class="extlink" href="https://fotos.eternoinstante.com" target="_blank" rel="noopener"><span class="es">Ver el sitio en producción</span><span class="en">Visit the live site</span> ↗</a></p>
+        </div>
+
+        <div class="demo" aria-labelledby="ei-demo-t">
+          <div class="demo-bar"><h4 id="ei-demo-t"><span class="es">Probá el efecto lupa</span><span class="en">Try the magnifier</span></h4><span class="tagx"><span class="es">foto generada</span><span class="en">generated photo</span></span></div>
+          <div class="demo-in">
+            <p class="demo-help es">Pasá el mouse o el dedo por la foto. El cliente evalúa el encuadre sin poder llevarse la imagen: la vista previa está desenfocada y con marca de agua.</p>
+            <p class="demo-help en">Move your mouse or finger over the photo. Customers can judge the framing without being able to take the image: the preview is blurred and watermarked.</p>
+            <div class="lupa-wrap" id="lupa"><canvas id="lupa-c" width="800" height="500" aria-label="Foto de playa de ejemplo con vista previa protegida"></canvas><span class="lupa-hint" id="lupa-hint"></span></div>
+            <div class="variants" role="group" aria-label="Variantes">
+              <button type="button" class="dbtn" data-var="preview" aria-pressed="true"><span class="es">Vista previa + lupa</span><span class="en">Preview + magnifier</span></button>
+              <button type="button" class="dbtn" data-var="thumb" aria-pressed="false"><span class="es">Miniatura</span><span class="en">Thumbnail</span></button>
+              <button type="button" class="dbtn" data-var="original" aria-pressed="false"><span class="es">Original tras el pago</span><span class="en">Original after payment</span></button>
+            </div>
+            <p class="vnote" id="lupa-note"></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="more">
+        <div>
+          <h4><span class="es">Problemas que resolví</span><span class="en">Problems I solved</span></h4>
+          <div class="issues">
+            <details class="issue"><summary><span class="es">Órdenes ajenas al alcance de un número</span><span class="en">Other people's orders one number away</span></summary>
+              <div class="ib">
+                <p class="es"><b>Problema.</b> Las URLs de orden eran secuenciales: probando /orden/1, /orden/2 se podían ver órdenes ajenas y sus links de descarga.</p>
+                <p class="es"><b>Solución.</b> Token público aleatorio criptográfico por orden, backfill de las existentes y el ID secuencial queda sólo como dato interno.</p>
+                <p class="en"><b>Problem.</b> Order URLs were sequential: trying /orden/1, /orden/2 exposed other customers' orders and download links.</p>
+                <p class="en"><b>Solution.</b> A cryptographically random public token per order, backfilled for existing ones; the sequential ID stays internal.</p>
+              </div></details>
+            <details class="issue"><summary><span class="es">Un worker lento con lotes grandes</span><span class="en">A slow worker on large batches</span></summary>
+              <div class="ib">
+                <p class="es"><b>Análisis.</b> Con ~1.500 fotos por jornada, el cuello de botella era la CPU (redimensionar, desenfocar, marca de agua), no la RAM ni el disco.</p>
+                <p class="es"><b>Solución.</b> ProcessPoolExecutor con concurrencia configurable, pasando datos planos entre procesos en lugar de conexiones a la base.</p>
+                <p class="en"><b>Analysis.</b> At ~1,500 photos a day the bottleneck was CPU (resize, blur, watermark), not RAM or disk.</p>
+                <p class="en"><b>Solution.</b> ProcessPoolExecutor with configurable concurrency, passing plain data between processes instead of database connections.</p>
+              </div></details>
+            <details class="issue"><summary><span class="es">Falsa alarma de worker colgado</span><span class="en">A false "worker stuck" alarm</span></summary>
+              <div class="ib">
+                <p class="es"><b>Problema.</b> El heartbeat se escribía al terminar el lote completo; con cientos de fotos, el panel lo marcaba en rojo aunque estuviera trabajando.</p>
+                <p class="es"><b>Solución.</b> Heartbeat por foto terminada con as_completed, y un panel de estado con semáforo, contadores y errores recientes.</p>
+                <p class="en"><b>Problem.</b> The heartbeat was written only after a whole batch; with hundreds of photos the panel showed red while the worker was busy.</p>
+                <p class="en"><b>Solution.</b> A heartbeat per finished photo using as_completed, plus a status panel with health light, counters and recent errors.</p>
+              </div></details>
+            <details class="issue"><summary><span class="es">Cientos de fotos sin sesión</span><span class="en">Hundreds of photos without a session</span></summary>
+              <div class="ib">
+                <p class="es"><b>Problema.</b> Las fotos huérfanas había que asignarlas una por una.</p>
+                <p class="es"><b>Solución.</b> Agrupación automática por fotógrafo y cercanía temporal (ventana configurable), con confirmación humana. En las pruebas apareció un bug que mezclaba fotógrafos; lo corregí filtrando por autor.</p>
+                <p class="en"><b>Problem.</b> Orphan photos had to be assigned one at a time.</p>
+                <p class="en"><b>Solution.</b> Automatic grouping by photographer and time proximity (configurable window), with human confirmation. Testing surfaced a bug that mixed photographers; I fixed it by filtering by author.</p>
+              </div></details>
+          </div>
+        </div>
+        <div>
+          <h4><span class="es">Capturas</span><span class="en">Screenshots</span> <small style="font-weight:400;color:var(--muted)">(<span class="es">datos de demo</span><span class="en">demo data</span>)</small></h4>
+          <div class="gallery">
+            <figure><button type="button" data-lb><img src="assets/ei-galeria-movil.webp" width="440" height="952" alt="Galería del cliente en el celular" loading="lazy"></button><figcaption><span class="es">La galería en el celular, el uso principal en la playa.</span><span class="en">The gallery on a phone, the main use on the beach.</span></figcaption></figure>
+            <figure class="wide"><button type="button" data-lb><img src="assets/ei-galeria.webp" width="1200" height="750" alt="Galería de una sesión en escritorio" loading="lazy"></button><figcaption><span class="es">Previews desenfocadas y con marca de agua.</span><span class="en">Blurred, watermarked previews.</span></figcaption></figure>
+            <figure class="wide"><button type="button" data-lb><img src="assets/ei-sin-asignar.webp" width="1200" height="750" alt="Panel de fotos sin asignar con grupos sugeridos" loading="lazy"></button><figcaption><span class="es">Grupos sugeridos de fotos huérfanas.</span><span class="en">Suggested groups of orphan photos.</span></figcaption></figure>
+            <figure class="wide"><button type="button" data-lb><img src="assets/ei-worker.webp" width="1200" height="750" alt="Panel de estado del worker" loading="lazy"></button><figcaption><span class="es">Estado del worker con heartbeat.</span><span class="en">Worker status with heartbeat.</span></figcaption></figure>
+            <figure class="wide"><button type="button" data-lb><img src="assets/ei-ordenes.webp" width="1200" height="750" alt="Panel de órdenes del sysadmin" loading="lazy"></button><figcaption><span class="es">Órdenes: búsqueda y regeneración segura de links.</span><span class="en">Orders: search and safe link regeneration.</span></figcaption></figure>
+            <figure class="wide"><button type="button" data-lb><img src="assets/ei-arquitectura.webp" width="1600" height="896" alt="Diagrama de arquitectura de Eterno Instante" loading="lazy"></button><figcaption><span class="es">Arquitectura: web, API, worker y storage.</span><span class="en">Architecture: web, API, worker and storage.</span></figcaption></figure>
+          </div>
+        </div>
+        <details class="code"><summary><span class="es">Ver código: heartbeat por foto y originales protegidos</span><span class="en">View code: per-photo heartbeat and protected originals</span></summary>
+<pre><code><span class="c"># image-worker/worker.py</span>
+<span class="k">with</span> ProcessPoolExecutor(max_workers=config.WORKER_CONCURRENCY) <span class="k">as</span> executor:
+    futures = [executor.submit(_process_photo_in_subprocess, p) <span class="k">for</span> p <span class="k">in</span> pending]
+    <span class="c"># as_completed (no .map): reacciona a CADA foto que termina,
+    # así el heartbeat refleja la realidad.</span>
+    <span class="k">for</span> future <span class="k">in</span> as_completed(futures):
+        future.result()
+        now = conn.execute(<span class="s">"SELECT datetime('now')"</span>).fetchone()[0]
+        dbmod.set_setting(conn, <span class="s">"worker_last_heartbeat"</span>, now)
+
+<span class="c">// backend/src/controllers/media.controller.js
+// Los originales NUNCA pasan por esta ruta: sólo variantes protegidas.</span>
+<span class="k">if</span> (!segments.includes(<span class="s">'thumbnails'</span>) &amp;&amp; !segments.includes(<span class="s">'previews'</span>) &amp;&amp; !segments.includes(<span class="s">'reveals'</span>)) {
+  <span class="k">return</span> res.status(403).json({ error: <span class="s">'No autorizado'</span> });
+}</code></pre>
+        </details>
+        <ul class="chips" aria-label="Stack"><li>React 18</li><li>Vite</li><li>Node.js</li><li>Express</li><li>SQLite (WAL)</li><li>Python</li><li>Pillow</li><li>watchdog</li><li>Docker Compose</li><li>Ubuntu Server</li><li>Samba</li><li>Cloudflare Tunnel</li><li>Mercado Pago Checkout Pro</li><li>JWT</li></ul>
+      </div>
+    </article>
+
+    <!-- ===================== CUADERNO DIGITAL ===================== -->
+    <article class="case" id="cuaderno-digital">
+      <div class="case-head">
+        <div class="case-flight"><span class="flight-code">NW 103</span><span class="pill ok"><span class="es">En producción desde agosto 2026</span><span class="en">In production since August 2026</span></span></div>
+        <h3 class="case-title">Cuaderno Digital</h3>
+        <p class="case-tag es">La libreta de fiados del kiosco, sin papel y sin errores de cuenta. Reemplazó el cuaderno de un comercio de barrio que la usa todos los días.</p>
+        <p class="case-tag en">The corner shop's credit notebook, without paper or math mistakes. It replaced the paper ledger of a neighborhood store that uses it every day.</p>
+      </div>
+      <div class="case-body">
+        <div class="story">
+          <div>
+            <h4><span class="es">El problema</span><span class="en">The problem</span></h4>
+            <p class="es">En un kiosco de barrio se vende mucho "al fiado" y todo se anota en un cuaderno: buscar al cliente con gente esperando, sumar pagos parciales a mano, no saber quién debe hace más tiempo. Y si el cuaderno se moja, la deuda se pierde.</p>
+            <p class="en">Corner shops in Argentina sell a lot on credit (<i>fiado</i>), all written in a paper notebook: finding a customer while people wait, adding partial payments by hand, not knowing who has owed the longest. If the notebook gets wet, the debt is gone.</p>
+          </div>
+          <div>
+            <h4><span class="es">Lo que construí</span><span class="en">What I built</span></h4>
+            <p class="es">Una PWA instalable pensada para el mostrador: búsqueda instantánea, cuentas familiares, antigüedad de deuda con lógica FIFO y alertas a los 30, 60 y 90 días, un PDF del detalle para compartir por WhatsApp y backups automáticos diarios. Arquitectura en capas (rutas, servicios, repositorios).</p>
+            <p class="en">An installable PWA built for the counter: instant search, shared family accounts, FIFO debt aging with alerts at 30, 60 and 90 days, a PDF statement shareable on WhatsApp and automatic daily backups. Layered architecture (routes, services, repositories).</p>
+          </div>
+          <div>
+            <h4><span class="es">Mi rol</span><span class="en">My role</span></h4>
+            <p class="es">Escribí el análisis del dominio antes de programar, diseñé la arquitectura, lo implementé, lo desplegué con PM2 y Cloudflare Tunnel y doy soporte al comercio. Ya diseñé e implementé la versión multi-tenant, hoy en validación.</p>
+            <p class="en">I wrote the domain analysis before coding, designed the architecture, built it, deployed it with PM2 and Cloudflare Tunnel, and support the shop. I've already designed and implemented the multi-tenant version, now in validation.</p>
+          </div>
+          <dl class="facts">
+            <div><dt>~30</dt><dd><span class="es">endpoints REST</span><span class="en">REST endpoints</span></dd></div>
+            <div><dt>~60 kB</dt><dd><span class="es">de JS gzip: sin Redux ni librería de UI</span><span class="en">of gzipped JS: no Redux, no UI kit</span></dd></div>
+            <div><dt><span class="es">Diario</span><span class="en">Daily</span></dt><dd><span class="es">backup automático desde el 6/8/2026</span><span class="en">automatic backup since Aug 6, 2026</span></dd></div>
+          </dl>
+        </div>
+
+        <div class="demo" aria-labelledby="cu-demo-t">
+          <div class="demo-bar"><h4 id="cu-demo-t"><span class="es">Encontrá el bug de la antigüedad</span><span class="en">Spot the debt-aging bug</span></h4><span class="tagx"><span class="es">cuenta de ejemplo</span><span class="en">sample account</span></span></div>
+          <div class="demo-in">
+            <p class="demo-help es">Cada pago cancela primero la deuda más vieja. Mi primer cálculo sólo miraba los pagos anteriores a cada deuda, así que una cuenta saldada seguía marcada como morosa. Saldá la cuenta y compará.</p>
+            <p class="demo-help en">Each payment settles the oldest debt first. My first version only looked at payments made before each debt, so a settled account still showed up as overdue. Settle the account and compare.</p>
+            <div class="dbtns">
+              <button type="button" class="dbtn" id="cu-debt"><span class="es">Anotar deuda $5.000</span><span class="en">Add $5,000 debt</span></button>
+              <button type="button" class="dbtn" id="cu-pay"><span class="es">Registrar pago $6.000</span><span class="en">Record $6,000 payment</span></button>
+              <button type="button" class="dbtn" id="cu-days"><span class="es">Pasan 15 días</span><span class="en">15 days pass</span></button>
+              <button type="button" class="dbtn y" id="cu-settle"><span class="es">Saldar la cuenta</span><span class="en">Settle the account</span></button>
+              <button type="button" class="dbtn" id="cu-reset"><span class="es">Reiniciar</span><span class="en">Reset</span></button>
+            </div>
+            <div class="ledger">
+              <div class="panel">
+                <div class="dlabel"><span class="es">Familia Pereyra · saldo</span><span class="en">Pereyra family · balance</span></div>
+                <div class="saldo" id="cu-saldo">$0</div>
+                <div class="age" id="cu-age"></div>
+                <div class="bug" id="cu-bug"></div>
+              </div>
+              <div class="panel">
+                <div class="dlabel"><span class="es">Deudas pendientes (cola FIFO)</span><span class="en">Pending debts (FIFO queue)</span></div>
+                <div class="queue" id="cu-queue"></div>
+                <div class="dlabel" style="margin-top:.8rem"><span class="es">Últimos movimientos</span><span class="en">Latest entries</span></div>
+                <ul class="hist" id="cu-hist"></ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="more">
+        <div>
+          <h4><span class="es">Problemas que resolví</span><span class="en">Problems I solved</span></h4>
+          <div class="issues">
+            <details class="issue"><summary><span class="es">Cuentas saldadas que seguían morosas</span><span class="en">Settled accounts still flagged as overdue</span></summary>
+              <div class="ib">
+                <p class="es"><b>Causa.</b> Por cada deuda, el cálculo sólo miraba los pagos anteriores a ella; un pago posterior nunca la cancelaba.</p>
+                <p class="es"><b>Solución.</b> Recorrer el historial en orden con una cola FIFO: cada deuda entra, cada pago consume desde el frente. Cuando la cola se vacía, la antigüedad se reinicia sola.</p>
+                <p class="en"><b>Cause.</b> For each debt, the calculation only looked at earlier payments; a later payment never settled it.</p>
+                <p class="en"><b>Solution.</b> Walk the history in order with a FIFO queue: each debt is enqueued, each payment consumes from the front. When the queue empties, the aging resets by itself.</p>
+              </div></details>
+            <details class="issue"><summary><span class="es">Deuda y pago con la misma fecha y hora</span><span class="en">A debt and a payment with the same timestamp</span></summary>
+              <div class="ib">
+                <p class="es"><b>Problema.</b> Un cliente real con saldo $0 seguía con "deuda antigua". Al migrar el cuaderno, los movimientos se cargaron a las 12:00 y el desempate por id podía procesar el pago antes que la deuda.</p>
+                <p class="es"><b>Solución.</b> Un criterio explícito en el ORDER BY: ante empate, la deuda va primero. El orden de los datos es parte de la lógica de negocio.</p>
+                <p class="en"><b>Problem.</b> A real customer with a $0 balance still showed "old debt". Migrated paper entries were stored at 12:00, and tie-breaking by id could process the payment before the debt.</p>
+                <p class="en"><b>Solution.</b> An explicit ORDER BY criterion: on a tie, the debt goes first. Data ordering is part of the business logic.</p>
+              </div></details>
+            <details class="issue"><summary><span class="es">Publicar a internet desde una PC del comercio</span><span class="en">Exposing a shop PC to the internet</span></summary>
+              <div class="ib">
+                <p class="es"><b>Decisión.</b> Evalué VPS, DDNS y túnel; elegí Cloudflare Tunnel: sin abrir puertos ni depender de IP fija.</p>
+                <p class="es"><b>Endurecimiento.</b> helmet, CORS por variable de entorno, límite de 8 intentos de login cada 15 minutos por IP y el servidor no arranca si falta la configuración.</p>
+                <p class="en"><b>Decision.</b> I compared a VPS, DDNS and a tunnel, and picked Cloudflare Tunnel: no open ports, no fixed IP needed.</p>
+                <p class="en"><b>Hardening.</b> helmet, env-based CORS, login limited to 8 attempts per 15 minutes per IP, and the server refuses to start without configuration.</p>
+              </div></details>
+            <details class="issue"><summary><span class="es">Días sin backup</span><span class="en">Days without a backup</span></summary>
+              <div class="ib">
+                <p class="es"><b>Problema.</b> Si la PC estaba apagada a las 20:00, ese día no había copia.</p>
+                <p class="es"><b>Solución.</b> Backups organizados por mes con retención de 60 copias, y en la versión 2 una verificación al arrancar que genera el backup faltante usando la API nativa de SQLite.</p>
+                <p class="en"><b>Problem.</b> If the PC was off at 8 p.m., there was no copy that day.</p>
+                <p class="en"><b>Solution.</b> Monthly backup folders with 60-copy retention, and in version 2 a startup check that creates the missing backup using SQLite's native backup API.</p>
+              </div></details>
+          </div>
+        </div>
+        <div>
+          <h4><span class="es">Capturas</span><span class="en">Screenshots</span> <small style="font-weight:400;color:var(--muted)">(<span class="es">datos ficticios</span><span class="en">fictional data</span>)</small></h4>
+          <div class="gallery">
+            <figure><button type="button" data-lb><img src="assets/cu-cuenta.webp" width="440" height="952" alt="Detalle de una cuenta con alerta de deuda antigua" loading="lazy"></button><figcaption><span class="es">Saldo, deuda más antigua e historial.</span><span class="en">Balance, oldest debt and history.</span></figcaption></figure>
+            <figure><button type="button" data-lb><img src="assets/cu-listado.webp" width="440" height="952" alt="Listado de clientes coloreado por antigüedad de deuda" loading="lazy"></button><figcaption><span class="es">Las tarjetas se tiñen según la antigüedad.</span><span class="en">Cards change color with debt age.</span></figcaption></figure>
+            <figure><button type="button" data-lb><img src="assets/cu-anotar.webp" width="440" height="952" alt="Formulario para anotar una deuda" loading="lazy"></button><figcaption><span class="es">Anotar una deuda lleva segundos.</span><span class="en">Adding a debt takes seconds.</span></figcaption></figure>
+            <figure><button type="button" data-lb><img src="assets/cu-antiguas.webp" width="440" height="952" alt="Ranking de deudas más antiguas" loading="lazy"></button><figcaption><span class="es">Ranking de deudas más antiguas.</span><span class="en">Oldest debts ranking.</span></figcaption></figure>
+            <figure class="wide"><button type="button" data-lb><img src="assets/cu-capas.webp" width="900" height="470" alt="Diagrama de arquitectura en capas" loading="lazy"></button><figcaption><span class="es">Arquitectura en capas.</span><span class="en">Layered architecture.</span></figcaption></figure>
+          </div>
+        </div>
+        <details class="code"><summary><span class="es">Ver código: la cola FIFO que corrigió el bug</span><span class="en">View code: the FIFO queue that fixed the bug</span> (cuentaService.js)</summary>
+<pre><code><span class="k">function</span> fechaDeudaMasAntigua(cuenta_id) {
+  <span class="k">const</span> movimientos = movimientoRepo.listarPorCuenta(cuenta_id).slice().reverse();
+  <span class="k">const</span> colaDeudas = [];
+  <span class="k">for</span> (<span class="k">const</span> mov <span class="k">of</span> movimientos) {
+    <span class="k">if</span> (mov.tipo === <span class="s">'deuda'</span>) {
+      colaDeudas.push({ fecha: mov.fecha, hora: mov.hora, restante: mov.monto });
+      <span class="k">continue</span>;
+    }
+    <span class="c">// un pago cancela deudas empezando por la más antigua pendiente</span>
+    <span class="k">let</span> pagoRestante = mov.monto;
+    <span class="k">while</span> (pagoRestante &gt; 0 &amp;&amp; colaDeudas.length &gt; 0) {
+      <span class="k">const</span> masAntigua = colaDeudas[0];
+      <span class="k">if</span> (masAntigua.restante &lt;= pagoRestante) {
+        pagoRestante -= masAntigua.restante;
+        colaDeudas.shift();
+      } <span class="k">else</span> {
+        masAntigua.restante -= pagoRestante;
+        pagoRestante = 0;
+      }
+    }
+  }
+  <span class="k">if</span> (colaDeudas.length === 0) <span class="k">return null</span>; <span class="c">// sin deuda: la alerta se reinicia sola</span>
+  <span class="k">return</span> colaDeudas[0];
+}</code></pre>
+        </details>
+        <ul class="chips" aria-label="Stack"><li>React 18</li><li>Vite</li><li>PWA</li><li>Node.js</li><li>Express</li><li>SQLite (WAL)</li><li>PDFKit</li><li>node-cron</li><li>helmet</li><li>PM2</li><li>Cloudflare Tunnel</li><li>Docker</li><li>JWT + bcrypt</li></ul>
+      </div>
+    </article>
+
+    <!-- ===================== CD NETWORK PLAYER ===================== -->
+    <article class="case" id="cd-network-player">
+      <div class="case-head">
+        <div class="case-flight"><span class="flight-code">NW 104</span><span class="pill mvp"><span class="es">MVP funcionando con hardware real</span><span class="en">MVP working on real hardware</span></span><span>2026</span></div>
+        <h3 class="case-title">CD Network Player</h3>
+        <p class="case-tag es">Metés un CD en la lectora del servidor de casa y lo escuchás en vivo desde cualquier celular de la red, sin rippear ni guardar el audio en ningún disco.</p>
+        <p class="case-tag en">Put a CD in the home server's drive and listen live from any phone on the network, without ripping or storing the audio on any disk.</p>
+      </div>
+      <div class="case-body">
+        <div class="story">
+          <div>
+            <h4><span class="es">El problema</span><span class="en">The problem</span></h4>
+            <p class="es">Tengo una colección de CDs y un servidor Linux en casa. Quería escucharlos desde el celular sin comprar un reproductor, sin convertir toda la colección a archivos y sin depender de un servicio externo.</p>
+            <p class="en">I have a CD collection and a Linux server at home. I wanted to play the discs from my phone without buying a streamer, converting the whole collection to files, or relying on an outside service.</p>
+          </div>
+          <div>
+            <h4><span class="es">Lo que construí</span><span class="en">What I built</span></h4>
+            <p class="es">Un backend async en FastAPI que arma un WAV bit-perfect en streaming: calcula el tamaño exacto desde la tabla de contenidos del CD, escribe el header de 44 bytes y pipea cdparanoia directo a la respuesta HTTP. Un WebSocket mantiene sincronizados a todos los clientes.</p>
+            <p class="en">An async FastAPI backend that streams a bit-perfect WAV: it computes the exact size from the CD's table of contents, writes the 44-byte header and pipes cdparanoia straight into the HTTP response. A WebSocket keeps every client in sync.</p>
+          </div>
+          <div>
+            <h4><span class="es">Mi rol</span><span class="en">My role</span></h4>
+            <p class="es">Proyecto personal, en solitario: arquitectura, backend, frontend, Docker y la integración con una lectora física en un servidor que ya corría otros servicios.</p>
+            <p class="en">Personal project, solo: architecture, backend, frontend, Docker and the integration with a physical drive on a server already running other services.</p>
+          </div>
+          <dl class="facts">
+            <div><dt>0 B</dt><dd><span class="es">de audio escritos a disco</span><span class="en">of audio written to disk</span></dd></div>
+            <div><dt>1</dt><dd><span class="es">dispositivo expuesto al contenedor, sin privileged</span><span class="en">device exposed to the container, no privileged mode</span></dd></div>
+            <div><dt>Android</dt><dd><span class="es">reproduce con la pantalla bloqueada</span><span class="en">keeps playing with the screen locked</span></dd></div>
+          </dl>
+        </div>
+
+        <div class="demo" aria-labelledby="cd-demo-t">
+          <div class="demo-bar"><h4 id="cd-demo-t"><span class="es">Dos clientes, un solo estado</span><span class="en">Two clients, one shared state</span></h4><span class="tagx"><span class="es">disco de demo</span><span class="en">demo disc</span></span></div>
+          <div class="demo-in">
+            <p class="demo-help es">Controlá el reproductor desde cualquiera de los dos dispositivos: el WebSocket difunde el cambio y ambos muestran lo mismo. Cortá Internet y la música sigue sonando.</p>
+            <p class="demo-help en">Control playback from either device: the WebSocket broadcasts the change and both show the same thing. Cut the internet and the music keeps playing.</p>
+            <div class="cdgrid">
+              <div class="disc" id="cd-disc" aria-hidden="true"></div>
+              <div class="cdinfo">
+                <div class="al" id="cd-al"></div>
+                <div class="ar" id="cd-ar"></div>
+                <div class="dmono">/dev/sr0 · cdparanoia -r</div>
+                <div style="margin-top:.6rem"><button type="button" class="dbtn" id="cd-net" aria-pressed="false"><span class="es">Cortar Internet</span><span class="en">Cut the internet</span></button></div>
+              </div>
+            </div>
+            <div class="clients" id="cd-clients"></div>
+            <div class="meters">
+              <div class="meter"><b id="cd-sent">0 B</b><span><span class="es">enviados por la red</span><span class="en">sent over the network</span></span></div>
+              <div class="meter zero"><b>0 B</b><span><span class="es">escritos a disco</span><span class="en">written to disk</span></span></div>
+              <div class="meter"><b id="cd-cl">—</b><span>Content-Length <span class="es">desde la TOC</span><span class="en">from the TOC</span></span></div>
+            </div>
+            <div class="log" id="cd-log" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="more">
+        <div>
+          <h4><span class="es">Problemas que resolví</span><span class="en">Problems I solved</span></h4>
+          <div class="issues">
+            <details class="issue"><summary><span class="es">Streaming sin archivos temporales</span><span class="en">Streaming with no temp files</span></summary>
+              <div class="ib">
+                <p class="es">Un proceso de cdparanoia por reproducción, con su ciclo de vida atado a la conexión HTTP: si el cliente corta, el proceso se termina en el finally. Cero escritura a disco.</p>
+                <p class="en">One cdparanoia process per playback, its lifecycle tied to the HTTP connection: if the client disconnects, the process is killed in the finally block. Zero disk writes.</p>
+              </div></details>
+            <details class="issue"><summary><span class="es">Acceso mínimo al hardware desde Docker</span><span class="en">Least-privilege hardware access from Docker</span></summary>
+              <div class="ib">
+                <p class="es">El servidor corre otros servicios en producción. Primero identifiqué en el host el dispositivo exacto, y el contenedor recibe sólo ese: nunca privileged ni /dev completo.</p>
+                <p class="en">The server runs other production services. I first identified the exact device on the host, and the container gets only that one: never privileged, never all of /dev.</p>
+              </div></details>
+            <details class="issue"><summary><span class="es">Metadata que nunca rompe la reproducción</span><span class="en">Metadata that can never break playback</span></summary>
+              <div class="ib">
+                <p class="es">La consulta a MusicBrainz corre en segundo plano y desacoplada. Si falla, tarda o se saca el disco a mitad de consulta, un contador de generación descarta el resultado y el reproductor sigue con "Track 01".</p>
+                <p class="en">The MusicBrainz lookup runs decoupled in the background. If it fails, stalls, or the disc is ejected mid-lookup, a generation counter discards the result and playback continues with "Track 01".</p>
+              </div></details>
+          </div>
+        </div>
+        <div>
+          <h4><span class="es">Capturas</span><span class="en">Screenshots</span></h4>
+          <div class="gallery">
+            <figure><button type="button" data-lb><img src="assets/cd-metadata.webp" width="440" height="921" alt="Reproduciendo con metadata de MusicBrainz" loading="lazy"></button><figcaption><span class="es">Con portada y nombres desde MusicBrainz.</span><span class="en">With cover and titles from MusicBrainz.</span></figcaption></figure>
+            <figure><button type="button" data-lb><img src="assets/cd-fallback.webp" width="440" height="921" alt="Reproduciendo sin metadata" loading="lazy"></button><figcaption><span class="es">Sin metadata: sigue sonando.</span><span class="en">No metadata: it keeps playing.</span></figcaption></figure>
+            <figure><button type="button" data-lb><img src="assets/cd-idle.webp" width="440" height="921" alt="Sin disco insertado" loading="lazy"></button><figcaption><span class="es">Esperando un disco.</span><span class="en">Waiting for a disc.</span></figcaption></figure>
+            <figure class="wide"><button type="button" data-lb><img src="assets/cd-desktop.webp" width="1400" height="941" alt="Interfaz en escritorio" loading="lazy"></button><figcaption><span class="es">La misma interfaz en escritorio.</span><span class="en">The same interface on desktop.</span></figcaption></figure>
+          </div>
+        </div>
+        <details class="code"><summary><span class="es">Ver código: un WAV armado a mano, sin FFmpeg</span><span class="en">View code: a hand-built WAV, no FFmpeg</span> (streaming.py)</summary>
+<pre><code>SECTOR_BYTES = 2352  <span class="c"># 588 muestras estéreo de 16 bits por sector CDDA</span>
+SECTORS_PER_SECOND = 75
+
+<span class="k">def</span> _wav_header(pcm_data_size: int) -&gt; bytes:
+    byte_rate = SAMPLE_RATE * CHANNELS * BITS_PER_SAMPLE // 8
+    block_align = CHANNELS * BITS_PER_SAMPLE // 8
+    <span class="k">return</span> b<span class="s">""</span>.join([
+        b<span class="s">"RIFF"</span>, struct.pack(<span class="s">"&lt;I"</span>, 36 + pcm_data_size), b<span class="s">"WAVE"</span>,
+        b<span class="s">"fmt "</span>, struct.pack(<span class="s">"&lt;IHHIIHH"</span>, 16, 1, CHANNELS, SAMPLE_RATE,
+                            byte_rate, block_align, BITS_PER_SAMPLE),
+        b<span class="s">"data"</span>, struct.pack(<span class="s">"&lt;I"</span>, pcm_data_size),
+    ])
+
+<span class="k">def</span> content_length(track, start_seconds=0.0) -&gt; int:
+    <span class="c"># conocemos el largo por la TOC: el WAV tiene tamaño real, no "infinito"</span>
+    <span class="k">return</span> 44 + remaining_pcm_bytes(track, start_seconds)</code></pre>
+        </details>
+        <ul class="chips" aria-label="Stack"><li>Python</li><li>FastAPI</li><li>asyncio</li><li>React</li><li>Vite</li><li>WebSocket</li><li>cdparanoia</li><li>libdiscid</li><li>MusicBrainz API</li><li>Docker Compose</li><li>Ubuntu Server</li></ul>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ===================== TRAYECTORIA ===================== -->
+<section id="trayectoria" class="sec" style="background:var(--paper-2);border-block:1px solid var(--line)">
+  <div class="wrap">
+    <h2 class="sign"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg></i><span class="es">Del rack al código</span><span class="en">From the rack to the code</span></h2>
+    <div class="route-grid">
+      <div class="route-intro">
+        <p class="es">Antes de programar estos sistemas pasé años del otro lado: <strong>servidores Windows y Linux, Active Directory, VPNs, SQL Server y backups</strong>, atendiendo incidentes en entornos donde caerse no era opción.</p>
+        <p class="es">Eso cambia cómo programo. Pienso desde el principio en qué pasa cuando el servidor se reinicia, cuando una API externa se traba o cuando hay que restaurar una base. Por eso mis proyectos tienen heartbeats, backups automáticos, monitoreo y despliegues sin puertos abiertos.</p>
+        <p class="en">Before building these systems I spent years on the other side: <strong>Windows and Linux servers, Active Directory, VPNs, SQL Server and backups</strong>, handling incidents where going down wasn't an option.</p>
+        <p class="en">That shapes how I code. From day one I think about what happens when the server reboots, when an external API stalls or when a database must be restored. That's why my projects ship with heartbeats, automatic backups, monitoring and deployments with no open ports.</p>
+      </div>
+      <ol class="stops">
+        <li class="stop now"><span class="yr"><span class="es">Hoy</span><span class="en">Now</span></span><span class="dot"></span><div><h3>Nowagon Software</h3><p><span class="es">Fundador y desarrollador full stack. Sistemas a medida de punta a punta: frontend, backend, datos, pagos e infraestructura.</span><span class="en">Founder and full stack developer. Custom systems end to end: frontend, backend, data, payments and infrastructure.</span></p></div></li>
+        <li class="stop"><span class="yr">2022–25</span><span class="dot"></span><div><h3><span class="es">Administrador de Sistemas IT · Aeropuertos Argentina, Ezeiza</span><span class="en">IT Systems Administrator · Aeropuertos Argentina, Ezeiza Airport</span></h3><p><span class="es">Infraestructura crítica para la operación aeroportuaria, incidentes, proveedores y SQL Server en alta disponibilidad.</span><span class="en">Critical infrastructure for airport operations, incident response, vendors and high-availability SQL Server.</span></p></div></li>
+        <li class="stop edu"><span class="yr">2024</span><span class="dot"></span><div><h3><span class="es">Programador Web · CodeaRock</span><span class="en">Web Programmer · CodeaRock</span></h3><p>HTML, CSS, JavaScript</p></div></li>
+        <li class="stop"><span class="yr">2019–21</span><span class="dot"></span><div><h3><span class="es">Administrador de Redes y Terminales · DotCom</span><span class="en">Network and Endpoint Administrator · DotCom</span></h3><p><span class="es">Lideré migraciones para clientes corporativos: Active Directory, DNS, DHCP, file servers, VPNs y backups.</span><span class="en">Led migrations for corporate clients: Active Directory, DNS, DHCP, file servers, VPNs and backups.</span></p></div></li>
+        <li class="stop"><span class="yr">2019</span><span class="dot"></span><div><h3><span class="es">Técnico Especialista · QosIT, Villa La Angostura</span><span class="en">IT Specialist · QosIT, Villa La Angostura</span></h3><p><span class="es">Redes cableadas e inalámbricas, servidores y estaciones de trabajo.</span><span class="en">Wired and wireless networks, servers and workstations.</span></p></div></li>
+        <li class="stop"><span class="yr">2014</span><span class="dot"></span><div><h3><span class="es">Programador · Indra</span><span class="en">Developer · Indra</span></h3><p><span class="es">Procedimientos y optimizaciones en Oracle PL/SQL para proyectos de Telefónica.</span><span class="en">Oracle PL/SQL procedures and optimizations for Telefónica projects.</span></p></div></li>
+        <li class="stop"><span class="yr">2007–12</span><span class="dot"></span><div><h3><span class="es">Técnico Especialista · Insystems / All-kom</span><span class="en">IT Specialist · Insystems / All-kom</span></h3><p><span class="es">Windows Server, Exchange, IIS y SQL Server sobre plataformas IBM y HP.</span><span class="en">Windows Server, Exchange, IIS and SQL Server on IBM and HP platforms.</span></p></div></li>
+        <li class="stop edu"><span class="yr">2008</span><span class="dot"></span><div><h3><span class="es">Ingeniería en Sistemas · UAI</span><span class="en">Systems Engineering · UAI</span></h3><p><span class="es">24 materias aprobadas.</span><span class="en">24 courses completed.</span></p></div></li>
+        <li class="stop edu"><span class="yr">2003</span><span class="dot"></span><div><h3><span class="es">Técnico Informático · E.E.S.T. N°5</span><span class="en">IT Technician diploma · E.E.S.T. N°5</span></h3></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CÓMO TRABAJO ===================== -->
+<section id="como-trabajo" class="sec">
+  <div class="wrap">
+    <h2 class="sign"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg></i><span class="es">Cómo trabajo</span><span class="en">How I work</span></h2>
+    <p class="lede es">Reglas que salieron de incidentes reales en producción, no de un manual.</p>
+    <p class="lede en">Rules that came from real production incidents, not from a handbook.</p>
+    <div class="rules">
+      <div class="rule"><h3><span class="es">Evidencia antes que hipótesis</span><span class="en">Evidence before hypotheses</span></h3><p><span class="es">Antes de tocar algo que afecta montos, corro scripts de diagnóstico de sólo lectura contra los datos reales. Así pude probar que no se había perdido ningún pago, en vez de suponerlo.</span><span class="en">Before touching anything that affects money, I run read-only diagnostic scripts against real data. That's how I proved no payment had been lost, instead of assuming it.</span></p></div>
+      <div class="rule"><h3><span class="es">La causa, no el síntoma</span><span class="en">The cause, not the symptom</span></h3><p><span class="es">Si un dato puede recalcularse de dos formas, tarde o temprano diverge. Prefiero rediseñar para que el error no pueda ocurrir antes que agregar otro parche.</span><span class="en">If a value can be computed two ways, sooner or later they diverge. I'd rather redesign so the bug can't happen than add another patch.</span></p></div>
+      <div class="rule"><h3><span class="es">Dry-run por defecto</span><span class="en">Dry-run by default</span></h3><p><span class="es">Toda corrección masiva primero se simula. Los comprobantes fiscales ya emitidos no se modifican: se compensan.</span><span class="en">Every bulk fix is simulated first. Issued tax documents are never modified; they're compensated.</span></p></div>
+      <div class="rule"><h3><span class="es">Pensar como quien lo opera</span><span class="en">Think like the operator</span></h3><p><span class="es">Backups, heartbeats, paneles de monitoreo, reinicio automático y secretos fuera del repositorio. El sistema tiene que aguantar la madrugada sin mí.</span><span class="en">Backups, heartbeats, monitoring panels, auto-restart and secrets kept out of the repo. The system has to survive 3 a.m. without me.</span></p></div>
+      <div class="rule"><h3><span class="es">Escuchar al usuario real</span><span class="en">Listen to the real user</span></h3><p><span class="es">Las mejoras del fiado salieron de mirar cómo se usa en el mostrador; las del fotógrafo, de una jornada en la playa.</span><span class="en">The ledger improvements came from watching it used at the counter; the photographer ones, from a day on the beach.</span></p></div>
+      <div class="rule ai"><h3><span class="es">IA como herramienta, criterio propio</span><span class="en">AI as a tool, my own judgment</span></h3><p><span class="es">Uso Claude Code para acelerar el desarrollo. Yo defino requisitos y arquitectura, y reviso y valido cada cambio antes de que llegue a producción.</span><span class="en">I use Claude Code to speed up development. I define requirements and architecture, and I review and validate every change before it reaches production.</span></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== HABILIDADES ===================== -->
+<section id="habilidades" class="sec" style="padding-top:0">
+  <div class="wrap">
+    <h2 class="sign"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5v14"/></svg></i><span class="es">Habilidades</span><span class="en">Skills</span></h2>
+    <p class="lede es">Tocá una tecnología para ver dónde la usé.</p>
+    <p class="lede en">Tap a technology to see where I used it.</p>
+    <div class="skills" id="skills"></div>
+    <div class="skout" id="skout" aria-live="polite"></div>
+  </div>
+</section>
+</main>
+
+<!-- ===================== CONTACTO ===================== -->
+<section id="contacto" class="contact">
+  <div class="wrap">
+    <h2 class="sign"><i><svg viewBox="0 0 24 24" fill="currentColor"><path d="M2.5 19h19v2h-19zM22.07 9.64c-.21-.8-1.04-1.28-1.84-1.06L14.92 10l-6.9-6.43-1.93.51 4.14 7.17-4.97 1.33-1.97-1.54-1.45.39 2.59 4.49L21 11.49c.81-.23 1.28-1.05 1.07-1.85z"/></svg></i><span class="es">Próximo destino: tu equipo</span><span class="en">Next destination: your team</span></h2>
+    <p class="lede es">Busco sumarme a un equipo como desarrollador full stack. Traigo lo que construí y los años de infraestructura que hay detrás.</p>
+    <p class="lede en">I'm looking to join a team as a full stack developer. I bring what I've built and the years of infrastructure behind it.</p>
+    <div class="gate">
+      <div>
+        <div class="mail">
+          <span class="addr" id="addr">javierthomson1986@gmail.com</span>
+          <button type="button" class="btn primary" id="copy"><span class="es">Copiar email</span><span class="en">Copy email</span></button>
+        </div>
+        <p class="copied" id="copied" aria-live="polite"></p>
+        <p class="phone"><span class="es">Teléfono y WhatsApp</span><span class="en">Phone and WhatsApp</span>: <span class="tel">+54 11 3188-3446</span></p>
+        <div class="links" id="links">
+          <a class="btn es" href="assets/CV_Eduardo_Javier_Thomson.pdf" target="_blank" rel="noopener">CV (PDF)</a>
+          <a class="btn en" href="assets/CV_Eduardo_Javier_Thomson_EN.pdf" target="_blank" rel="noopener">Resume (PDF)</a>
+          <a class="btn en" href="assets/CV_Eduardo_Javier_Thomson.pdf" target="_blank" rel="noopener">CV (Spanish)</a>
+          <a class="btn es" href="assets/CV_Eduardo_Javier_Thomson_EN.pdf" target="_blank" rel="noopener">CV en inglés</a>
+        </div>
+      </div>
+      <dl class="ticket">
+        <div><dt><span class="es">Pasajero</span><span class="en">Passenger</span></dt><dd>Eduardo Javier Thomson</dd></div>
+        <div><dt><span class="es">Origen</span><span class="en">From</span></dt><dd>Ezeiza, Buenos Aires</dd></div>
+        <div><dt><span class="es">Modalidad</span><span class="en">Work mode</span></dt><dd><span class="es">Presencial, híbrido o remoto</span><span class="en">On-site, hybrid or remote</span></dd></div>
+        <div><dt><span class="es">Embarque</span><span class="en">Boarding</span></dt><dd><span class="es">Disponibilidad inmediata</span><span class="en">Available immediately</span></dd></div>
+        <div><dt><span class="es">Idiomas</span><span class="en">Languages</span></dt><dd><span class="es">Español nativo, inglés técnico</span><span class="en">Native Spanish, technical English</span></dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+<footer><div class="wrap"><span>© 2026 Eduardo Javier Thomson · Nowagon Software</span><span>Ezeiza, Buenos Aires</span></div></footer>
+
+<dialog class="lb" id="lb"><button type="button" id="lb-x"><span class="es">Cerrar</span><span class="en">Close</span></button><img id="lb-img" alt=""><p id="lb-cap"></p></dialog>
+
+<script>
+/* ===== Configuración: completar cuando estén ===== */
+const LINKEDIN_URL = "https://www.linkedin.com/in/eduardo-javier-thomson-88b92b185/";
+const GITHUB_URL   = "https://github.com/Javit1986/";
+
+(function(){
+const root = document.documentElement;
+const store = {get(k){try{return localStorage.getItem(k)}catch(e){return null}}, set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let lang = 'es';
+const T = (es,en)=> lang==='es'?es:en;
+const listeners = [];
+
+/* ---------- idioma ---------- */
+function setLang(l, animate){
+  lang = l; root.lang = l;
+  root.classList.toggle('lang-es', l==='es'); root.classList.toggle('lang-en', l==='en');
+  document.querySelectorAll('.langsw button').forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.lang===l)));
+  store.set('ejt-lang', l);
+  listeners.forEach(fn=>fn(animate));
+}
+const hashLang = location.hash==='#en' ? 'en' : null;
+const initial = hashLang || store.get('ejt-lang') || ((navigator.language||'es').toLowerCase().startsWith('es') ? 'es' : 'en');
+lang = initial; root.classList.add('lang-'+initial); root.lang = initial;
+document.querySelectorAll('.langsw button').forEach(b=>{
+  b.setAttribute('aria-pressed', String(b.dataset.lang===initial));
+  b.addEventListener('click',()=>{ if(b.dataset.lang!==lang) setLang(b.dataset.lang,true); });
+});
+
+/* ---------- tema ---------- */
+const tb = document.getElementById('themebtn');
+const savedTheme = store.get('ejt-theme'); if(savedTheme) root.dataset.theme = savedTheme;
+tb.addEventListener('click',()=>{
+  const dark = root.dataset.theme ? root.dataset.theme==='dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  root.dataset.theme = dark ? 'light' : 'dark'; store.set('ejt-theme', root.dataset.theme);
+});
+
+/* ---------- tablero de salidas ---------- */
+const flights = [
+  {code:'NW 101', dest:['MP → ARCA','MP → ARCA'], via:['TYPESCRIPT FASTIFY','TYPESCRIPT FASTIFY'], st:['EN PRODUCCION','IN PRODUCTION'], cls:'ok', href:'#mp-arca'},
+  {code:'NW 102', dest:['ETERNO INSTANTE','ETERNO INSTANTE'], via:['REACT NODE PYTHON','REACT NODE PYTHON'], st:['EN PRODUCCION','IN PRODUCTION'], cls:'ok', href:'#eterno-instante'},
+  {code:'NW 103', dest:['CUADERNO DIGITAL','CUADERNO DIGITAL'], via:['REACT NODE SQLITE','REACT NODE SQLITE'], st:['EN PRODUCCION','IN PRODUCTION'], cls:'ok', href:'#cuaderno-digital'},
+  {code:'NW 104', dest:['CD NETWORK PLAYER','CD NETWORK PLAYER'], via:['FASTAPI WEBSOCKET','FASTAPI WEBSOCKET'], st:['MVP OK','MVP WORKING'], cls:'mvp', href:'#cd-network-player'},
+  {code:'NW 105', dest:['TU EQUIPO','YOUR TEAM'], via:['FULL STACK','FULL STACK'], st:['EMBARCANDO','BOARDING'], cls:'boarding blink', href:'#contacto'}
+];
+const W = {code:6, dest:17, via:18, st:13};
+const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789→ ';
+const rowsEl = document.getElementById('rows');
+const cells = [];
+flights.forEach((f,ri)=>{
+  const a = document.createElement('a'); a.className='brow'; a.href=f.href;
+  ['code','dest','via','st'].forEach(k=>{
+    const c = document.createElement('span'); c.className='cell c-'+k + (k==='st' ? ' '+f.cls : ''); c.setAttribute('aria-hidden','true');
+    const n = W[k]; const spans=[];
+    for(let i=0;i<n;i++){ const s=document.createElement('span'); s.className='f sp'; s.textContent='·'; c.appendChild(s); spans.push(s); }
+    a.appendChild(c);
+    cells.push({row:ri, key:k, spans, get:()=> k==='code'? f.code : f[k][lang==='es'?0:1]});
+  });
+  const sr = document.createElement('span'); sr.className='sr'; sr.style.cssText='position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)';
+  a.appendChild(sr); f.sr = sr;
+  rowsEl.appendChild(a);
+});
+function setSR(){ flights.forEach(f=>{ f.sr.textContent = `${T('Vuelo','Flight')} ${f.code}: ${f.dest[lang==='es'?0:1]}, ${f.via[0]}, ${f.st[lang==='es'?0:1]}`; }); }
+function paint(span,ch){ span.textContent = ch===' '?'·':ch; span.classList.toggle('sp', ch===' '); }
+function flipBoard(animate){
+  setSR();
+  cells.forEach(cell=>{
+    const txt = cell.get().padEnd(cell.spans.length,' ').slice(0,cell.spans.length);
+    cell.spans.forEach((s,i)=>{
+      const target = txt[i];
+      if(!animate || reduce){ paint(s,target); return; }
+      let steps = 4 + cell.row*2 + Math.floor(Math.random()*6) + (i%5);
+      const tick = ()=>{
+        if(steps-- <= 0){ paint(s,target); return; }
+        paint(s, CHARS[Math.floor(Math.random()*(CHARS.length-1))]);
+        setTimeout(tick, 55);
+      };
+      setTimeout(tick, i*12);
+    });
+  });
+}
+listeners.push(a=>flipBoard(a));
+flipBoard(true);
+
+/* reloj en Buenos Aires */
+const clock = document.getElementById('clock');
+const fmtClock = new Intl.DateTimeFormat('es-AR',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'America/Argentina/Buenos_Aires'});
+function tickClock(){ clock.textContent = fmtClock.format(new Date()); }
+tickClock(); setInterval(tickClock, 15000);
+
+/* ---------- utilidades ---------- */
+const money = n => '$' + Math.round(n).toLocaleString('es-AR');
+function logTo(el, html, cls){ const d=document.createElement('div'); d.innerHTML=html; if(cls) d.className=cls; el.prepend(d); while(el.children.length>8) el.lastChild.remove(); }
+const now = ()=> fmtClock.format(new Date());
+
+/* ===================== DEMO: MP → ARCA ===================== */
+(function(){
+  const TH = 10000; let seq = 1000, cbte = 142, lastWebhook = null;
+  const seen = new Set(); const incomes = []; const jobs = []; let batch = []; let busy = false;
+  const inEl = document.getElementById('mp-in'), jobsEl = document.getElementById('mp-jobs'), accEl=document.getElementById('mp-acc'), accN=document.getElementById('mp-accn'), log=document.getElementById('mp-log'), led=document.getElementById('mp-led'), wk=document.getElementById('mp-wk');
+  const payAmts=[2500,4800,12500,18900,7300,26400,3600,15200,950,6100];
+  const trfAmts=[1800,22000,5400,11700,3300,40000,7900];
+  let pi=0, ti=0;
+  function ingest(src, amount, id, silent){
+    if(seen.has(id)){ logTo(log, `${T('Duplicado ignorado','Duplicate ignored')}: ${id} · UNIQUE(${T('cuenta','tenant')}, ${T('origen','source')}, id)`, 'hl'); return; }
+    seen.add(id);
+    const big = amount > TH;
+    incomes.unshift({src, amount, id, big});
+    if(big) jobs.push({kind:'IND', amount, status:'PENDING'});
+    else batch.push(amount);
+    if(!silent) logTo(log, `${now()} ${src==='w'?T('webhook firmado OK','signed webhook OK'):T('sondeo release_report','release_report poll')} → ${id} ${money(amount)} → ${big?T('factura individual','individual invoice'):T('acumula para el cierre','batched for close')}`);
+    render(); pump();
+  }
+  function closeDay(){
+    if(!batch.length){ logTo(log, T('Cierre 23:30: no hay montos chicos pendientes.','23:30 close: no small amounts pending.')); return; }
+    const sum = batch.reduce((a,b)=>a+b,0);
+    jobs.push({kind:'CONS', amount:sum, n:batch.length, status:'PENDING'});
+    logTo(log, `${T('Cierre 23:30: suma real de','23:30 close: real sum of')} ${batch.length} ${T('movimientos','movements')} = ${money(sum)} → ${T('Factura B a Consumidor Final','Invoice to final consumer')}`, 'hl');
+    batch = []; render(); pump();
+  }
+  function pump(){
+    if(busy) return;
+    const job = jobs.find(j=>j.status==='PENDING'); if(!job) { render(); return; }
+    busy = true; job.status='PROCESSING'; render();
+    setTimeout(()=>{
+      job.status='DONE'; job.nro = `B 0003-${String(cbte++).padStart(8,'0')}`;
+      logTo(log, `${T('ARCA autorizó','ARCA authorized')} ${job.nro} · CAE ${Math.floor(1e13+Math.random()*9e13)} · ${money(job.amount)}`, 'okc');
+      busy=false; render(); setTimeout(pump, 250);
+    }, reduce ? 300 : 1100);
+  }
+  function render(){
+    inEl.innerHTML = incomes.slice(0,5).map(i=>`<li class="it"><span class="src ${i.src==='t'?'t':''}">${i.src==='w'?'webhook':T('sondeo','poll')}</span><span class="why">${i.big?T('&gt; $10k · individual','&gt; $10k · individual'):T('≤ $10k · al cierre','≤ $10k · to close')}</span><span class="amt">${money(i.amount)}</span></li>`).join('') || `<li class="it"><span class="why">${T('Sin ingresos todavía','No income yet')}</span></li>`;
+    const sum = batch.reduce((a,b)=>a+b,0);
+    accEl.textContent = money(sum); accN.textContent = `${batch.length} ${T('mov.','mov.')}`;
+    const shown = jobs.slice(-4).reverse();
+    jobsEl.innerHTML = shown.map(j=>`<li class="it"><span class="why">${j.nro? j.nro+' · ' : ''}${j.kind==='IND'?T('Individual','Individual'):T('Consolidada','Consolidated')+' ('+j.n+')'} ${money(j.amount)}</span><span class="st ${j.status}">${j.status}</span></li>`).join('') || `<li class="it"><span class="why">${T('Cola vacía','Queue empty')}</span><span></span></li>`;
+    led.classList.toggle('on', busy); wk.textContent = busy ? T('Worker único: emitiendo de a una','Single worker: issuing one at a time') : T('Worker único: esperando trabajo','Single worker: waiting for jobs');
+  }
+  document.getElementById('mp-pay').onclick = ()=>{ const id='pay_'+(++seq); lastWebhook = {id, amount:payAmts[pi++%payAmts.length]}; ingest('w', lastWebhook.amount, id); };
+  document.getElementById('mp-trf').onclick = ()=>{ ingest('t', trfAmts[ti++%trfAmts.length], 'trf_'+(++seq)); };
+  document.getElementById('mp-dup').onclick = ()=>{ if(!lastWebhook){ logTo(log, T('Primero entrá un pago con QR.','Send a QR payment first.')); return;} logTo(log, `${T('Mercado Pago reintenta el webhook','Mercado Pago retries the webhook')} ${lastWebhook.id}…`); ingest('w', lastWebhook.amount, lastWebhook.id); };
+  document.getElementById('mp-close').onclick = closeDay;
+  // estado inicial realista
+  [['w',18900,'pay_0997'],['t',3300,'trf_0998'],['w',4800,'pay_0999']].forEach(([s,a,id])=>{ seen.add(id); incomes.unshift({src:s,amount:a,id,big:a>TH}); if(a>TH) jobs.push({kind:'IND',amount:a,status:'DONE',nro:'B 0003-'+String(cbte++).padStart(8,'0')}); else batch.push(a); });
+  lastWebhook = {id:'pay_0999', amount:4800};
+  render();
+  logTo(log, T('09:12 webhook firmado OK → pay_0997 $18.900 → factura individual','09:12 signed webhook OK → pay_0997 $18,900 → individual invoice'));
+  logTo(log, T('ARCA autorizó B 0003-00000142 · $18.900','ARCA authorized B 0003-00000142 · $18,900'),'okc');
+  logTo(log, T('10:30 sondeo release_report → trf_0998 $3.300 → acumula para el cierre','10:30 release_report poll → trf_0998 $3,300 → batched for close'));
+  logTo(log, T('11:05 webhook firmado OK → pay_0999 $4.800 → acumula para el cierre','11:05 signed webhook OK → pay_0999 $4,800 → batched for close'));
+  listeners.push(()=>{ render(); });
+})();
+
+/* ===================== DEMO: lupa Eterno Instante ===================== */
+(function(){
+  const cv = document.getElementById('lupa-c'), ctx = cv.getContext('2d'), wrap=document.getElementById('lupa'), note=document.getElementById('lupa-note'), hint=document.getElementById('lupa-hint');
+  const Wd=cv.width, Ht=cv.height;
+  const mk=()=>{const c=document.createElement('canvas'); c.width=Wd; c.height=Ht; return c;};
+  const sharp=mk(), blur=mk(), wm=mk(), thumb=mk();
+  // escena de playa generada
+  (function draw(c){
+    const g=c.getContext('2d');
+    let sky=g.createLinearGradient(0,0,0,Ht*.55); sky.addColorStop(0,'#F6D59B'); sky.addColorStop(.6,'#F3B98A'); sky.addColorStop(1,'#9FD0DA');
+    g.fillStyle=sky; g.fillRect(0,0,Wd,Ht);
+    g.fillStyle='#FFF4D6'; g.beginPath(); g.arc(Wd*.68,Ht*.3,46,0,7); g.fill();
+    g.fillStyle='#FFE7B0'; g.globalAlpha=.35; g.beginPath(); g.arc(Wd*.68,Ht*.3,70,0,7); g.fill(); g.globalAlpha=1;
+    let sea=g.createLinearGradient(0,Ht*.5,0,Ht*.72); sea.addColorStop(0,'#3F8FA3'); sea.addColorStop(1,'#2A6B7E');
+    g.fillStyle=sea; g.fillRect(0,Ht*.5,Wd,Ht*.24);
+    g.strokeStyle='#ffffff99'; g.lineWidth=2;
+    for(let y=Ht*.54;y<Ht*.72;y+=13){ g.beginPath(); for(let x=0;x<=Wd;x+=8){ g.lineTo(x, y+Math.sin(x/28+y)*2.5); } g.stroke(); }
+    g.fillStyle='#FFF8E8'; g.beginPath(); g.moveTo(0,Ht*.72); for(let x=0;x<=Wd;x+=10) g.lineTo(x,Ht*.72+Math.sin(x/40)*5); g.lineTo(Wd,Ht*.76); g.lineTo(0,Ht*.76); g.fill();
+    let sand=g.createLinearGradient(0,Ht*.73,0,Ht); sand.addColorStop(0,'#EBCF9F'); sand.addColorStop(1,'#D9B57E');
+    g.fillStyle=sand; g.beginPath(); g.moveTo(0,Ht*.74); for(let x=0;x<=Wd;x+=10) g.lineTo(x,Ht*.74+Math.sin(x/40)*5); g.lineTo(Wd,Ht); g.lineTo(0,Ht); g.fill();
+    // sombrilla
+    g.strokeStyle='#5b4a3a'; g.lineWidth=4; g.beginPath(); g.moveTo(170,Ht*.95); g.lineTo(190,Ht*.62); g.stroke();
+    const cols=['#E4572E','#FFF','#E4572E','#FFF','#E4572E'];
+    for(let i=0;i<5;i++){ g.fillStyle=cols[i]; g.beginPath(); g.moveTo(190,Ht*.62-8); g.arc(190,Ht*.62+18,80,Math.PI+i*Math.PI/5,Math.PI+(i+1)*Math.PI/5); g.closePath(); g.fill(); }
+    // personas
+    function person(x,y,s,shirt,skin){ g.fillStyle=skin; g.beginPath(); g.arc(x,y-58*s,11*s,0,7); g.fill(); g.fillStyle=shirt; g.beginPath(); g.roundRect ? g.roundRect(x-13*s,y-46*s,26*s,34*s,6*s) : g.rect(x-13*s,y-46*s,26*s,34*s); g.fill(); g.fillStyle='#2b3440'; g.fillRect(x-11*s,y-14*s,9*s,26*s); g.fillRect(x+2*s,y-14*s,9*s,26*s); g.fillStyle=skin; g.fillRect(x-19*s,y-44*s,6*s,24*s); g.fillRect(x+13*s,y-44*s,6*s,24*s); }
+    person(470,Ht*.9,1.25,'#2F6DB5','#C98E64'); person(520,Ht*.9,1.15,'#F2B705','#8D5A3B'); person(495,Ht*.93,.75,'#E4572E','#C98E64');
+    g.fillStyle='#ffffffcc'; g.font='600 13px sans-serif'; g.fillText('10:42', Wd-58, Ht-14);
+  })(sharp);
+  // blur barato y compatible: bajar resolución y volver a escalar
+  (function(){ const s=document.createElement('canvas'); s.width=Wd/14; s.height=Ht/14; const sg=s.getContext('2d'); sg.imageSmoothingEnabled=true; sg.drawImage(sharp,0,0,s.width,s.height); const b=blur.getContext('2d'); b.imageSmoothingEnabled=true; b.imageSmoothingQuality='high'; b.drawImage(s,0,0,Wd,Ht); })();
+  (function(){ const s=document.createElement('canvas'); s.width=Wd/5; s.height=Ht/5; s.getContext('2d').drawImage(sharp,0,0,s.width,s.height); const t=thumb.getContext('2d'); t.imageSmoothingEnabled=false; t.drawImage(s,0,0,Wd,Ht); })();
+  (function(){ const g=wm.getContext('2d'); g.save(); g.translate(Wd/2,Ht/2); g.rotate(-0.36); g.font='italic 700 26px Georgia,serif'; g.textAlign='center';
+    for(let y=-Ht;y<Ht;y+=78){ for(let x=-Wd;x<Wd;x+=230){ const ox = (Math.round(y/78)%2)*115; g.lineWidth=3; g.strokeStyle='#00000040'; g.strokeText('Eterno Instante',x+ox,y); g.fillStyle='#ffffff8c'; g.fillText('Eterno Instante',x+ox,y);} } g.restore(); })();
+  let mode='preview', pt=null;
+  function frame(){
+    ctx.clearRect(0,0,Wd,Ht);
+    if(mode==='original'){ ctx.drawImage(sharp,0,0); return; }
+    if(mode==='thumb'){ ctx.drawImage(thumb,0,0); ctx.drawImage(wm,0,0); return; }
+    ctx.drawImage(blur,0,0); ctx.drawImage(wm,0,0);
+    if(pt){ ctx.save(); ctx.beginPath(); ctx.arc(pt.x,pt.y,62,0,7); ctx.clip(); ctx.drawImage(sharp,0,0); ctx.drawImage(wm,0,0); ctx.restore();
+      ctx.strokeStyle='#fff'; ctx.lineWidth=3; ctx.beginPath(); ctx.arc(pt.x,pt.y,62,0,7); ctx.stroke(); }
+  }
+  function pos(e){ const r=cv.getBoundingClientRect(); return {x:(e.clientX-r.left)*Wd/r.width, y:(e.clientY-r.top)*Ht/r.height}; }
+  wrap.addEventListener('pointermove',e=>{ pt=pos(e); frame(); });
+  wrap.addEventListener('pointerdown',e=>{ pt=pos(e); frame(); });
+  wrap.addEventListener('pointerleave',()=>{ pt=null; frame(); });
+  const notes = {
+    preview:['Vista previa: desenfocada y con marca de agua. La lupa revela un círculo chico nítido, también marcado. Es lo único que sirve la ruta pública /media.','Preview: blurred and watermarked. The magnifier reveals a small sharp circle, still watermarked. This is all the public /media route ever serves.'],
+    thumb:['Miniatura liviana para la grilla tipo Instagram. El worker genera 5 variantes por foto: original, miniatura, preview, reveal y proof interno.','Lightweight thumbnail for the grid. The worker renders 5 variants per photo: original, thumbnail, preview, reveal and an internal proof.'],
+    original:['Original: sólo se descarga tras el pago aprobado (webhook verificado), con un token firmado que vence. Nunca pasa por la ruta pública.','Original: downloadable only after the payment is approved (verified webhook), via a signed expiring token. It never goes through the public route.']
+  };
+  function setNote(){ note.textContent = notes[mode][lang==='es'?0:1]; hint.textContent = mode==='preview' ? T('preview · pasá el cursor','preview · hover to reveal') : mode==='thumb' ? T('miniatura','thumbnail') : T('original · token firmado','original · signed token'); wrap.style.cursor = mode==='preview' ? 'none':'default'; }
+  document.querySelectorAll('[data-var]').forEach(b=>b.addEventListener('click',()=>{ mode=b.dataset.var; document.querySelectorAll('[data-var]').forEach(x=>x.setAttribute('aria-pressed',String(x===b))); setNote(); frame(); }));
+  pt = {x:Wd*.62, y:Ht*.72}; frame(); pt=null;
+  // dejar la lupa visible en reposo sobre las personas
+  setTimeout(()=>{ if(!pt){ pt={x:Wd*.62,y:Ht*.74}; frame(); pt=null; } },0);
+  setNote(); listeners.push(setNote);
+})();
+
+/* ===================== DEMO: Cuaderno FIFO ===================== */
+(function(){
+  let today, movs;
+  const initial = ()=>{ today=120; movs=[
+    {d:10, t:'deuda', m:8400, desc:'Fideos, salsa, pan'},
+    {d:42, t:'deuda', m:6200, desc:'Leche x2, yerba'},
+    {d:60, t:'pago', m:3000, desc:'Pago parcial'},
+    {d:85, t:'deuda', m:4900, desc:'Gaseosa 2L, galletitas'},
+    {d:110, t:'pago', m:6000, desc:'Pago'}
+  ];};
+  initial();
+  const el = id=>document.getElementById(id);
+  function ordered(){ return movs.map((m,i)=>({...m,i})).sort((a,b)=> a.d-b.d || (a.t==='deuda'?0:1)-(b.t==='deuda'?0:1) || a.i-b.i); }
+  function fifo(){ const q=[]; for(const m of ordered()){ if(m.t==='deuda'){ q.push({d:m.d, rest:m.m, desc:m.desc}); continue; } let p=m.m; while(p>0&&q.length){ if(q[0].rest<=p){ p-=q[0].rest; q.shift(); } else { q[0].rest-=p; p=0; } } } return q; }
+  function buggy(){ // versión original: por cada deuda sólo mira los pagos anteriores a ella
+    const o=ordered(); let debts=0;
+    for(let k=0;k<o.length;k++){ const m=o[k]; if(m.t!=='deuda') continue; debts+=m.m; const before=o.slice(0,k).filter(x=>x.t==='pago').reduce((a,b)=>a+b.m,0); if(before<debts) return m; }
+    return null; }
+  const cls = age => age>=90?'a90':age>=60?'a60':age>=30?'a30':'';
+  function render(){
+    const saldo = movs.reduce((a,m)=>a+(m.t==='deuda'?m.m:-m.m),0);
+    el('cu-saldo').textContent = saldo<0 ? T('A favor ','Credit ')+money(-saldo) : money(saldo);
+    const q=fifo(); const b=buggy();
+    if(q.length){ const age=today-q[0].d; el('cu-age').innerHTML = `<span class="agebadge ${cls(age)}">${age} ${T('días','days')}</span><span>${T('deuda más antigua (FIFO)','oldest debt (FIFO)')}</span>`; }
+    else el('cu-age').innerHTML = `<span class="agebadge">${T('Al día','Up to date')}</span><span>${T('la antigüedad se reinició sola','aging reset by itself')}</span>`;
+    const fifoAge = q.length? today-q[0].d : null, bugAge = b? today-b.d : null;
+    el('cu-bug').innerHTML = fifoAge===bugAge
+      ? `${T('Cálculo original con el bug','Original buggy calculation')}: ${bugAge===null?T('al día','up to date'):bugAge+' '+T('días','days')} · ${T('coincide por ahora','matches for now')}`
+      : `${T('Cálculo original con el bug','Original buggy calculation')}: <b>${bugAge===null?T('al día','up to date'):bugAge+' '+T('días','days')}</b> · ${T('acá estaba el error','here was the bug')}`;
+    el('cu-queue').innerHTML = q.length ? q.map(x=>`<span class="qd ${cls(today-x.d)}">${money(x.rest)}<small>${T('hace','')} ${today-x.d} ${T('días','days ago')}</small></span>`).join('') : `<span style="font-size:.84rem;color:var(--board-dim)">${T('Cola vacía: no hay deuda pendiente.','Queue empty: no pending debt.')}</span>`;
+    el('cu-hist').innerHTML = ordered().slice(-4).reverse().map(m=>`<li><span>${m.desc} · ${T('hace','')} ${today-m.d} ${T('d','d ago')}</span><span class="${m.t==='pago'?'p':'d'} dmono">${m.t==='pago'?'−':'+'}${money(m.m)}</span></li>`).join('');
+  }
+  el('cu-debt').onclick=()=>{ movs.push({d:today,t:'deuda',m:5000,desc:T('Galletitas, queso','Cookies, cheese')}); render(); };
+  el('cu-pay').onclick=()=>{ movs.push({d:today,t:'pago',m:6000,desc:T('Pago','Payment')}); render(); };
+  el('cu-days').onclick=()=>{ today+=15; render(); };
+  el('cu-settle').onclick=()=>{ const s=movs.reduce((a,m)=>a+(m.t==='deuda'?m.m:-m.m),0); if(s>0){ movs.push({d:today,t:'pago',m:s,desc:T('Pago total','Full payment')}); } render(); };
+  el('cu-reset').onclick=()=>{ initial(); render(); };
+  render(); listeners.push(render);
+})();
+
+/* ===================== DEMO: CD Network Player ===================== */
+(function(){
+  const tracks=[['Amanecer',222],['Deriva',245],['Luz Baja',178],['Horizonte Azul',201],['Sal y Viento',310],['Marea',213],['Costa Norte',288]];
+  const S={status:'paused', i:4, pos:98, online:true, sent:0};
+  const clientsEl=document.getElementById('cd-clients'), log=document.getElementById('cd-log'), disc=document.getElementById('cd-disc');
+  const devs=[['Celular','Phone'],['Notebook','Laptop']];
+  const ico={play:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l13 8-13 8z"/></svg>',pause:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>',prev:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg>',next:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 5h2v14h-2zM4 5l11 7-11 7z"/></svg>'};
+  devs.forEach((d,k)=>{ const c=document.createElement('div'); c.className='client'; c.innerHTML=`<div class="dev"><span class="dn"></span><span>ws ●</span></div><div class="tn"></div><div class="tm"></div><div class="bar"><i></i></div><div class="ctrls"><button type="button" data-a="prev"></button><button type="button" data-a="toggle"></button><button type="button" data-a="next"></button></div>`; clientsEl.appendChild(c);
+    c.querySelector('[data-a=prev]').innerHTML=ico.prev; c.querySelector('[data-a=next]').innerHTML=ico.next;
+    c.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>act(b.dataset.a,k))); });
+  const name = i => S.online ? tracks[i][0] : 'Track '+String(i+1).padStart(2,'0');
+  const mmss = s => `${String(Math.floor(s/60)).padStart(2,'0')}:${String(Math.floor(s%60)).padStart(2,'0')}`;
+  const bytes = n => n>=1048576 ? (n/1048576).toFixed(1)+' MB' : n>=1024 ? (n/1024).toFixed(0)+' KB' : n+' B';
+  const cl = i => 44 + tracks[i][1]*75*2352;
+  function act(a,k){
+    const who=devs[k][lang==='es'?0:1];
+    if(a==='toggle'){ S.status = S.status==='playing'?'paused':'playing'; }
+    if(a==='next'){ S.i=(S.i+1)%tracks.length; S.pos=0; S.status='playing'; }
+    if(a==='prev'){ S.i=(S.i-1+tracks.length)%tracks.length; S.pos=0; S.status='playing'; }
+    logTo(log, `${who} → ${a} · ${T('broadcast a 2 clientes','broadcast to 2 clients')} {status:"${S.status}", track:${S.i+1}}`, 'hl');
+    if(a!=='toggle' || S.status==='playing') logTo(log, `GET /api/stream?track=${S.i+1} · Content-Length ${cl(S.i).toLocaleString('es-AR')} B · cdparanoia -r → HTTP`);
+    render();
+  }
+  function render(){
+    document.getElementById('cd-al').textContent = S.online ? 'Horizonte Azul' : T('Disco de audio','Audio CD');
+    document.getElementById('cd-ar').textContent = S.online ? 'Luna Marea · MusicBrainz' : T('sin metadata: nombres genéricos','no metadata: generic names');
+    document.getElementById('cd-cl').textContent = bytes(cl(S.i));
+    document.getElementById('cd-sent').textContent = bytes(Math.round(S.sent));
+    disc.classList.toggle('spin', S.status==='playing');
+    clientsEl.querySelectorAll('.client').forEach((c,k)=>{
+      c.querySelector('.dn').textContent = devs[k][lang==='es'?0:1];
+      c.querySelector('.tn').textContent = `${String(S.i+1).padStart(2,'0')} · ${name(S.i)}`;
+      c.querySelector('.tm').textContent = `${mmss(S.pos)} / ${mmss(tracks[S.i][1])}`;
+      c.querySelector('.bar i').style.width = (S.pos/tracks[S.i][1]*100)+'%';
+      const t=c.querySelector('[data-a=toggle]'); t.innerHTML = S.status==='playing'?ico.pause:ico.play; t.setAttribute('aria-label', S.status==='playing'?T('Pausa','Pause'):T('Reproducir','Play'));
+      c.querySelector('[data-a=prev]').setAttribute('aria-label',T('Anterior','Previous')); c.querySelector('[data-a=next]').setAttribute('aria-label',T('Siguiente','Next'));
+    });
+  }
+  const net=document.getElementById('cd-net');
+  net.addEventListener('click',()=>{ S.online=!S.online; net.setAttribute('aria-pressed',String(!S.online));
+    net.querySelector('.es').textContent = S.online?'Cortar Internet':'Volver a conectar'; net.querySelector('.en').textContent = S.online?'Cut the internet':'Reconnect';
+    logTo(log, S.online ? T('MusicBrainz responde: portada y nombres aplicados (generación vigente).','MusicBrainz responded: cover and titles applied (current generation).') : T('MusicBrainz: timeout. El reproductor sigue sonando con "Track 01…".','MusicBrainz: timeout. Playback continues with "Track 01…".'), S.online?'okc':'hl'); render(); });
+  setInterval(()=>{ if(S.status!=='playing') return; S.pos+=.5; S.sent+=176400*.5; if(S.pos>=tracks[S.i][1]){ S.i=(S.i+1)%tracks.length; S.pos=0; } render(); }, 500);
+  logTo(log, T('CD insertado: 7 tracks leídos de la TOC.','CD inserted: 7 tracks read from the TOC.'));
+  render(); listeners.push(render);
+})();
+
+/* ===================== Habilidades ===================== */
+(function(){
+  const P = {mp:['Mercado Pago → ARCA','#mp-arca'], ei:['Eterno Instante','#eterno-instante'], cu:['Cuaderno Digital','#cuaderno-digital'], cd:['CD Network Player','#cd-network-player'], it:[['15 años de infraestructura IT','15 years in IT infrastructure'],'#trayectoria']};
+  const groups = [
+    [['Frontend','Frontend'], [['React','ei cu cd mp'],['Next.js','mp'],['Vite','ei cu cd'],['PWA','cu'],['JavaScript ES6+','ei cu cd'],[['HTML y CSS','HTML & CSS'],'ei cu cd mp']]],
+    [['Backend','Backend'], [['Node.js','mp ei cu'],['TypeScript','mp'],['Fastify','mp'],['Express','ei cu'],['Python','ei cd'],['FastAPI','cd'],[['APIs REST','REST APIs'],'mp ei cu cd'],['WebSocket','cd'],['C# / .NET','it'],['PHP','it']]],
+    [['Datos','Data'], [['PostgreSQL','mp'],['Prisma','mp'],['SQLite (WAL)','ei cu'],['SQL Server','it'],['Oracle PL/SQL','it'],['Firebase','it']]],
+    [['Infra y DevOps','Infra & DevOps'], [['Docker Compose','mp ei cd cu'],['Linux / Ubuntu Server','mp ei cd'],['Cloudflare Tunnel','mp ei cu'],['PM2','cu'],['Windows Server','it'],['Active Directory','it'],[['Redes y VPN','Networking & VPN'],'it'],[['Backups','Backups'],'cu ei it']]],
+    [['Integraciones','Integrations'], [['Mercado Pago','mp ei'],['ARCA / AFIP WSFEv1','mp'],['MusicBrainz','cd'],[['Generación de PDF','PDF generation'],'mp cu']]],
+    [['Seguridad','Security'], [[['Firma de webhooks','Webhook signatures'],'mp ei'],['AES-256-GCM','mp'],['JWT + bcrypt','ei cu'],['helmet + rate limiting','ei cu'],[['Tokens criptográficos','Cryptographic tokens'],'ei mp'],[['Mínimo privilegio en Docker','Least privilege in Docker'],'cd']]]
+  ];
+  const box=document.getElementById('skills'), out=document.getElementById('skout');
+  let current=null, curData=null;
+  function build(){
+    box.innerHTML='';
+    groups.forEach(([gn,items],gi)=>{
+      const row=document.createElement('div'); row.className='sk';
+      row.innerHTML=`<h3>${gn[lang==='es'?0:1]}</h3><div class="skbtns"></div>`;
+      const bx=row.querySelector('.skbtns');
+      items.forEach(([n0,p],ii)=>{ const n = Array.isArray(n0) ? n0[lang==='es'?0:1] : n0; const b=document.createElement('button'); b.type='button'; b.className='skb'; b.id=`sk-${gi}-${ii}`; b.textContent=n; b.setAttribute('aria-pressed', String(current===b.id)); b.onclick=()=>{ current = current===b.id?null:b.id; curData=[n0,p]; build(); show(n,p); document.getElementById(b.id)?.focus(); }; bx.appendChild(b); });
+      box.appendChild(row);
+    });
+  }
+  function show(n,p){
+    if(!current){ out.textContent = T('Elegí una tecnología.','Pick a technology.'); return; }
+    const links = p.split(' ').map(k=>{ const [nm,h]=P[k]; const label = Array.isArray(nm)? nm[lang==='es'?0:1] : nm; return `<a href="${h}">${label}</a>`; });
+    out.innerHTML = `<strong>${n}</strong> — ${T('la usé en','used in')}: ${links.join(', ')}`;
+  }
+  build(); out.textContent = T('Elegí una tecnología.','Pick a technology.');
+  listeners.push(()=>{ build(); if(current&&curData) show(Array.isArray(curData[0])?curData[0][lang==='es'?0:1]:curData[0], curData[1]); else out.textContent = T('Elegí una tecnología.','Pick a technology.'); });
+})();
+
+/* ===================== Contacto ===================== */
+(function(){
+  const links=document.getElementById('links');
+  [['https://wa.me/5491131883446','WhatsApp'],[LINKEDIN_URL,'LinkedIn'],[GITHUB_URL,'GitHub']].forEach(([u,n])=>{ if(!u) return; const a=document.createElement('a'); a.className='btn'; a.href=u; a.target='_blank'; a.rel='noopener'; a.textContent=n; links.appendChild(a); });
+  const btn=document.getElementById('copy'), addr=document.getElementById('addr'), msg=document.getElementById('copied');
+  btn.addEventListener('click',()=>{
+    const ok=()=>{ msg.textContent = T('Email copiado.','Email copied.'); };
+    const sel=()=>{ const r=document.createRange(); r.selectNodeContents(addr); const s=getSelection(); s.removeAllRanges(); s.addRange(r); msg.textContent=T('Seleccionado: copialo con Ctrl+C.','Selected: copy it with Ctrl+C.'); };
+    try{ navigator.clipboard.writeText(addr.textContent).then(ok, sel); }catch(e){ sel(); }
+  });
+})();
+
+/* ===================== Lightbox ===================== */
+(function(){
+  const lb=document.getElementById('lb'), img=document.getElementById('lb-img'), cap=document.getElementById('lb-cap');
+  document.querySelectorAll('[data-lb]').forEach(b=>b.addEventListener('click',()=>{
+    const i=b.querySelector('img'); img.src=i.currentSrc||i.src; img.alt=i.alt;
+    const fc=b.parentElement.querySelector('figcaption'); cap.textContent = fc ? [...fc.querySelectorAll('.'+lang)].map(x=>x.textContent).join(' ') : '';
+    if(lb.showModal) lb.showModal(); else window.open(img.src,'_blank');
+  }));
+  document.getElementById('lb-x').onclick=()=>lb.close();
+  lb.addEventListener('click',e=>{ if(e.target===lb) lb.close(); });
+})();
+})();
+</script>
+
+</body>
+</html>
