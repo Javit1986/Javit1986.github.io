@@ -330,6 +330,216 @@ dialog.lb button{position:fixed;top:1rem;right:1rem;font:600 .9rem var(--font-bo
 /* Martian Mono es ancha: se angosta en todos sus usos */
 .f,pre,.chips li,.skb,.dmono,.log,.src,.st,.tagx,.flight-code,.board-clock,.stop .yr,.addr,.tel,.saldo,.meter b,.client .tm,.acc b,.qd,.tbtn,.langsw button,.lupa-hint,.case-flight,.mark b{font-stretch:87.5%}
 pre{font-size:.78rem}
+/* ===================== Modo "2002" (nostalgic mood) =====================
+   Portal estilo principios de los 2000: ancho fijo, Verdana, pestañas, cajas de color, links azules subrayados. */
+.moodsw{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.moodsw button{font:600 .78rem var(--font-mono);font-stretch:87.5%;border:0;background:transparent;color:var(--muted);padding:.35rem .55rem;cursor:pointer;min-height:2.1rem}
+.moodsw button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.retro,.r-foot,.r-im{display:none}
+:root.nost{
+  --paper:#FFFFFF; --paper-2:#FFFFEE; --ink:#000000; --muted:#333333; --line:#999999;
+  --sign:#FFCC00; --sign-ink:#000000; --go:#008000; --warn:#996600; --bad:#CC0000; --route:#0000CC;
+  --board:#D4D0C8; --b0:#FFFFFF; --b1:#FFFFFF; --b2:#D4D0C8; --b3:#808080;
+  --flap-amber:#000080; --flap-white:#000000; --board-line:#808080; --board-dim:#333333;
+  --flap-go:#007700; --flap-warn:#996600; --flap-bad:#CC0000; --flap-apricot:#CC6600;
+  --code-bg:#FFFFFF; --code-fg:#000000; --code-c:#008000; --code-k:#0000CC; --code-s:#A31515;
+  --font-display:"Trebuchet MS",Arial,Helvetica,sans-serif; --font-body:Verdana,Tahoma,Arial,sans-serif; --font-mono:"Courier New",Courier,monospace;
+  color-scheme:light;
+}
+html.nost body{background:#fff;color:#000;font-size:13px;line-height:1.45}
+html.nost .top, html.nost .hero, html.nost footer.modern, html.nost .skip{display:none}
+html.nost .retro, html.nost .r-foot{display:block}
+html.nost a{color:#0000CC;text-decoration:underline}
+html.nost a:visited{color:#551A8B}
+html.nost .wrap{max-width:770px;padding-inline:12px}
+html.nost .sec{padding-block:14px!important;background:#fff!important;border:0!important}
+html.nost .sign{font:bold 19px/1.2 "Trebuchet MS",Arial,sans-serif;color:#fff;background:#003399;padding:6px 10px;margin:0 0 8px;border-radius:8px 8px 0 0;text-shadow:1px 1px 0 #001a4d}
+html.nost .sign i{display:none}
+html.nost .lede{font-size:13px;color:#000;max-width:none;margin-bottom:6px}
+html.nost #trayectoria .sign{background:#FF9900}
+html.nost #como-trabajo .sign{background:#33AAAA}
+html.nost #habilidades .sign{background:#9933CC}
+/* casos */
+html.nost .case{border:1px solid #7F9DB9;border-top:0;padding:0 0 12px;margin-top:14px;background:#fff}
+html.nost #mp-arca{--cc:#003399} html.nost #eterno-instante{--cc:#FF9900} html.nost #cuaderno-digital{--cc:#2AA6A6} html.nost #cd-network-player{--cc:#9933CC}
+html.nost .case-head{background:var(--cc);color:#fff;padding:8px 10px 10px}
+html.nost .case-flight{color:#fff;font:bold 11px Verdana,sans-serif}
+html.nost .flight-code{background:#000;color:#FFCC00;border-radius:0}
+html.nost .pill{color:#fff!important;border-color:#fff;font:bold 11px Verdana,sans-serif}
+html.nost .case-title{font:bold 24px/1.1 "Trebuchet MS",Arial,sans-serif;color:#fff;text-shadow:1px 1px 0 rgba(0,0,0,.35);margin-top:4px}
+html.nost .case-tag{font:13px/1.4 Verdana,sans-serif;color:#fff;max-width:none}
+html.nost .case-body{grid-template-columns:1fr;gap:12px;margin-top:10px;padding-inline:10px}
+html.nost .more{padding-inline:10px;margin-top:14px;gap:12px}
+html.nost .story{gap:8px}
+html.nost .story h4,html.nost .more h4{font:bold 12px Verdana,sans-serif;color:#CC3300}
+html.nost .story p{max-width:none}
+html.nost .facts{display:flex;flex-wrap:wrap;gap:6px;background:none;border:0}
+html.nost .facts div{background:#FFFFCC;border:1px solid #CC9900;padding:4px 8px}
+html.nost .facts dt{font:bold 14px Verdana,sans-serif}
+html.nost .facts dd{font-size:11px;color:#333}
+html.nost .extlink{font-weight:bold}
+/* demos como ventanas de escritorio de la época */
+html.nost .demo{background:#D4D0C8;border:2px outset #fff;border-radius:0;color:#000}
+html.nost .demo-bar{background:linear-gradient(90deg,#0A246A,#A6CAF0);padding:3px 6px;border:0}
+html.nost .demo-bar h4{color:#fff;font:bold 12px Tahoma,Verdana,sans-serif}
+html.nost .demo-bar .tagx{color:#fff;border-color:#c8d8ff;font:10px Tahoma,sans-serif}
+html.nost .demo-help{color:#000;font-size:12px}
+html.nost .dbtn,html.nost .ctrls button{background:#D4D0C8;color:#000;border:2px outset #fff;border-radius:0;font:12px Tahoma,Verdana,sans-serif}
+html.nost .dbtn:active,html.nost .ctrls button:active,html.nost .dbtn[aria-pressed="true"]{border-style:inset;background:#C0BDB5;color:#000}
+html.nost .dbtn.y{font-weight:bold;background:#D4D0C8;color:#000}
+html.nost .panel,html.nost .meter,html.nost .client{background:#fff;border:2px inset #fff;border-radius:0}
+html.nost .it{background:#F2F2F2;border-radius:0}
+html.nost .log{background:#000;color:#00FF00;border-radius:0}
+html.nost .log .hl{color:#FFFF00} html.nost .log .okc{color:#00FF00}
+html.nost .st.DONE{background:#CCFFCC;color:#006600} html.nost .st.PROCESSING{background:#000080;color:#fff}
+html.nost .agebadge{background:#CCFFCC;color:#006600}
+html.nost .agebadge.a30{background:#FFFFAA;color:#665500} html.nost .agebadge.a60{background:#FFDDAA;color:#994400} html.nost .agebadge.a90{background:#FFCCCC;color:#990000}
+html.nost .qd{background:#FFFFE0;color:#000;border-radius:0}
+html.nost .bar{background:#ccc}
+html.nost .lupa-wrap{border-radius:0;border:2px inset #fff}
+html.nost .disc{box-shadow:0 0 0 2px #808080}
+/* problemas, galería, código, stack */
+html.nost .issues{gap:4px}
+html.nost details.issue{background:#FFFFEE;border:1px solid #CCCC99;border-radius:0}
+html.nost details.issue summary{font:bold 12px Verdana,sans-serif;color:#0000CC;text-decoration:underline;padding:6px 8px}
+html.nost details.issue .ib{padding:0 10px 8px 26px;font-size:12px}
+html.nost .gallery button{border:2px solid #0000CC;border-radius:0;background:#fff}
+html.nost .gallery img{height:150px}
+html.nost .gallery figure.diagram img{height:auto;width:min(740px,calc(100vw - 48px))}
+html.nost .gallery figcaption{font-size:11px;color:#333}
+html.nost details.code{background:#fff;border:1px solid #999;border-radius:0}
+html.nost details.code summary{font:bold 12px Verdana,sans-serif;color:#0000CC;text-decoration:underline}
+html.nost details.code pre{border-top:1px dashed #999;font:12px/1.4 "Courier New",monospace}
+html.nost .chips{display:block}
+html.nost .chips li{display:inline;border:0;background:none;padding:0;font:11px Verdana,sans-serif;color:#333}
+html.nost .chips li+li::before{content:" | ";color:#999}
+html.nost .case + .case{border-top:0}
+/* trayectoria, reglas, habilidades */
+html.nost .route-grid{grid-template-columns:1fr;gap:10px;margin-top:6px}
+html.nost .route-intro{color:#000}
+html.nost .stop .dot{border-radius:0;background:#FFCC00;border:1px solid #000}
+html.nost .stop.now .dot{background:#CC0000}
+html.nost .stop.now h3{font:bold 15px Verdana,sans-serif}
+html.nost .stop h3{font-size:12px}
+html.nost .stop p{font-size:12px;color:#333}
+html.nost .stops::before{border-left-color:#999}
+html.nost .rules{border-top:0;gap:6px;margin-top:6px}
+html.nost .rule{border:1px solid #9999CC;background:#EEEEFF;padding:8px 10px}
+html.nost .rule h3{font:bold 13px Verdana,sans-serif;color:#000099;margin-bottom:2px}
+html.nost .rule p{color:#000;font-size:12px}
+html.nost .rule.ai{background:#FFFFCC;border:1px solid #CC9900}
+html.nost .skills{gap:6px;margin-top:6px}
+html.nost .sk{grid-template-columns:130px minmax(0,1fr);padding-bottom:6px;border-bottom:1px dotted #999}
+html.nost .sk h3{font:bold 12px Verdana,sans-serif;color:#CC3300}
+html.nost .skb{font:11px Verdana,sans-serif;background:#EEE;border:2px outset #fff;border-radius:0;color:#000;min-height:0;padding:2px 6px}
+html.nost .skb[aria-pressed="true"]{background:#003399;color:#fff;border-style:inset}
+html.nost .skout{background:#FFFFCC;border:1px solid #CC9900;font-size:12px;margin-top:8px}
+@media (max-width:640px){html.nost .sk{grid-template-columns:1fr}}
+/* contacto */
+html.nost .contact{background:#fff;color:#000;padding-block:14px}
+html.nost .contact .sign{color:#fff;background:#CC0000}
+html.nost .contact .lede{color:#000}
+html.nost .gate{gap:12px;margin-top:6px}
+html.nost .mail .addr{color:#0000CC;font:bold 16px Verdana,sans-serif}
+html.nost .phone,html.nost .phone .tel{color:#000;font:12px Verdana,sans-serif}
+html.nost .phone .tel{font-weight:bold}
+html.nost .btn,html.nost .contact .btn{background:#D4D0C8;color:#000;border:2px outset #fff;border-radius:0;font:bold 12px Tahoma,Verdana,sans-serif;text-decoration:none;min-height:0;padding:4px 12px}
+html.nost .btn.primary,html.nost .contact .btn.primary{background:#FFCC00;color:#000;border-color:#FFE680}
+html.nost .btn:hover{background:#E4E1D9;color:#000}
+html.nost .ticket{border:1px dashed #999;border-radius:0;font-size:12px}
+html.nost .ticket div{font-size:12px} html.nost .ticket dt{color:#666}
+html.nost .copied{color:#008000}
+
+/* ---------- portal ---------- */
+.r-wrap{max-width:770px;margin:0 auto;padding:10px 12px 0;font:12px/1.4 Verdana,Tahoma,Arial,sans-serif;color:#000}
+.r-head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:6px}
+.r-logo{display:flex;align-items:center;gap:7px;text-decoration:none!important;font:bold 30px/1 "Trebuchet MS",Arial,sans-serif;color:#003399!important;letter-spacing:-.5px}
+.r-logo i{font-style:normal;color:#3366CC}
+.r-logo sup{font-size:11px;color:#003399}
+.r-mark{width:38px;height:38px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFF2A8,#FFCC00 55%,#CC9900);color:#003399;display:grid;place-items:center;font:bold 15px "Trebuchet MS",Arial,sans-serif;border:2px solid #003399}
+.r-promo{font:bold 12px Verdana,sans-serif}
+.r-tabs{display:flex;gap:3px;margin-top:8px;border-bottom:4px solid #CC0000;flex-wrap:wrap}
+.r-tabs a,.r-tabs button{flex:1 1 auto;text-align:center;font:bold 12px Verdana,sans-serif;color:#fff!important;background:linear-gradient(#FF4A4A,#CC0000);border:1px solid #990000;border-bottom:0;border-radius:7px 7px 0 0;padding:4px 9px;text-decoration:none!important;cursor:pointer;min-height:26px}
+.r-tabs a:hover,.r-tabs button:hover{background:linear-gradient(#FF7070,#E00000)}
+.r-tabs .alt{background:linear-gradient(#6E9BFF,#003399);border-color:#002266}
+.r-ticker{overflow:hidden;white-space:nowrap;background:#FFFFCC;border:1px solid #CC9900;font:bold 11px Verdana,sans-serif;color:#CC0000;padding:3px 0;margin-top:6px}
+.r-ticker span{display:inline-block;padding-left:100%;animation:rtick 32s linear infinite}
+@keyframes rtick{to{transform:translateX(-100%)}}
+@media (prefers-reduced-motion:reduce){.r-ticker{white-space:normal}.r-ticker span{animation:none;padding:0 6px}}
+.r-grid{display:grid;grid-template-columns:minmax(0,1fr) 210px;gap:8px;margin-top:8px}
+@media (max-width:680px){.r-grid{grid-template-columns:minmax(0,1fr)}}
+.r-main,.r-side{min-width:0}.r-ul a{overflow-wrap:anywhere}
+.r-box{color:#fff;padding:8px 12px 12px}
+.r-box + .r-box{margin-top:3px}
+.r-box h3{font:bold 19px "Trebuchet MS",Arial,sans-serif;margin:0 0 6px;color:#fff;text-shadow:1px 1px 0 rgba(0,0,0,.35)}
+.r-box p{margin:0 0 6px}
+.r-blue{background:#003399;border-radius:6px 6px 0 0}.r-orange{background:#FF9900}.r-teal{background:#33CCCC;color:#000}.r-sky{background:#66CCFF;color:#000}.r-purple{background:#CC66FF;color:#000}
+.r-blue a,.r-orange a{color:#fff!important}
+.r-teal a,.r-sky a,.r-purple a{color:#0000CC!important}
+.r-row{display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap}
+.r-row label{display:grid;gap:2px;font:bold italic 12px Verdana,sans-serif}
+.r-box input{font:12px Verdana,sans-serif;padding:3px 4px;border:2px inset #ccc;width:min(100%,230px);background:#fff;color:#000}
+.r-btn{font:12px Verdana,sans-serif;background:#3399CC;color:#fff;border:2px outset #99CCFF;padding:2px 14px;cursor:pointer}
+.r-btn:active{border-style:inset}
+.r-dots{border-top:1px dotted #99A9DD;margin:8px 0}
+.r-greet{font-weight:bold;color:#FFEE44;min-height:1.2em}
+.r-icons{display:flex;justify-content:space-around;flex-wrap:wrap;gap:10px;margin-top:8px}
+.r-icons a{display:grid;justify-items:center;gap:4px;font:bold 12px Verdana,sans-serif;text-decoration:none!important}
+.r-icons svg{width:34px;height:34px}
+.r-res{background:#fff;color:#000;margin-top:6px;padding:6px 8px;border:1px solid #CC6600;display:none}
+.r-res.on{display:block}
+.r-res a{color:#0000CC!important}
+.r-qlinks{text-align:right;margin-top:6px;font-size:11px}
+.r-ul{margin:0;padding-left:16px;list-style:square}
+.r-ul li{margin:2px 0}
+.r-cols{columns:2;column-gap:22px}
+.r-cols3{columns:3;column-gap:18px}
+@media (max-width:520px){.r-cols3{columns:2}.r-cols{columns:1}}
+.r-strip{background:#fff;color:#000;margin:8px -12px -12px;padding:4px 12px;font-size:11px;border-top:1px solid #2AA6A6}
+.r-im-btn{display:inline-flex;align-items:center;gap:6px;margin-top:6px;font:bold 12px Verdana,sans-serif;background:#FFEE44;border:2px outset #FFF6A0;padding:3px 10px;cursor:pointer;color:#000}
+.r-member{background:#FFEE44;border:2px solid #333;border-radius:14px;padding:10px 10px 0;text-align:center;overflow:hidden}
+.r-big{font:bold 25px/1.02 "Trebuchet MS",Arial,sans-serif;color:#CC0000;margin:0}
+.r-big small{display:block;font-size:20px;color:#000}
+.r-join{display:inline-block;background:#003399;color:#fff!important;font:bold 14px Verdana,sans-serif;padding:3px 9px;border:2px outset #6699FF;margin:8px 0 2px}
+.r-fine{font:bold 15px "Trebuchet MS",Arial,sans-serif;color:#CC0000;margin:0}
+.r-fine small{display:block;font:10px Verdana,sans-serif;color:#CC0000;text-align:right}
+.r-inner{background:#FF6600;color:#fff;margin:8px -10px 0;padding:8px 12px;text-align:left;font:12px Verdana,sans-serif}
+.r-inner li{list-style:disc;margin-left:14px}
+.r-inner b{font-size:15px}
+.r-today{display:block;background:#FFEE44;padding:6px;font:bold 17px "Trebuchet MS",Arial,sans-serif;color:#0000CC!important;margin:0 -10px}
+.r-banner{display:block;margin-top:8px;border:2px solid #003399;text-decoration:none!important;text-align:center}
+.r-banner b{display:block;background:#fff;color:#003399;font:bold 17px "Trebuchet MS",Arial,sans-serif;padding:4px}
+.r-banner span{display:block;background:#CC0000;color:#fff;font:bold 19px "Trebuchet MS",Arial,sans-serif;padding:6px 4px}
+.r-side h4{font:bold 12px Verdana,sans-serif;color:#CC3300;margin:12px 0 4px}
+.r-news{display:grid;grid-template-columns:62px minmax(0,1fr);gap:6px;margin-top:8px;font-size:11px}
+.r-news img{width:62px;height:62px;object-fit:cover;object-position:top;border:1px solid #333}
+.r-news b{font-size:13px}
+.r-plus{border-top:1px solid #999;margin-top:10px;padding-top:6px;font-size:11px}
+.r-badge{float:right;background:#CC0000;color:#FFEE44;font:bold 10px/1 Verdana,sans-serif;padding:5px 4px;transform:rotate(-8deg);border:2px solid #000;margin-left:6px;text-align:center}
+.r-info{margin-top:14px;border-top:1px solid #999;padding-top:8px}
+.r-info h4{font:bold 15px "Trebuchet MS",Arial,sans-serif;color:#CC3300;margin:0 0 4px}
+.r-info ul{margin:0;padding-left:16px}
+.r-foot .r-wrap{padding-bottom:16px}
+.r-flinks{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px 12px;border-top:1px solid #999;padding-top:8px;font-size:11px}
+@media (max-width:520px){.r-flinks{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.r-flinks a{display:block}
+.r-copy{text-align:center;border-top:1px solid #999;margin-top:8px;padding-top:6px;font-size:11px}
+.r-badges{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-top:8px}
+.r-badges span{font:bold 9px/1 Verdana,sans-serif;border:1px solid #000;padding:3px 5px;background:linear-gradient(#fff,#ddd)}
+.r-badges span:nth-child(1){background:#003399;color:#fff}
+.r-badges span:nth-child(2){background:#FFCC00}
+/* ventana de mensajería */
+html.nost .r-im.on{display:block}
+.r-im{position:fixed;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));width:min(280px,calc(100vw - 24px));background:#D4D0C8;border:2px outset #fff;z-index:50;font:12px Tahoma,Verdana,sans-serif;box-shadow:3px 3px 0 rgba(0,0,0,.35)}
+.r-im-t{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(90deg,#0A246A,#A6CAF0);color:#fff;font-weight:bold;padding:3px 4px 3px 6px}
+.r-im-t button{background:#D4D0C8;border:2px outset #fff;font:bold 11px/1 Tahoma,sans-serif;width:18px;height:16px;padding:0;cursor:pointer}
+.r-im-b{background:#fff;border:2px inset #fff;margin:4px;height:150px;overflow:auto;padding:4px 6px}
+.r-im-b p{margin:0 0 4px}
+.r-im-b .me{color:#0000CC}.r-im-b .jt{color:#CC0000}
+.r-im form{display:flex;gap:4px;margin:0 4px 4px}
+.r-im input{flex:1;min-width:0;font:12px Tahoma,sans-serif;border:2px inset #fff;padding:2px}
+.r-im form button{background:#D4D0C8;border:2px outset #fff;font:12px Tahoma,sans-serif;cursor:pointer}
+@media (max-width:420px){.mark span{display:none}}
 </style>
 
 <meta property="og:title" content="Eduardo Javier Thomson · Full Stack Developer">
@@ -356,10 +566,149 @@ pre{font-size:.78rem}
         <button type="button" id="lang-es" data-lang="es" aria-pressed="true">ES</button>
         <button type="button" id="lang-en" data-lang="en" aria-pressed="false">EN</button>
       </div>
-      <button type="button" class="tbtn" id="themebtn" aria-label="Cambiar tema claro u oscuro">◐</button>
+      <div class="moodsw" role="group" aria-label="Tema / Theme">
+        <button type="button" data-mood="light" aria-label="Tema claro / Light theme" title="Claro / Light">☀</button>
+        <button type="button" data-mood="dark" aria-label="Tema oscuro / Dark theme" title="Oscuro / Dark">☾</button>
+        <button type="button" data-mood="nostalgic" aria-label="Nostalgic mood: estilo 2002" title="Nostalgic mood">2002</button>
+      </div>
     </div>
   </div>
 </header>
+
+<!-- ===================== Portal "2002" ===================== -->
+<div id="retro" class="retro">
+  <div class="r-wrap">
+    <div class="r-head">
+      <a class="r-logo" href="#retro"><span class="r-mark">JT</span><span>Javier<i>Online</i></span><sup>®</sup></a>
+      <a class="r-promo" href="#contacto"><span class="es">¡Contratá a Javier: disponibilidad INMEDIATA!</span><span class="en">Hire Javier: available IMMEDIATELY!</span></a>
+    </div>
+    <nav class="r-tabs" aria-label="Portal">
+      <a href="#retro"><span class="es">Inicio</span><span class="en">Home</span></a>
+      <a href="#proyectos"><span class="es">Proyectos</span><span class="en">Projects</span></a>
+      <a href="#trayectoria"><span class="es">Trayectoria</span><span class="en">Career</span></a>
+      <a href="#como-trabajo"><span class="es">Cómo trabajo</span><span class="en">How I work</span></a>
+      <a href="#habilidades"><span class="es">Habilidades</span><span class="en">Skills</span></a>
+      <a href="#contacto"><span class="es">Contacto</span><span class="en">Contact</span></a>
+      <button type="button" class="alt" id="r-lang"><span class="es">English</span><span class="en">Español</span></button>
+      <button type="button" class="alt" id="r-exit"><span class="es">Volver a 2026</span><span class="en">Back to 2026</span></button>
+    </nav>
+    <div class="r-ticker" aria-label="Últimas noticias"><span class="es">+++ NW 101 Mercado Pago → ARCA: EN PRODUCCIÓN +++ NW 102 Eterno Instante: EN PRODUCCIÓN +++ NW 103 Cuaderno Digital: EN PRODUCCIÓN +++ NW 104 CD Network Player: MVP OK +++ NW 105 Tu equipo: EMBARCANDO +++</span><span class="en">+++ NW 101 Mercado Pago → ARCA: IN PRODUCTION +++ NW 102 Eterno Instante: IN PRODUCTION +++ NW 103 Cuaderno Digital: IN PRODUCTION +++ NW 104 CD Network Player: MVP WORKING +++ NW 105 Your team: BOARDING +++</span></div>
+
+    <div class="r-grid">
+      <div class="r-main">
+        <div class="r-box r-blue">
+          <h3><span class="es">Bienvenido, reclutador</span><span class="en">Welcome, recruiter</span></h3>
+          <p><span class="es">Escribí tu nombre para personalizar la visita.</span><span class="en">Type your name to personalize your visit.</span></p>
+          <form class="r-row" id="r-sign">
+            <label for="r-name"><span class="es">Tu nombre</span><span class="en">Your name</span><input id="r-name" autocomplete="off" maxlength="30"></label>
+            <button type="submit" class="r-btn"><span class="es">Entrar</span><span class="en">Sign in</span></button>
+          </form>
+          <p class="r-greet" id="r-greet" aria-live="polite"></p>
+          <div class="r-dots"></div>
+          <b><span class="es">Desde acá accedés a:</span><span class="en">From here you can open:</span></b>
+          <div class="r-icons">
+            <a href="#proyectos"><svg viewBox="0 0 32 32"><path d="M2 8h11l3 3h14v17H2z" fill="#FFCC00" stroke="#000"/><path d="M2 13h28" stroke="#CC9900"/></svg><span class="es">Proyectos</span><span class="en">Projects</span></a>
+            <a href="assets/CV_Eduardo_Javier_Thomson.pdf" target="_blank" rel="noopener" class="es"><svg viewBox="0 0 32 32"><path d="M7 2h13l6 6v22H7z" fill="#fff" stroke="#000"/><path d="M20 2v6h6" fill="#ddd" stroke="#000"/><path d="M10 14h12M10 18h12M10 22h8" stroke="#003399" stroke-width="2"/></svg>CV</a>
+            <a href="assets/CV_Eduardo_Javier_Thomson_EN.pdf" target="_blank" rel="noopener" class="en"><svg viewBox="0 0 32 32"><path d="M7 2h13l6 6v22H7z" fill="#fff" stroke="#000"/><path d="M20 2v6h6" fill="#ddd" stroke="#000"/><path d="M10 14h12M10 18h12M10 22h8" stroke="#003399" stroke-width="2"/></svg>Resume</a>
+            <a href="#contacto"><svg viewBox="0 0 32 32"><rect x="3" y="8" width="26" height="17" fill="#fff" stroke="#000"/><path d="M3 8l13 10 13-10" fill="none" stroke="#CC0000" stroke-width="2"/></svg><span class="es">Correo</span><span class="en">Mail</span></a>
+            <a href="#trayectoria"><svg viewBox="0 0 32 32"><rect x="3" y="5" width="26" height="24" fill="#fff" stroke="#000"/><rect x="3" y="5" width="26" height="6" fill="#3366CC"/><g fill="#3366CC"><rect x="7" y="14" width="4" height="4"/><rect x="14" y="14" width="4" height="4"/><rect x="21" y="14" width="4" height="4"/><rect x="7" y="21" width="4" height="4"/><rect x="14" y="21" width="4" height="4" fill="#CC0000"/></g></svg><span class="es">Trayectoria</span><span class="en">Career</span></a>
+          </div>
+        </div>
+
+        <div class="r-box r-orange">
+          <h3><span class="es">Buscar en el portfolio</span><span class="en">Search the portfolio</span></h3>
+          <form class="r-row" id="r-search">
+            <input id="r-q" autocomplete="off" aria-label="Tecnología" placeholder="Docker, React, Python…">
+            <button type="submit" class="r-btn"><span class="es">Buscar</span><span class="en">Search</span></button>
+          </form>
+          <div class="r-res" id="r-res" aria-live="polite"></div>
+          <div class="r-qlinks"><a href="#" data-q="React">React</a> | <a href="#" data-q="Node.js">Node.js</a> | <a href="#" data-q="Python">Python</a> | <a href="#" data-q="Docker">Docker</a> | <a href="#" data-q="PostgreSQL">PostgreSQL</a></div>
+        </div>
+
+        <div class="r-box r-teal">
+          <h3>Proyectos@JT</h3>
+          <ul class="r-ul r-cols">
+            <li><a href="#mp-arca">Mercado Pago → ARCA</a> <span class="es">factura sola en ARCA</span><span class="en">auto e-invoicing</span></li>
+            <li><a href="#eterno-instante">Eterno Instante</a> <span class="es">venta de fotos online</span><span class="en">online photo sales</span></li>
+            <li><a href="#cuaderno-digital">Cuaderno Digital</a> <span class="es">el fiado sin papel</span><span class="en">paperless shop credit</span></li>
+            <li><a href="#cd-network-player">CD Network Player</a> <span class="es">tus CDs por la red</span><span class="en">your CDs over the network</span></li>
+          </ul>
+          <div class="r-strip"><b><span class="es">3 de 4 sistemas EN PRODUCCIÓN:</span><span class="en">3 of 4 systems IN PRODUCTION:</span></b> <a href="https://fotos.eternoinstante.com" target="_blank" rel="noopener"><span class="es">visitá Eterno Instante en vivo</span><span class="en">visit Eterno Instante live</span></a></div>
+        </div>
+
+        <div class="r-box r-sky">
+          <h3><span class="es">Contacto y chat</span><span class="en">Contact &amp; chat</span></h3>
+          <ul class="r-ul r-cols">
+            <li><a href="#contacto">javierthomson1986@gmail.com</a></li>
+            <li><a href="https://wa.me/5491131883446" target="_blank" rel="noopener">WhatsApp +54 11 3188-3446</a></li>
+            <li><a href="https://www.linkedin.com/in/eduardo-javier-thomson-88b92b185/" target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a href="https://github.com/Javit1986/" target="_blank" rel="noopener">GitHub</a></li>
+          </ul>
+          <button type="button" class="r-im-btn" id="r-im-open"><svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="5" r="3.2" fill="#FFCC00" stroke="#000"/><path d="M2 15c0-4 3-6 6-6s6 2 6 6z" fill="#3366CC" stroke="#000"/></svg><span class="es">Abrir JT Messenger</span><span class="en">Open JT Messenger</span></button>
+        </div>
+
+        <div class="r-box r-purple">
+          <h3><span class="es">Canales</span><span class="en">Channels</span></h3>
+          <ul class="r-ul r-cols3">
+            <li><a href="#mp-arca"><span class="es">Facturación electrónica</span><span class="en">E-invoicing</span></a></li>
+            <li><a href="#eterno-instante"><span class="es">Pagos online</span><span class="en">Online payments</span></a></li>
+            <li><a href="#eterno-instante"><span class="es">Imágenes con Python</span><span class="en">Images with Python</span></a></li>
+            <li><a href="#cd-network-player"><span class="es">Streaming de audio</span><span class="en">Audio streaming</span></a></li>
+            <li><a href="#cuaderno-digital">PWA</a></li>
+            <li><a href="#cuaderno-digital"><span class="es">Lógica financiera</span><span class="en">Financial logic</span></a></li>
+            <li><a href="#habilidades"><span class="es">Seguridad web</span><span class="en">Web security</span></a></li>
+            <li><a href="#habilidades">DevOps</a></li>
+            <li><a href="#habilidades"><span class="es">Bases de datos</span><span class="en">Databases</span></a></li>
+            <li><a href="#trayectoria"><span class="es">Infraestructura IT</span><span class="en">IT infrastructure</span></a></li>
+            <li><a href="#como-trabajo"><span class="es">Cómo trabajo</span><span class="en">How I work</span></a></li>
+            <li><a href="#como-trabajo">Claude Code</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <aside class="r-side">
+        <div class="r-member">
+          <p class="r-big"><span class="es">¿Todavía no<small>me contrataste?</small></span><span class="en">Haven't hired<small>me yet?</small></span></p>
+          <a class="r-join" href="#contacto"><span class="es">¡escribime!</span><span class="en">write me!</span></a>
+          <p class="r-fine"><span class="es">sin período de prueba</span><span class="en">no trial period</span><small><span class="es">requerido</span><span class="en">required</span></small></p>
+          <div class="r-inner">
+            <ul style="margin:0;padding:0">
+              <li><b>15 <span class="es">años</span><span class="en">years</span></b> <span class="es">de infraestructura IT</span><span class="en">of IT infrastructure</span></li>
+              <li><b>3</b> <span class="es">sistemas en producción</span><span class="en">systems in production</span></li>
+            </ul>
+          </div>
+          <a class="r-today" href="#contacto"><span class="es">¡Contactame hoy!</span><span class="en">Contact me today!</span></a>
+        </div>
+        <a class="r-banner es" href="assets/CV_Eduardo_Javier_Thomson.pdf" target="_blank" rel="noopener"><b>CV GRATIS en PDF</b><span>DESCARGALO ACÁ</span></a>
+        <a class="r-banner en" href="assets/CV_Eduardo_Javier_Thomson_EN.pdf" target="_blank" rel="noopener"><b>FREE resume in PDF</b><span>DOWNLOAD HERE</span></a>
+        <div class="r-news">
+          <img src="assets/ei-galeria-movil.webp" alt="" width="62" height="62">
+          <div><b><span class="es">Fotos en la playa</span><span class="en">Beach photos</span></b><br>
+            - <a href="#eterno-instante"><span class="es">Probá el efecto lupa</span><span class="en">Try the magnifier</span></a><br>
+            - <a href="#cuaderno-digital"><span class="es">Encontrá el bug</span><span class="en">Spot the bug</span></a><br>
+            - <a href="#mp-arca"><span class="es">Simulá un día de ventas</span><span class="en">Simulate a sales day</span></a></div>
+        </div>
+        <h4><span class="es">Sitios destacados</span><span class="en">Top sites</span></h4>
+        <ul class="r-ul">
+          <li><a href="https://github.com/Javit1986/" target="_blank" rel="noopener"><span class="es">Mi GitHub</span><span class="en">My GitHub</span></a></li>
+          <li><a href="https://www.linkedin.com/in/eduardo-javier-thomson-88b92b185/" target="_blank" rel="noopener"><span class="es">Mi LinkedIn</span><span class="en">My LinkedIn</span></a></li>
+          <li><a href="https://fotos.eternoinstante.com" target="_blank" rel="noopener">fotos.eternoinstante.com</a></li>
+          <li><a href="#trayectoria"><span class="es">Aeropuerto de Ezeiza</span><span class="en">Ezeiza Airport</span></a></li>
+        </ul>
+        <div class="r-plus"><span class="r-badge">ALTA<br>DISPO</span><b>JT Plus</b><br><span class="es">Ahora con Docker, Cloudflare Tunnel y backups automáticos. ¡Tus sistemas siempre en línea!</span><span class="en">Now with Docker, Cloudflare Tunnel and automatic backups. Your systems always online!</span></div>
+      </aside>
+    </div>
+
+    <div class="r-info">
+      <h4><span class="es">Información de JavierOnline</span><span class="en">JavierOnline information</span></h4>
+      <ul>
+        <li><span class="es">Desarrollador full stack y fundador de Nowagon Software, en Ezeiza, Buenos Aires.</span><span class="en">Full stack developer and founder of Nowagon Software, based in Ezeiza, Buenos Aires.</span></li>
+        <li><span class="es">Modalidad presencial, híbrida o remota. Español nativo, inglés técnico.</span><span class="en">On-site, hybrid or remote. Native Spanish, technical English.</span></li>
+        <li><span class="es">¿Preferís la versión actual? Usá la pestaña</span><span class="en">Prefer the current version? Use the</span> <a href="#" id="r-exit2"><span class="es">Volver a 2026</span><span class="en">Back to 2026</span></a><span class="en"> tab</span>.</li>
+      </ul>
+    </div>
+  </div>
+</div>
 
 <main id="inicio">
 <section class="hero">
@@ -984,7 +1333,25 @@ SECTORS_PER_SECOND = 75
     </div>
   </div>
 </section>
-<footer><div class="wrap"><span>© 2026 Eduardo Javier Thomson · Nowagon Software</span><span>Ezeiza, Buenos Aires</span></div></footer>
+<footer class="modern"><div class="wrap"><span>© 2026 Eduardo Javier Thomson · Nowagon Software</span><span>Ezeiza, Buenos Aires</span></div></footer>
+<div class="r-foot">
+  <div class="r-wrap">
+    <div class="r-flinks">
+      <a href="#mp-arca">Mercado Pago → ARCA</a><a href="#trayectoria"><span class="es">Trayectoria</span><span class="en">Career</span></a><a href="https://www.linkedin.com/in/eduardo-javier-thomson-88b92b185/" target="_blank" rel="noopener">LinkedIn</a><a href="#contacto"><span class="es">Contacto</span><span class="en">Contact</span></a>
+      <a href="#eterno-instante">Eterno Instante</a><a href="#como-trabajo"><span class="es">Cómo trabajo</span><span class="en">How I work</span></a><a href="https://github.com/Javit1986/" target="_blank" rel="noopener">GitHub</a><a class="es" href="assets/CV_Eduardo_Javier_Thomson.pdf" target="_blank" rel="noopener">CV (PDF)</a><a class="en" href="assets/CV_Eduardo_Javier_Thomson_EN.pdf" target="_blank" rel="noopener">Resume (PDF)</a>
+      <a href="#cuaderno-digital">Cuaderno Digital</a><a href="#habilidades"><span class="es">Habilidades</span><span class="en">Skills</span></a><a href="https://wa.me/5491131883446" target="_blank" rel="noopener">WhatsApp</a><a href="#inicio"><span class="es">Volver arriba</span><span class="en">Back to top</span></a>
+      <a href="#cd-network-player">CD Network Player</a>
+    </div>
+    <p class="r-copy">© 2002–2026 Eduardo Javier Thomson · Nowagon Software. <span class="es">Todos los derechos reservados.</span><span class="en">All rights reserved.</span></p>
+    <div class="r-badges" aria-hidden="true"><span>800 × 600</span><span>HTML 4.01</span><span><span class="es">Hecho en Argentina</span><span class="en">Made in Argentina</span></span></div>
+  </div>
+</div>
+<div class="r-im" id="r-im" role="dialog" aria-label="JT Messenger">
+  <div class="r-im-t"><span>JT Messenger · javier_dev</span><button type="button" id="r-im-x" aria-label="Cerrar">×</button></div>
+  <div class="r-im-b" id="r-im-b"></div>
+  <form id="r-im-f"><input id="r-im-i" autocomplete="off" aria-label="Mensaje"><button type="submit"><span class="es">Enviar</span><span class="en">Send</span></button></form>
+</div>
+
 
 <dialog class="lb" id="lb"><button type="button" id="lb-x"><span class="es">Cerrar</span><span class="en">Close</span></button><img id="lb-img" alt=""><p id="lb-cap"></p></dialog>
 
@@ -1017,13 +1384,24 @@ document.querySelectorAll('.langsw button').forEach(b=>{
   b.addEventListener('click',()=>{ if(b.dataset.lang!==lang) setLang(b.dataset.lang,true); });
 });
 
-/* ---------- tema ---------- */
-const tb = document.getElementById('themebtn');
-const savedTheme = store.get('ejt-theme'); if(savedTheme) root.dataset.theme = savedTheme;
-tb.addEventListener('click',()=>{
-  const dark = root.dataset.theme ? root.dataset.theme==='dark' : matchMedia('(prefers-color-scheme: dark)').matches;
-  root.dataset.theme = dark ? 'light' : 'dark'; store.set('ejt-theme', root.dataset.theme);
-});
+/* ---------- tema: claro / oscuro / 2002 ---------- */
+const moodBtns = document.querySelectorAll('.moodsw button');
+let mood = store.get('ejt-mood') || store.get('ejt-theme') || 'auto';
+if(location.hash==='#2002') mood='nostalgic';
+let lastModern = (mood==='light'||mood==='dark') ? mood : 'auto';
+function applyMood(m, scroll){
+  mood = m; store.set('ejt-mood', m);
+  root.classList.toggle('nost', m==='nostalgic');
+  if(m==='light'||m==='dark') root.dataset.theme=m; else if(m==='nostalgic') root.dataset.theme='light'; else delete root.dataset.theme;
+  if(m!=='nostalgic') lastModern = m;
+  const resolved = m==='auto' ? (matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light') : m;
+  moodBtns.forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.mood===resolved)));
+  if(scroll) window.scrollTo(0,0);
+}
+applyMood(mood,false);
+moodBtns.forEach(b=>b.addEventListener('click',()=>applyMood(b.dataset.mood,true)));
+['r-exit','r-exit2'].forEach(id=>document.getElementById(id).addEventListener('click',e=>{ e.preventDefault(); applyMood(lastModern,true); }));
+document.getElementById('r-lang').addEventListener('click',()=>setLang(lang==='es'?'en':'es',true));
 
 /* ---------- tablero de salidas ---------- */
 const flights = [
@@ -1299,6 +1677,7 @@ const now = ()=> fmtClock.format(new Date());
     [['Integraciones','Integrations'], [['Mercado Pago','mp ei'],['ARCA / AFIP WSFEv1','mp'],['MusicBrainz','cd'],[['Generación de PDF','PDF generation'],'mp cu']]],
     [['Seguridad','Security'], [[['Firma de webhooks','Webhook signatures'],'mp ei'],['AES-256-GCM','mp'],['JWT + bcrypt','ei cu'],['helmet + rate limiting','ei cu'],[['Tokens criptográficos','Cryptographic tokens'],'ei mp'],[['Mínimo privilegio en Docker','Least privilege in Docker'],'cd']]]
   ];
+  window.__skills = {groups, P};
   const box=document.getElementById('skills'), out=document.getElementById('skout');
   let current=null, curData=null;
   function build(){
@@ -1343,6 +1722,50 @@ const now = ()=> fmtClock.format(new Date());
   document.getElementById('lb-x').onclick=()=>lb.close();
   lb.addEventListener('click',e=>{ if(e.target===lb) lb.close(); });
 })();
+
+/* ===================== Modo 2002 ===================== */
+(function(){
+  const box = document.getElementById('r-greet');
+  document.getElementById('r-sign').addEventListener('submit',e=>{
+    e.preventDefault();
+    const n = document.getElementById('r-name').value.trim().slice(0,30);
+    box.textContent = n ? T(`¡Hola, ${n}! Tenés 1 mensaje nuevo: "Javier está disponible para entrevistas."`, `Hi, ${n}! You have 1 new message: "Javier is available for interviews."`) : T('Escribí tu nombre primero.','Type your name first.');
+  });
+  // buscador: reutiliza el mapa de habilidades
+  const res = document.getElementById('r-res'), q = document.getElementById('r-q');
+  function search(term){
+    const t = term.trim().toLowerCase(); res.classList.add('on');
+    if(!t){ res.textContent = T('Escribí una tecnología, por ejemplo Docker.','Type a technology, for example Docker.'); return; }
+    const S = window.__skills; const hits = [];
+    S.groups.forEach(([,items])=>items.forEach(([n0,p])=>{ const names = Array.isArray(n0)?n0:[n0]; if(names.some(n=>n.toLowerCase().includes(t))) hits.push([names[lang==='es'?0:1]||names[0], p]); }));
+    if(!hits.length){ res.textContent = T(`No encontré "${term}". Probá con React, Docker o Python.`, `No results for "${term}". Try React, Docker or Python.`); return; }
+    res.innerHTML = hits.slice(0,5).map(([n,p])=>`<b>${n}</b>: ${p.split(' ').map(k=>{ const [nm,h]=S.P[k]; return `<a href="${h}">${Array.isArray(nm)?nm[lang==='es'?0:1]:nm}</a>`; }).join(', ')}`).join('<br>');
+  }
+  document.getElementById('r-search').addEventListener('submit',e=>{ e.preventDefault(); search(q.value); });
+  document.querySelectorAll('[data-q]').forEach(a=>a.addEventListener('click',e=>{ e.preventDefault(); q.value=a.dataset.q; search(a.dataset.q); }));
+  // mensajería
+  const im = document.getElementById('r-im'), body = document.getElementById('r-im-b'), inp = document.getElementById('r-im-i');
+  const say = (who, txt)=>{ const p=document.createElement('p'); const b=document.createElement('b'); b.className = who==='jt'?'jt':'me'; b.textContent = (who==='jt'?'javier_dev':T('vos','you'))+': '; p.append(b, document.createTextNode(txt)); body.append(p); body.scrollTop = body.scrollHeight; };
+  let opened = false;
+  document.getElementById('r-im-open').addEventListener('click',()=>{
+    im.classList.add('on');
+    if(!opened){ opened=true; say('jt', T('¡Hola! Soy Javier. ¿Buscás un desarrollador full stack?','Hi! I\'m Javier. Looking for a full stack developer?')); }
+    inp.focus();
+  });
+  document.getElementById('r-im-x').addEventListener('click',()=>im.classList.remove('on'));
+  const replies = [
+    ['Este chat es de mentira, pero yo no: escribime a javierthomson1986@gmail.com o por WhatsApp al +54 11 3188-3446.','This chat is pretend, but I\'m real: email javierthomson1986@gmail.com or WhatsApp +54 11 3188-3446.'],
+    ['Tengo disponibilidad inmediata: presencial, híbrido o remoto.','I\'m available immediately: on-site, hybrid or remote.'],
+    ['Mientras tanto, probá las demos de los proyectos. La del fiado tiene un bug escondido.','Meanwhile, try the project demos. The ledger one hides a bug.']
+  ];
+  let ri = 0;
+  document.getElementById('r-im-f').addEventListener('submit',e=>{
+    e.preventDefault(); const v = inp.value.trim(); if(!v) return;
+    say('me', v); inp.value='';
+    const r = replies[ri++ % replies.length]; setTimeout(()=>say('jt', r[lang==='es'?0:1]), 700);
+  });
+})();
+
 })();
 </script>
 
