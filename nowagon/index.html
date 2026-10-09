@@ -1,0 +1,625 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nowagon Software</title>
+<meta name="description" content="Software a medida para comercios y empresas. Contanos tu problema en 2 minutos y te respondemos con un primer enfoque.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@50..150,400..900&family=Atkinson+Hyperlegible+Next:ital,wght@0,300..700;1,400&family=Martian+Mono:wdth,wght@75..112.5,400..700&display=swap">
+<style>
+/* Layout: el cuestionario ES el hero. A la izquierda la pregunta, a la derecha la "ficha de proyecto" que se completa sola. Paleta de la marca personal de Javier (Tea Green → Charcoal Blue). */
+:root{
+  --paper:#EEF5ED; --paper-2:#FFFFFF; --wash:#DCEBDB; --ink:#22323E; --muted:#3B6064; --line:#BCD6BF;
+  --teal:#3B6064; --teal-ink:#F3F9F2; --mint:#87BBA2; --cyan:#55828B; --slate:#364958;
+  --ticket:#FFFFFF; --ticket-ink:#22323E; --ticket-dim:#5F7A7C; --ticket-line:#CFE0D0;
+  --ok:#2E6E57; --focus:#55828B;
+  --font-display:"Anybody","Arial Narrow",Arial,sans-serif;
+  --font-body:"Atkinson Hyperlegible Next","Atkinson Hyperlegible",Verdana,Tahoma,sans-serif;
+  --font-mono:"Martian Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
+  --wrap:74rem; --gut:clamp(1rem,4vw,2.5rem);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#17232B; --paper-2:#1E2D37; --wash:#22333E; --ink:#DCEBDD; --muted:#9DBDB4; --line:#2E4351;
+  --teal:#87BBA2; --teal-ink:#17232B; --mint:#87BBA2; --cyan:#7FB0B8; --slate:#C9E4CA;
+  --ticket:#F3F9F2; --ticket-ink:#22323E; --ticket-dim:#5F7A7C; --ticket-line:#CFE0D0;
+  --ok:#9CD3B4; --focus:#9CCDB6; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#17232B; --paper-2:#1E2D37; --wash:#22333E; --ink:#DCEBDD; --muted:#9DBDB4; --line:#2E4351;
+  --teal:#87BBA2; --teal-ink:#17232B; --mint:#87BBA2; --cyan:#7FB0B8; --slate:#C9E4CA;
+  --ticket:#F3F9F2; --ticket-ink:#22323E; --ticket-dim:#5F7A7C; --ticket-line:#CFE0D0;
+  --ok:#9CD3B4; --focus:#9CCDB6; color-scheme:dark}
+
+html.lang-es .en, html.lang-en .es{display:none!important}
+[hidden]{display:none!important}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:1.0625rem;line-height:1.6;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:var(--cyan);text-underline-offset:.18em}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:3px}
+h1,h2,h3{font-family:var(--font-display);line-height:1.05;margin:0;text-wrap:balance}
+p{margin:0}
+.wrap{max-width:var(--wrap);margin-inline:auto;padding-inline:var(--gut)}
+section{scroll-margin-top:4.5rem}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--paper) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:1rem;min-height:3.6rem}
+.brand{display:flex;align-items:center;gap:.6rem;text-decoration:none;color:var(--ink)}
+.brand svg{width:2.1rem;height:2.1rem;flex:none}
+.brand b{font:800 1.25rem/1 var(--font-display);font-stretch:78%}
+.brand span{font:500 .72rem var(--font-mono);font-stretch:87.5%;color:var(--muted);display:block;margin-top:.15rem}
+.nav{display:flex;gap:1.2rem;margin-left:auto}
+.nav a{color:var(--muted);text-decoration:none;font-size:.95rem}
+.nav a:hover{color:var(--ink)}
+.tools{display:flex;gap:.4rem;align-items:center}
+.seg{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.seg button{font:600 .76rem var(--font-mono);font-stretch:87.5%;border:0;background:transparent;color:var(--muted);padding:.35rem .6rem;cursor:pointer;min-height:2.1rem}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.cta-s{font:700 .9rem var(--font-body);background:var(--teal);color:var(--teal-ink);text-decoration:none;border-radius:6px;padding:.5rem .9rem;white-space:nowrap}
+@media (max-width:900px){.nav{display:none}.tools{margin-left:auto}}
+@media (max-width:520px){.cta-s{display:none}.brand span{display:none}}
+
+/* hero */
+.hero{padding-block:clamp(2rem,5vw,3.5rem) clamp(2.5rem,6vw,4.5rem)}
+.hero-top{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:clamp(1rem,4vw,3rem);align-items:end}
+@media (max-width:860px){.hero-top{grid-template-columns:1fr}}
+.hero h1{font-weight:850;font-stretch:66%;font-size:clamp(2.5rem,6.4vw,4.6rem);line-height:.92;letter-spacing:-.005em}
+.hero .sub{font-size:1.12rem;color:var(--muted);max-width:32rem}
+.trust{display:flex;flex-wrap:wrap;gap:.4rem .9rem;margin-top:1rem;font:500 .8rem var(--font-mono);font-stretch:87.5%;color:var(--muted)}
+.trust>span{display:inline-flex;align-items:center;gap:.4rem}
+.trust>span::before{content:"";width:.5rem;height:.5rem;border-radius:50%;background:var(--mint)}
+
+/* workbench: pregunta + ficha */
+.bench{scroll-margin-top:4.6rem;margin-top:clamp(1.5rem,4vw,2.5rem);display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:0;background:var(--paper-2);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 30px 60px -40px #22323e55}
+@media (max-width:900px){.bench{grid-template-columns:1fr}}
+.qpane{padding:clamp(1.1rem,3vw,2rem);min-width:0;display:flex;flex-direction:column;min-height:31rem}
+.qhead{display:flex;align-items:center;gap:.8rem;margin-bottom:1.1rem}
+.qcount{font:600 .78rem var(--font-mono);font-stretch:87.5%;color:var(--muted);white-space:nowrap}
+.qbar{flex:1;height:6px;border-radius:3px;background:var(--wash);overflow:hidden}
+.qbar i{display:block;height:100%;background:var(--teal);width:0;transition:width .35s ease}
+.q{font:800 clamp(1.45rem,3vw,2rem)/1.1 var(--font-display);font-stretch:80%}
+.qhint{color:var(--muted);margin-top:.35rem;font-size:.98rem}
+.opts{display:grid;gap:.5rem;margin-top:1.1rem}
+.opts.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:560px){.opts.two{grid-template-columns:1fr}}
+.opt{display:grid;grid-template-columns:auto minmax(0,1fr);gap:.7rem;align-items:start;text-align:left;width:100%;padding:.75rem .9rem;border:1.5px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);font:inherit;cursor:pointer;transition:border-color .15s, background .15s}
+.opt:hover{border-color:var(--cyan)}
+.opt[aria-pressed="true"]{border-color:var(--teal);background:var(--wash)}
+.opt .box{width:1.15rem;height:1.15rem;border:2px solid var(--muted);border-radius:4px;margin-top:.2rem;display:grid;place-items:center}
+.opt.radio .box{border-radius:50%}
+.opt[aria-pressed="true"] .box{background:var(--teal);border-color:var(--teal)}
+.opt[aria-pressed="true"] .box::after{content:"";width:.45rem;height:.45rem;background:var(--teal-ink);border-radius:2px}
+.opt b{display:block;font-weight:700;line-height:1.3}
+.opt small{display:block;color:var(--muted);font-size:.86rem;line-height:1.35;margin-top:.15rem}
+.field{display:grid;gap:.3rem;margin-top:.9rem}
+.field label{font-weight:700;font-size:.92rem}
+.field label i{font-style:normal;font-weight:400;color:var(--muted)}
+.field input,.field textarea{font:inherit;font-size:1rem;color:var(--ink);background:var(--paper);border:1.5px solid var(--line);border-radius:8px;padding:.65rem .75rem;width:100%}
+.field input:focus,.field textarea:focus{border-color:var(--teal);outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--teal) 25%,transparent)}
+.field textarea{min-height:8.5rem;resize:vertical}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 .8rem}
+@media (max-width:560px){.grid2{grid-template-columns:1fr}}
+.examples{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.55rem}
+.examples button{font:500 .82rem var(--font-body);color:var(--muted);background:transparent;border:1px dashed var(--line);border-radius:999px;padding:.25rem .65rem;cursor:pointer}
+.examples button:hover{color:var(--ink);border-color:var(--cyan)}
+.counter{font:500 .74rem var(--font-mono);font-stretch:87.5%;color:var(--muted);text-align:right}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.3rem}
+.chip{font:600 .88rem var(--font-body);border:1.5px solid var(--line);background:var(--paper);color:var(--ink);border-radius:999px;padding:.35rem .8rem;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--teal);color:var(--teal-ink);border-color:var(--teal)}
+.qnav{display:flex;justify-content:space-between;align-items:center;gap:.6rem;margin-top:auto;padding-top:1.3rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;font:700 1rem var(--font-body);border-radius:8px;padding:.7rem 1.2rem;border:1.5px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer;text-decoration:none;min-height:2.85rem}
+.btn.primary{background:var(--teal);border-color:var(--teal);color:var(--teal-ink)}
+.btn[disabled]{opacity:.4;cursor:not-allowed}
+.btn.ghost{border-color:transparent;color:var(--muted);padding-inline:.4rem}
+.btn svg{width:1.1em;height:1.1em}
+.err{color:#A3443F;font-size:.88rem;min-height:1.2em;margin-top:.4rem}
+:root[data-theme="dark"] .err{color:#E6A69F}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .err{color:#E6A69F}}
+.done-actions{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.2rem}
+.privacy{font-size:.86rem;color:var(--muted);margin-top:1rem;max-width:34rem}
+.copied{font-size:.88rem;color:var(--ok);min-height:1.2em;margin-top:.5rem}
+
+/* ficha */
+.tpane{background:var(--wash);padding:clamp(1rem,2.6vw,1.6rem);display:flex;align-items:flex-start;justify-content:center;min-width:0;border-left:1px solid var(--line)}
+@media (max-width:900px){.tpane{border-left:0;border-top:1px solid var(--line)}}
+.ticket{width:100%;max-width:25rem;background:var(--ticket);color:var(--ticket-ink);border-radius:4px;padding:1.1rem 1.1rem 1.3rem;position:relative;font-size:.84rem;box-shadow:0 1px 0 #0000000d,0 14px 30px -18px #22323e66;
+  -webkit-mask:radial-gradient(circle 7px at 50% 0,#0000 98%,#000) top/18px 51% repeat-x,radial-gradient(circle 7px at 50% 100%,#0000 98%,#000) bottom/18px 51% repeat-x;
+          mask:radial-gradient(circle 7px at 50% 0,#0000 98%,#000) top/18px 51% repeat-x,radial-gradient(circle 7px at 50% 100%,#0000 98%,#000) bottom/18px 51% repeat-x}
+.t-head{display:flex;justify-content:space-between;align-items:flex-start;gap:.6rem;padding-bottom:.7rem;border-bottom:2px dashed var(--ticket-line)}
+.t-head h2{font:800 1.15rem/1.1 var(--font-display);font-stretch:80%;color:var(--ticket-ink)}
+.t-head small{display:block;font:500 .7rem var(--font-mono);font-stretch:87.5%;color:var(--ticket-dim);margin-top:.2rem}
+.t-no{font:600 .72rem var(--font-mono);font-stretch:87.5%;text-align:right;color:var(--ticket-dim);white-space:nowrap}
+.t-no b{display:block;color:var(--ticket-ink);font-size:.82rem}
+.t-rows{margin:0;padding:0}
+.t-row{display:grid;grid-template-columns:6.4rem minmax(0,1fr);gap:.6rem;padding:.5rem 0;border-bottom:1px dotted var(--ticket-line)}
+.t-row dt{font:600 .68rem/1.5 var(--font-mono);font-stretch:87.5%;color:var(--ticket-dim)}
+.t-row dd{margin:0;line-height:1.4;overflow-wrap:anywhere}
+.t-row dd.empty{color:#9DB0AE}
+.t-row.new dd{animation:ink .6s ease-out}
+@keyframes ink{from{background:#C9E4CA}to{background:transparent}}
+@media (prefers-reduced-motion:reduce){.t-row.new dd{animation:none}}
+.t-foot{display:flex;justify-content:space-between;align-items:center;gap:.6rem;margin-top:.8rem;font:500 .68rem var(--font-mono);font-stretch:87.5%;color:var(--ticket-dim)}
+.stamp{font:800 .8rem/1 var(--font-display);font-stretch:80%;color:#2E6E57;border:2px solid #2E6E57;border-radius:4px;padding:.3rem .5rem;transform:rotate(-6deg);opacity:0;transition:opacity .3s}
+.stamp.on{opacity:1}
+
+/* secciones */
+.sec{padding-block:clamp(3rem,7vw,5rem)}
+.sec.alt{background:var(--paper-2);border-block:1px solid var(--line)}
+.h2{font-weight:850;font-stretch:70%;font-size:clamp(2rem,4.6vw,3.2rem)}
+.lede{color:var(--muted);font-size:1.08rem;max-width:40rem;margin-top:.6rem}
+.pains{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,12.5rem),1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:2rem}
+.pain{background:var(--paper);padding:1.2rem 1.2rem 1.3rem}
+.pain h3{font:750 1.2rem/1.15 var(--font-display);font-stretch:85%}
+.pain p{color:var(--muted);font-size:.96rem;margin-top:.4rem}
+.cases{display:grid;gap:1rem;margin-top:2rem}
+.case{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:1.5rem;padding:1.3rem 0;border-top:1px solid var(--line);align-items:start}
+@media (max-width:760px){.case{grid-template-columns:1fr;gap:.6rem}}
+.case h3{font:800 1.5rem/1.05 var(--font-display);font-stretch:78%}
+.case .who{font:500 .76rem var(--font-mono);font-stretch:87.5%;color:var(--muted);margin-top:.35rem}
+.case .ba{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem}
+@media (max-width:520px){.case .ba{grid-template-columns:1fr}}
+.case .ba div{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:.8rem .9rem}
+.case .ba div:last-child{background:var(--wash);border-color:var(--mint)}
+.case .ba b{display:block;font:600 .72rem var(--font-mono);font-stretch:87.5%;color:var(--muted);margin-bottom:.25rem}
+.case .ba p{font-size:.96rem}
+.steps{list-style:none;margin:2rem 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,13rem),1fr));gap:1.2rem;counter-reset:s}
+.steps li{counter-increment:s;border-top:3px solid var(--teal);padding-top:.8rem}
+.steps li::before{content:counter(s);font:700 .8rem var(--font-mono);font-stretch:87.5%;color:var(--muted)}
+.steps h3{font:750 1.2rem/1.15 var(--font-display);font-stretch:85%;margin-top:.2rem}
+.steps p{color:var(--muted);font-size:.95rem;margin-top:.35rem}
+.why{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr));gap:1.5rem 2.5rem;margin-top:2rem}
+.why div{border-left:3px solid var(--mint);padding-left:1rem}
+.why h3{font:750 1.2rem/1.15 var(--font-display);font-stretch:85%}
+.why p{color:var(--muted);font-size:.96rem;margin-top:.3rem}
+.faq{margin-top:1.6rem;max-width:48rem}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{cursor:pointer;list-style:none;padding:1rem 0;font-weight:700;display:flex;justify-content:space-between;gap:1rem}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font:600 1.2rem/1 var(--font-mono);color:var(--muted)}
+.faq details[open] summary::after{content:"–"}
+.faq details p{padding:0 0 1rem;color:var(--muted)}
+.final{background:var(--slate);color:#F3F9F2;padding-block:clamp(3rem,7vw,4.5rem)}
+:root[data-theme="dark"] .final{background:#22323E}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .final{background:#22323E}}
+.final .h2{color:#F3F9F2}
+.final p{color:#C9E4CA;max-width:38rem;margin-top:.6rem}
+.final .row{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.5rem}
+.final .btn{border-color:#C9E4CA;color:#F3F9F2}
+.final .btn.primary{background:#87BBA2;border-color:#87BBA2;color:#1E2D37}
+footer{background:var(--slate);color:#A9C3BD;font-size:.86rem;border-top:1px solid #4B6374}
+:root[data-theme="dark"] footer{background:#22323E}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) footer{background:#22323E}}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;padding-block:1.2rem}
+footer a{color:#C9E4CA}
+</style>
+
+<meta property="og:title" content="Nowagon Software · Software a medida">
+<meta property="og:description" content="Contanos tu problema en 2 minutos y te respondemos con un primer enfoque. Sistemas a medida para comercios y empresas de Argentina y el exterior.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%233B6064'/%3E%3Ctext x='16' y='22' font-family='Arial' font-weight='800' font-size='15' text-anchor='middle' fill='%23C9E4CA'%3EN%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#inicio" aria-label="Nowagon Software">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="9" fill="#3B6064"/><path d="M11 29V11l18 18V11" fill="none" stroke="#C9E4CA" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div><b>Nowagon Software</b><span><span class="es">software a medida</span><span class="en">custom software</span></span></div>
+    </a>
+    <nav class="nav" aria-label="Secciones">
+      <a href="#casos"><span class="es">Casos reales</span><span class="en">Real cases</span></a>
+      <a href="#proceso"><span class="es">Cómo trabajo</span><span class="en">How I work</span></a>
+      <a href="#faq"><span class="es">Preguntas</span><span class="en">FAQ</span></a>
+    </nav>
+    <div class="tools">
+      <div class="seg" role="group" aria-label="Idioma / Language"><button type="button" data-lang="es" aria-pressed="true">ES</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div>
+      <div class="seg" role="group" aria-label="Tema / Theme"><button type="button" data-theme-set="light" aria-pressed="false" aria-label="Claro / Light">☀</button><button type="button" data-theme-set="dark" aria-pressed="false" aria-label="Oscuro / Dark">☾</button></div>
+      <a class="cta-s" href="#contar"><span class="es">Contar mi proyecto</span><span class="en">Tell me your project</span></a>
+    </div>
+  </div>
+</header>
+
+<main id="inicio">
+<section class="hero" id="contar">
+  <div class="wrap">
+    <div class="hero-top">
+      <h1><span class="es">Software a medida que tu negocio realmente usa.</span><span class="en">Custom software your business will actually use.</span></h1>
+      <div>
+        <p class="sub es">Contame qué problema querés resolver. Son 2 minutos, sin compromiso, y te respondo con un primer enfoque y los próximos pasos.</p>
+        <p class="sub en">Tell me what problem you want to solve. It takes 2 minutes, no strings attached, and I'll reply with a first approach and next steps.</p>
+        <div class="trust">
+          <span><span class="es">3 sistemas en producción</span><span class="en">3 systems in production</span></span>
+          <span><span class="es">Argentina y exterior</span><span class="en">Argentina &amp; abroad</span></span>
+          <span><span class="es">Español e inglés</span><span class="en">Spanish &amp; English</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bench">
+      <div class="qpane" aria-live="polite">
+        <div class="qhead"><span class="qcount" id="qcount"></span><span class="qbar" aria-hidden="true"><i id="qbar"></i></span></div>
+        <div id="qbody"></div>
+        <div class="qnav" id="qnav">
+          <button type="button" class="btn ghost" id="back"><span class="es">← Atrás</span><span class="en">← Back</span></button>
+          <button type="button" class="btn primary" id="next"><span class="es">Siguiente</span><span class="en">Next</span></button>
+        </div>
+      </div>
+      <div class="tpane">
+        <div class="ticket" aria-label="Ficha de proyecto">
+          <div class="t-head">
+            <div><h2><span class="es">Ficha de proyecto</span><span class="en">Project brief</span></h2><small><span class="es">se completa con tus respuestas</span><span class="en">fills in as you answer</span></small></div>
+            <div class="t-no"><span class="es">N.º</span><span class="en">No.</span><b id="tno">NW-0000</b><span id="tdate"></span></div>
+          </div>
+          <dl class="t-rows" id="trows"></dl>
+          <div class="t-foot"><span>Nowagon Software · Ezeiza, AR</span><span class="stamp" id="stamp"><span class="es">LISTA</span><span class="en">READY</span></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec alt" id="dolores">
+  <div class="wrap">
+    <h2 class="h2"><span class="es">¿Te suena alguna?</span><span class="en">Sound familiar?</span></h2>
+    <p class="lede es">Son las situaciones que más veo en comercios y empresas antes de encarar un sistema.</p>
+    <p class="lede en">These are the situations I see most often in shops and companies before they build a system.</p>
+    <div class="pains">
+      <div class="pain"><h3><span class="es">Todo vive en un cuaderno o en un Excel</span><span class="en">Everything lives in a notebook or a spreadsheet</span></h3><p><span class="es">Y solo una persona sabe dónde está cada cosa. Si falta, nadie encuentra nada.</span><span class="en">And only one person knows where things are. When they're out, nobody finds anything.</span></p></div>
+      <div class="pain"><h3><span class="es">Horas en tareas repetitivas</span><span class="en">Hours lost on repetitive tasks</span></h3><p><span class="es">Facturar a mano, pasar datos de un sistema a otro, armar el mismo reporte todas las semanas.</span><span class="en">Invoicing by hand, copying data between systems, building the same report every week.</span></p></div>
+      <div class="pain"><h3><span class="es">Cobrar online es un lío</span><span class="en">Getting paid online is a mess</span></h3><p><span class="es">Links sueltos, pagos que no se concilian, clientes que no saben si su pago entró.</span><span class="en">Scattered links, payments that don't reconcile, customers unsure whether they paid.</span></p></div>
+      <div class="pain"><h3><span class="es">Una mala experiencia previa</span><span class="en">A bad past experience</span></h3><p><span class="es">Un sistema a medias, un proveedor que desapareció o algo que nadie sabe mantener.</span><span class="en">A half-built system, a vendor who vanished, or something nobody knows how to maintain.</span></p></div>
+      <div class="pain"><h3><span class="es">Una idea sin forma</span><span class="en">An idea without a shape</span></h3><p><span class="es">Sabés lo que necesitás pero no cómo bajarlo a algo concreto ni cuánto puede costar.</span><span class="en">You know what you need but not how to turn it into something concrete, or what it might cost.</span></p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="casos">
+  <div class="wrap">
+    <h2 class="h2"><span class="es">Casos reales, en uso todos los días</span><span class="en">Real cases, used every day</span></h2>
+    <p class="lede es">Sistemas que diseñé, construí y mantengo para negocios reales.</p>
+    <p class="lede en">Systems I designed, built and maintain for real businesses.</p>
+    <div class="cases">
+      <div class="case">
+        <div><h3><span class="es">Facturación automática</span><span class="en">Automatic invoicing</span></h3><p class="who"><span class="es">Comercio minorista · Argentina</span><span class="en">Retail shop · Argentina</span></p></div>
+        <div class="ba">
+          <div><b><span class="es">Antes</span><span class="en">Before</span></b><p><span class="es">Cada cobro de Mercado Pago se facturaba a mano en ARCA, uno por uno.</span><span class="en">Every Mercado Pago payment was invoiced by hand with the tax authority, one by one.</span></p></div>
+          <div><b><span class="es">Ahora</span><span class="en">Now</span></b><p><span class="es">El sistema detecta cada ingreso y emite la factura solo, con revisión opcional del dueño.</span><span class="en">The system detects every payment and issues the invoice automatically, with optional owner review.</span></p></div>
+        </div>
+      </div>
+      <div class="case">
+        <div><h3><span class="es">Venta de fotos online</span><span class="en">Online photo sales</span></h3><p class="who"><span class="es">Fotógrafos de playa y eventos · <a href="https://fotos.eternoinstante.com" target="_blank" rel="noopener">ver en vivo</a></span><span class="en">Beach &amp; event photographers · <a href="https://fotos.eternoinstante.com" target="_blank" rel="noopener">see it live</a></span></p></div>
+        <div class="ba">
+          <div><b><span class="es">Antes</span><span class="en">Before</span></b><p><span class="es">Imprimir en el momento o mandar fotos por WhatsApp sin cobro asegurado.</span><span class="en">Printing on the spot or sending photos over WhatsApp with no guaranteed payment.</span></p></div>
+          <div><b><span class="es">Ahora</span><span class="en">Now</span></b><p><span class="es">El cliente busca su sesión, paga con Mercado Pago y descarga sus fotos al instante.</span><span class="en">Customers find their session, pay with Mercado Pago and download their photos instantly.</span></p></div>
+        </div>
+      </div>
+      <div class="case">
+        <div><h3><span class="es">Libreta de fiado digital</span><span class="en">Digital credit ledger</span></h3><p class="who"><span class="es">Kiosco de barrio · Argentina</span><span class="en">Corner shop · Argentina</span></p></div>
+        <div class="ba">
+          <div><b><span class="es">Antes</span><span class="en">Before</span></b><p><span class="es">Un cuaderno de papel, cuentas a mano y nadie sabía quién debía hace más tiempo.</span><span class="en">A paper notebook, math by hand, and no idea who had owed the longest.</span></p></div>
+          <div><b><span class="es">Ahora</span><span class="en">Now</span></b><p><span class="es">Búsqueda instantánea, alertas de deudas viejas, resumen por WhatsApp y copias de seguridad diarias.</span><span class="en">Instant search, overdue alerts, statements over WhatsApp and daily backups.</span></p></div>
+        </div>
+      </div>
+    </div>
+    <p style="margin-top:1.4rem"><a href="https://javit1986.github.io" target="_blank" rel="noopener"><span class="es">Ver los casos completos en mi portfolio ↗</span><span class="en">See the full case studies in my portfolio ↗</span></a></p>
+  </div>
+</section>
+
+<section class="sec alt" id="proceso">
+  <div class="wrap">
+    <h2 class="h2"><span class="es">Cómo trabajo</span><span class="en">How I work</span></h2>
+    <p class="lede es">Antes de hablar de precio entiendo bien el problema. Así la propuesta tiene sentido para tu negocio.</p>
+    <p class="lede en">Before talking price, I make sure I understand the problem. That way the proposal makes sense for your business.</p>
+    <ol class="steps">
+      <li><h3><span class="es">Me contás el problema</span><span class="en">You describe the problem</span></h3><p><span class="es">Con el cuestionario de arriba. Me llega todo ordenado.</span><span class="en">Using the questionnaire above. It reaches me well organized.</span></p></li>
+      <li><h3><span class="es">Te respondo</span><span class="en">I reply</span></h3><p><span class="es">En menos de 48 horas hábiles, con preguntas y un primer enfoque.</span><span class="en">Within 48 business hours, with questions and a first approach.</span></p></li>
+      <li><h3><span class="es">Llamada de diagnóstico</span><span class="en">Discovery call</span></h3><p><span class="es">30 minutos sin cargo para entender cómo trabajás hoy.</span><span class="en">A free 30-minute call to understand how you work today.</span></p></li>
+      <li><h3><span class="es">Propuesta por etapas</span><span class="en">Staged proposal</span></h3><p><span class="es">Alcance, plazos e inversión claros antes de empezar.</span><span class="en">Clear scope, timeline and investment before we start.</span></p></li>
+      <li><h3><span class="es">Desarrollo y soporte</span><span class="en">Build and support</span></h3><p><span class="es">Entregas parciales para que lo pruebes, y acompañamiento después de lanzar.</span><span class="en">Partial deliveries you can test, and support after launch.</span></p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="sec" id="por-que">
+  <div class="wrap">
+    <h2 class="h2"><span class="es">Por qué trabajar conmigo</span><span class="en">Why work with me</span></h2>
+    <div class="why">
+      <div><h3><span class="es">Hablás con quien lo construye</span><span class="en">You talk to the person who builds it</span></h3><p><span class="es">Sin intermediarios ni vendedores. Te explico todo sin jerga técnica.</span><span class="en">No middlemen or salespeople. I explain everything without jargon.</span></p></div>
+      <div><h3><span class="es">15 años en infraestructura IT</span><span class="en">15 years in IT infrastructure</span></h3><p><span class="es">Vengo de mantener sistemas críticos. Pienso en copias de seguridad, caídas y seguridad desde el día uno.</span><span class="en">I come from keeping critical systems running. I plan for backups, outages and security from day one.</span></p></div>
+      <div><h3><span class="es">Pagos e impuestos de Argentina</span><span class="en">Payments and local integrations</span></h3><p><span class="es">Integraciones reales con Mercado Pago y facturación electrónica de ARCA en producción.</span><span class="en">Real integrations with Mercado Pago and Argentine e-invoicing running in production.</span></p></div>
+      <div><h3><span class="es">Sistemas que siguen funcionando</span><span class="en">Systems that keep running</span></h3><p><span class="es">Monitoreo, copias diarias y acceso seguro desde internet, sin dejar tu negocio expuesto.</span><span class="en">Monitoring, daily backups and secure internet access, without exposing your business.</span></p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec alt" id="faq">
+  <div class="wrap">
+    <h2 class="h2"><span class="es">Preguntas frecuentes</span><span class="en">Frequently asked questions</span></h2>
+    <div class="faq">
+      <details><summary><span class="es">¿Cuánto cuesta un sistema a medida?</span><span class="en">How much does custom software cost?</span></summary><p><span class="es">Depende del alcance. Después de la llamada te paso una propuesta por etapas con un valor cerrado para cada una, así sabés cuánto invertís antes de empezar.</span><span class="en">It depends on the scope. After our call I send a staged proposal with a fixed price per stage, so you know the investment before we start.</span></p></details>
+      <details><summary><span class="es">¿Cuánto tarda?</span><span class="en">How long does it take?</span></summary><p><span class="es">Un sistema chico puede estar en uso en pocas semanas. Prefiero arrancar con una primera versión útil y sumar funciones después, en lugar de esperar meses.</span><span class="en">A small system can be in use within a few weeks. I prefer to launch a useful first version and add features later, rather than wait months.</span></p></details>
+      <details><summary><span class="es">¿Trabajás con clientes de otros países?</span><span class="en">Do you work with clients abroad?</span></summary><p><span class="es">Sí, de forma remota, en español o inglés.</span><span class="en">Yes, remotely, in Spanish or English.</span></p></details>
+      <details><summary><span class="es">Solo tengo una idea, ¿me sirve?</span><span class="en">I only have an idea. Is that enough?</span></summary><p><span class="es">Sí. Te ayudo a bajarla a algo concreto: qué hace la primera versión, qué queda para después y cuánto puede llevar.</span><span class="en">Yes. I'll help you turn it into something concrete: what the first version does, what comes later and how long it may take.</span></p></details>
+      <details><summary><span class="es">Ya tengo un sistema, ¿podés mejorarlo o conectarlo con otro?</span><span class="en">I already have a system. Can you improve it or connect it?</span></summary><p><span class="es">Sí. Primero lo reviso para ver qué conviene: mejorarlo, integrarlo con otras herramientas o reemplazar alguna parte.</span><span class="en">Yes. I review it first to see what makes sense: improving it, integrating it with other tools or replacing a part of it.</span></p></details>
+      <details><summary><span class="es">¿Qué pasa con mis datos?</span><span class="en">What happens to my data?</span></summary><p><span class="es">Tus respuestas del cuestionario no se guardan en ningún servidor: la ficha se envía desde tu WhatsApp o tu correo. En los proyectos, cuido los datos con copias de seguridad y acceso protegido.</span><span class="en">Your questionnaire answers are not stored on any server: the brief is sent from your own WhatsApp or email. In projects, I protect data with backups and secured access.</span></p></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<section class="final">
+  <div class="wrap">
+    <h2 class="h2"><span class="es">¿Arrancamos por tu problema?</span><span class="en">Shall we start with your problem?</span></h2>
+    <p class="es">Completá la ficha en 2 minutos o escribime directo.</p>
+    <p class="en">Fill in the brief in 2 minutes or write to me directly.</p>
+    <div class="row">
+      <a class="btn primary" href="#contar"><span class="es">Completar la ficha</span><span class="en">Fill in the brief</span></a>
+      <a class="btn" href="https://wa.me/5491131883446" target="_blank" rel="noopener" onclick="window.__t&&window.__t('contact','whatsapp')">WhatsApp +54 11 3188-3446</a>
+    </div>
+  </div>
+</section>
+<footer><div class="wrap"><span>© 2026 Nowagon Software · Eduardo Javier Thomson</span><span>javierthomson1986@gmail.com · <a href="https://www.linkedin.com/in/eduardo-javier-thomson-88b92b185/" target="_blank" rel="noopener">LinkedIn</a></span></div></footer>
+
+<script>
+/* ===== Configuración ===== */
+const WHATSAPP = "5491131883446";
+const EMAIL = "javierthomson1986@gmail.com";
+
+(function(){
+const root=document.documentElement;
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+let lang = location.hash==='#en' ? 'en' : (store.get('nw-lang') || ((navigator.language||'es').toLowerCase().startsWith('es')?'es':'en'));
+const L = o => typeof o==='string' ? o : o[lang];
+const T = (es,en) => lang==='es'?es:en;
+
+/* ---------- pasos ---------- */
+const STEPS = [
+  {id:'need', type:'multi', cols:2,
+   q:{es:'¿Qué querés resolver?',en:'What do you want to solve?'},
+   hint:{es:'Podés elegir más de una opción.',en:'You can pick more than one.'},
+   options:[
+    {v:'gestion', t:{es:'Ordenar la gestión del negocio',en:'Organize how the business runs'}, d:{es:'Stock, clientes, deudas, turnos, pedidos',en:'Stock, customers, debts, bookings, orders'}},
+    {v:'ventas', t:{es:'Vender o cobrar online',en:'Sell or get paid online'}, d:{es:'Tienda, links de pago, Mercado Pago',en:'Store, payment links, Mercado Pago'}},
+    {v:'auto', t:{es:'Automatizar tareas repetitivas',en:'Automate repetitive work'}, d:{es:'Facturación, reportes, avisos',en:'Invoicing, reports, notifications'}},
+    {v:'app', t:{es:'Una app o plataforma nueva',en:'A new app or platform'}, d:{es:'Web o móvil, para tu idea',en:'Web or mobile, for your idea'}},
+    {v:'integrar', t:{es:'Conectar sistemas que ya uso',en:'Connect tools I already use'}, d:{es:'Que los datos pasen solos de uno a otro',en:'So data flows between them on its own'}},
+    {v:'rescate', t:{es:'Mejorar o rescatar un sistema',en:'Improve or rescue a system'}, d:{es:'Algo que existe pero no funciona bien',en:'Something that exists but doesn\'t work well'}}
+   ]},
+  {id:'stage', type:'single',
+   q:{es:'¿En qué punto estás?',en:'Where are you at?'},
+   hint:{es:'Así sé por dónde empezar.',en:'This tells me where to start.'},
+   options:[
+    {v:'puntual', t:{es:'Tengo una necesidad concreta en mi negocio',en:'I have a specific need in my business'}, d:{es:'Sé qué problema quiero resolver',en:'I know which problem I want solved'}},
+    {v:'definido', t:{es:'Tengo el proyecto definido',en:'My project is already defined'}, d:{es:'Busco a alguien que lo desarrolle',en:'I\'m looking for someone to build it'}},
+    {v:'idea', t:{es:'Tengo una idea y necesito darle forma',en:'I have an idea and need to shape it'}, d:{es:'Me vendría bien una consultoría',en:'Some consulting would help'}}
+   ]},
+  {id:'problem', type:'text',
+   q:{es:'Contame el problema con tus palabras',en:'Describe the problem in your own words'},
+   hint:{es:'Qué pasa hoy, a quién le afecta y qué te gustaría que pase. No hace falta saber de tecnología.',en:'What happens today, who it affects and what you\'d like to happen. No tech knowledge needed.'},
+   placeholder:{es:'Por ejemplo: llevamos el stock en un Excel y siempre hay diferencias con lo que hay en el depósito…',en:'For example: we track stock in a spreadsheet and it never matches what\'s in the warehouse…'},
+   examples:[
+    {es:'Llevamos los pedidos por WhatsApp y se pierden.',en:'We take orders over WhatsApp and they get lost.'},
+    {es:'Facturamos a mano todos los días.',en:'We invoice by hand every day.'},
+    {es:'Quiero que mis clientes reserven turnos solos.',en:'I want customers to book appointments on their own.'}
+   ],
+   sub:{id:'today', q:{es:'Hoy lo resolvés con…',en:'Today you handle it with…'},
+     options:[{v:'papel',t:{es:'Papel o cuaderno',en:'Paper or notebook'}},{v:'excel',t:{es:'Excel o planillas',en:'Spreadsheets'}},{v:'sistema',t:{es:'Un sistema que no me sirve',en:'A system that doesn\'t fit'}},{v:'nada',t:{es:'Nada todavía',en:'Nothing yet'}}]}},
+  {id:'when', type:'single',
+   q:{es:'¿Para cuándo lo necesitás?',en:'When do you need it?'},
+   hint:{es:'Una idea aproximada alcanza.',en:'A rough idea is enough.'},
+   options:[
+    {v:'ya', t:{es:'Lo antes posible',en:'As soon as possible'}, d:{es:'Menos de un mes',en:'Less than a month'}},
+    {v:'1-3', t:{es:'En 1 a 3 meses',en:'In 1 to 3 months'}},
+    {v:'explorando', t:{es:'Sin apuro, estoy explorando',en:'No rush, I\'m exploring'}}
+   ]},
+  {id:'budget', type:'single', cols:2,
+   q:{es:'¿Qué inversión tenés pensada?',en:'What budget do you have in mind?'},
+   hint:{es:'Valores de referencia en dólares. Me ayuda a proponerte una solución que encaje; no es un compromiso.',en:'Reference values in US dollars. It helps me propose a solution that fits; it\'s not a commitment.'},
+   options:[
+    {v:'<1k', t:{es:'Hasta USD 1.000',en:'Up to USD 1,000'}},
+    {v:'1-3k', t:{es:'USD 1.000 a 3.000',en:'USD 1,000 to 3,000'}},
+    {v:'3-8k', t:{es:'USD 3.000 a 8.000',en:'USD 3,000 to 8,000'}},
+    {v:'>8k', t:{es:'Más de USD 8.000',en:'Over USD 8,000'}},
+    {v:'cuotas', t:{es:'Prefiero pagar por etapas',en:'I\'d rather pay in stages'}},
+    {v:'nose', t:{es:'Todavía no lo sé',en:'I don\'t know yet'}, d:{es:'Te ayudo a estimarlo',en:'I\'ll help you estimate it'}}
+   ]},
+  {id:'contact', type:'contact',
+   q:{es:'¿Cómo te contacto?',en:'How should I reach you?'},
+   hint:{es:'Con tu nombre y un WhatsApp o un email alcanza.',en:'Your name plus a WhatsApp number or an email is enough.'}},
+  {id:'done', type:'done'}
+];
+const ROWS = [
+  ['name',{es:'Nombre',en:'Name'}],['company',{es:'Negocio',en:'Business'}],
+  ['need',{es:'Necesita',en:'Needs'}],['stage',{es:'Etapa',en:'Stage'}],
+  ['problem',{es:'Problema',en:'Problem'}],['today',{es:'Hoy usa',en:'Today uses'}],
+  ['when',{es:'Plazo',en:'Timeline'}],['budget',{es:'Inversión',en:'Budget'}],['reach',{es:'Contacto',en:'Contact'}]
+];
+
+/* ---------- estado ---------- */
+let A = {};
+try{ A = JSON.parse(store.get('nw-brief')||'{}') || {}; }catch(e){ A = {}; }
+if(!A.no){ A.no = 'NW-' + new Date().toISOString().slice(2,7).replace('-','') + '-' + String(Math.floor(1000+Math.random()*9000)); }
+let step = Math.min(A._step||0, STEPS.length-1);
+let lastChanged = null;
+const save = ()=>{ A._step = step; store.set('nw-brief', JSON.stringify(A)); };
+
+const $ = id => document.getElementById(id);
+const qbody=$('qbody'), back=$('back'), next=$('next');
+const optText = (stepId, v) => { const s = stepId==='today' ? STEPS[2].sub : STEPS.find(x=>x.id===stepId); const o = s.options.find(o=>o.v===v); return o ? L(o.t) : v; };
+const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function valid(s){
+  if(s.type==='multi') return (A[s.id]||[]).length>0;
+  if(s.type==='single') return !!A[s.id];
+  if(s.type==='text') return (A.problem||'').trim().length>=15;
+  if(s.type==='contact'){ const n=(A.name||'').trim().length>=2; const e=/^\S+@\S+\.\S+$/.test(A.email||''); const w=(A.whatsapp||'').replace(/\D/g,'').length>=8; return n && (e||w); }
+  return true;
+}
+
+function render(focus){
+  const s = STEPS[step]; const total = STEPS.length-1;
+  $('qcount').textContent = s.type==='done' ? T('Listo','Done') : T(`Paso ${step+1} de ${total}`,`Step ${step+1} of ${total}`);
+  $('qbar').style.width = (s.type==='done'?100:(step/total*100))+'%';
+  let h='';
+  if(s.type!=='done') h += `<h2 class="q" id="qtitle" tabindex="-1">${L(s.q)}</h2><p class="qhint">${L(s.hint)}</p>`;
+  if(s.type==='multi' || s.type==='single'){
+    const sel = s.type==='multi' ? (A[s.id]||[]) : [A[s.id]];
+    h += `<div class="opts ${s.cols===2?'two':''}" role="group" aria-labelledby="qtitle">` + s.options.map(o=>`<button type="button" class="opt ${s.type==='single'?'radio':''}" data-v="${o.v}" aria-pressed="${sel.includes(o.v)}"><span class="box"></span><span><b>${L(o.t)}</b>${o.d?`<small>${L(o.d)}</small>`:''}</span></button>`).join('') + `</div>`;
+  }
+  if(s.type==='text'){
+    h += `<div class="field"><label for="f-problem"><span class="es">Tu problema</span><span class="en">Your problem</span></label><textarea id="f-problem" maxlength="1200" placeholder="${esc(L(s.placeholder))}">${esc(A.problem||'')}</textarea><div class="counter" id="cnt"></div></div>`;
+    h += `<div class="examples" aria-label="${T('Ejemplos','Examples')}">${s.examples.map((e,i)=>`<button type="button" data-ex="${i}">+ ${esc(L(e))}</button>`).join('')}</div>`;
+    h += `<div class="field"><label>${L(s.sub.q)} <i>${T('(opcional)','(optional)')}</i></label><div class="chips">${s.sub.options.map(o=>`<button type="button" class="chip" data-today="${o.v}" aria-pressed="${A.today===o.v}">${L(o.t)}</button>`).join('')}</div></div>`;
+  }
+  if(s.type==='contact'){
+    const f=(id,lab,type,ph,opt,ac)=>`<div class="field"><label for="f-${id}">${lab}${opt?` <i>${T('(opcional)','(optional)')}</i>`:''}</label><input id="f-${id}" type="${type}" ${ac?`autocomplete="${ac}"`:''} placeholder="${esc(ph)}" value="${esc(A[id]||'')}"></div>`;
+    h += `<div class="grid2">${f('name',T('Nombre','Name'),'text',T('Cómo te llamás','Your name'),0,'name')}${f('company',T('Negocio o empresa','Business or company'),'text',T('Ej: Ferretería Los Andes','e.g. Andes Hardware'),1,'organization')}${f('whatsapp','WhatsApp','tel','+54 9 11 …',0,'tel')}${f('email','Email','email','nombre@empresa.com',0,'email')}${f('country',T('País y ciudad','Country and city'),'text',T('Ej: Argentina, Córdoba','e.g. Spain, Madrid'),1,'country-name')}${f('web',T('Web o redes','Website or social'),'text','instagram.com/…',1,'url')}</div>`;
+    h += `<div class="field"><label>${T('¿Por dónde preferís seguir?','How would you like to continue?')}</label><div class="chips">${[['wa','WhatsApp'],['mail','Email'],['call',T('Videollamada','Video call')]].map(([v,t])=>`<button type="button" class="chip" data-pref="${v}" aria-pressed="${A.pref===v}">${t}</button>`).join('')}</div></div>`;
+    h += `<p class="err" id="err"></p>`;
+  }
+  if(s.type==='done'){
+    h += `<h2 class="q" id="qtitle" tabindex="-1">${T('Tu ficha está lista','Your brief is ready')}${A.name?`, ${esc(A.name.split(' ')[0])}`:''}.</h2>
+      <p class="qhint">${T('Enviámela por el canal que prefieras. Te respondo en menos de 48 horas hábiles.','Send it through the channel you prefer. I\'ll reply within 48 business hours.')}</p>
+      <div class="done-actions">
+        <a class="btn primary" id="send-wa" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-3.2-.7-2.7-1.1-4.4-3.8-4.5-4-.1-.2-1.1-1.5-1.1-2.8s.7-2 .9-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .6l-.4.6-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.3z"/></svg>${T('Enviar por WhatsApp','Send via WhatsApp')}</a>
+        <a class="btn" id="send-mail">${T('Enviar por email','Send via email')}</a>
+        <button type="button" class="btn" id="copy">${T('Copiar ficha','Copy brief')}</button>
+      </div>
+      <p class="copied" id="copied" aria-live="polite"></p>
+      <p class="privacy">${T('Tus respuestas no se guardan en ningún servidor: la ficha sale desde tu WhatsApp o tu correo. Si el email no se abre, copiá la ficha y mandala a ','Your answers are not stored on any server: the brief is sent from your own WhatsApp or email. If email doesn\'t open, copy the brief and send it to ')}<b>${EMAIL}</b>.</p>
+      <p style="margin-top:1rem"><button type="button" class="btn ghost" id="edit">${T('← Editar respuestas','← Edit answers')}</button> <button type="button" class="btn ghost" id="restart">${T('Empezar una ficha nueva','Start a new brief')}</button></p>`;
+  }
+  qbody.innerHTML = h;
+  back.hidden = step===0 || s.type==='done';
+  next.hidden = s.type==='done';
+  next.innerHTML = s.type==='contact' ? T('Ver mi ficha','See my brief') : T('Siguiente','Next');
+  next.disabled = !valid(s);
+  wire(s);
+  renderTicket();
+  if(focus){ const t=$('qtitle'); t && t.focus({preventScroll:true}); }
+  save();
+}
+
+function wire(s){
+  qbody.querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>{
+    const v=b.dataset.v;
+    if(s.type==='multi'){ const arr=A[s.id]||[]; A[s.id] = arr.includes(v)?arr.filter(x=>x!==v):[...arr,v]; b.setAttribute('aria-pressed', String(A[s.id].includes(v))); }
+    else { A[s.id]=v; qbody.querySelectorAll('.opt').forEach(x=>x.setAttribute('aria-pressed',String(x===b))); setTimeout(()=>go(1), 260); }
+    lastChanged = s.id; next.disabled=!valid(s); renderTicket(); save();
+  }));
+  const ta=$('f-problem');
+  if(ta){
+    const upd=()=>{ A.problem=ta.value; $('cnt').textContent = ta.value.trim().length<15 ? T(`Escribí al menos ${15-ta.value.trim().length} caracteres más`,`Type at least ${15-ta.value.trim().length} more characters`) : `${ta.value.length}/1200`; lastChanged='problem'; next.disabled=!valid(s); renderTicket(); save(); };
+    ta.addEventListener('input',upd); upd(); lastChanged=null;
+    qbody.querySelectorAll('[data-ex]').forEach(b=>b.addEventListener('click',()=>{ const t=L(s.examples[+b.dataset.ex]); ta.value = ta.value.trim() ? ta.value.trim()+' '+t : t; upd(); ta.focus(); }));
+    qbody.querySelectorAll('[data-today]').forEach(b=>b.addEventListener('click',()=>{ A.today = A.today===b.dataset.today?null:b.dataset.today; qbody.querySelectorAll('[data-today]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.today===A.today))); lastChanged='today'; renderTicket(); save(); }));
+  }
+  if(s.type==='contact'){
+    ['name','company','whatsapp','email','country','web'].forEach(id=>{ const el=$('f-'+id); el.addEventListener('input',()=>{ A[id]=el.value; lastChanged = (id==='name'||id==='company')?id:'reach'; next.disabled=!valid(s); $('err').textContent=''; renderTicket(); save(); }); });
+    qbody.querySelectorAll('[data-pref]').forEach(b=>b.addEventListener('click',()=>{ A.pref=b.dataset.pref; qbody.querySelectorAll('[data-pref]').forEach(x=>x.setAttribute('aria-pressed',String(x===b))); lastChanged='reach'; renderTicket(); save(); }));
+  }
+  if(s.type==='done'){
+    const txt = summary();
+    if(!window.__nwBrief){ window.__nwBrief=1; window.__t && window.__t('brief_ready'); }
+    $('send-wa').addEventListener('click',()=>window.__t && window.__t('send_whatsapp'));
+    $('send-mail').addEventListener('click',()=>window.__t && window.__t('send_email'));
+    $('send-wa').href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(txt)}`;
+    $('send-mail').href = `mailto:${EMAIL}?subject=${encodeURIComponent(T('Ficha de proyecto ','Project brief ')+A.no+(A.company?' · '+A.company:''))}&body=${encodeURIComponent(txt)}`;
+    $('copy').addEventListener('click',()=>{
+      window.__t && window.__t('copy_brief');
+      const ok=()=>{$('copied').textContent=T('Ficha copiada.','Brief copied.');};
+      try{ navigator.clipboard.writeText(txt).then(ok,()=>{$('copied').textContent=T('No se pudo copiar. Seleccioná el texto de la ficha.','Couldn\'t copy. Select the brief text instead.');}); }catch(e){ $('copied').textContent=T('No se pudo copiar.','Couldn\'t copy.'); }
+    });
+    $('edit').addEventListener('click',()=>{ step=STEPS.length-2; render(true); });
+    $('restart').addEventListener('click',()=>{ store.del('nw-brief'); A={no:'NW-'+new Date().toISOString().slice(2,7).replace('-','')+'-'+String(Math.floor(1000+Math.random()*9000))}; step=0; render(true); });
+  }
+}
+
+function rowVal(k){
+  if(k==='need') return (A.need||[]).map(v=>optText('need',v)).join(', ');
+  if(['stage','when','budget','today'].includes(k)) return A[k]?optText(k,A[k]):'';
+  if(k==='problem') return A.problem ? (A.problem.length>180?A.problem.slice(0,180)+'…':A.problem) : '';
+  if(k==='company') return [A.company,A.country].filter(Boolean).join(' · ');
+  if(k==='reach'){ const p={wa:'WhatsApp',mail:'Email',call:T('Videollamada','Video call')}[A.pref]; return [A.whatsapp,A.email,p?T('prefiere ','prefers ')+p:''].filter(Boolean).join(' · '); }
+  return A[k]||'';
+}
+function renderTicket(){
+  $('tno').textContent = A.no;
+  $('tdate').textContent = new Date().toLocaleDateString(lang==='es'?'es-AR':'en-US',{day:'2-digit',month:'short',year:'numeric'});
+  $('trows').innerHTML = ROWS.map(([k,lab])=>{ const v=rowVal(k); return `<div class="t-row ${k===lastChanged?'new':''}"><dt>${L(lab)}</dt><dd class="${v?'':'empty'}">${v?esc(v):'· · · · ·'}</dd></div>`; }).join('');
+  $('stamp').classList.toggle('on', STEPS[step].type==='done');
+}
+function summary(){
+  const lines = [
+    T('Hola Javier, completé la ficha de proyecto en Nowagon Software.','Hi Javier, I filled in the project brief on Nowagon Software.'), '',
+    `${T('Ficha','Brief')}: ${A.no}`,
+    `${T('Nombre','Name')}: ${A.name||'-'}`,
+    `${T('Negocio','Business')}: ${[A.company,A.country].filter(Boolean).join(' · ')||'-'}`,
+    A.web?`${T('Web o redes','Website/social')}: ${A.web}`:null,
+    `${T('Necesito','I need')}: ${(A.need||[]).map(v=>optText('need',v)).join(', ')||'-'}`,
+    `${T('Etapa','Stage')}: ${A.stage?optText('stage',A.stage):'-'}`,
+    `${T('Problema','Problem')}: ${(A.problem||'-').trim()}`,
+    A.today?`${T('Hoy lo resuelvo con','Today I handle it with')}: ${optText('today',A.today)}`:null,
+    `${T('Plazo','Timeline')}: ${A.when?optText('when',A.when):'-'}`,
+    `${T('Inversión','Budget')}: ${A.budget?optText('budget',A.budget):'-'}`,
+    `${T('Contacto','Contact')}: ${[A.whatsapp,A.email].filter(Boolean).join(' · ')}${A.pref?' ('+T('prefiero ','I prefer ')+{wa:'WhatsApp',mail:'Email',call:T('videollamada','video call')}[A.pref]+')':''}`
+  ];
+  return lines.filter(x=>x!==null).join('\n');
+}
+function go(d){
+  const s=STEPS[step];
+  if(d>0 && !valid(s)){
+    if(s.type==='contact') $('err').textContent = T('Necesito tu nombre y un WhatsApp o email válido.','I need your name and a valid WhatsApp or email.');
+    return;
+  }
+  step=Math.max(0,Math.min(STEPS.length-1,step+d)); lastChanged=null; render(true);
+  const bench=document.querySelector('.bench'); const r=bench.getBoundingClientRect(); if(r.top<0) bench.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+}
+next.addEventListener('click',()=>go(1));
+back.addEventListener('click',()=>go(-1));
+
+/* ---------- idioma y tema ---------- */
+function setLang(l){
+  lang=l; root.lang=l; root.classList.toggle('lang-es',l==='es'); root.classList.toggle('lang-en',l==='en');
+  document.querySelectorAll('[data-lang]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lang===l)));
+  store.set('nw-lang',l); render(false);
+}
+document.querySelectorAll('[data-lang]').forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.lang)));
+const tset=document.querySelectorAll('[data-theme-set]');
+function setTheme(t,saveIt){ if(t) root.dataset.theme=t; const r = root.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'); tset.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.themeSet===r))); if(saveIt) store.set('nw-theme',t); }
+setTheme(store.get('nw-theme'),false);
+tset.forEach(b=>b.addEventListener('click',()=>setTheme(b.dataset.themeSet,true)));
+setLang(lang);
+})();
+</script>
+
+<script>
+(function(){
+  var U = "", S = "landing";
+  if (!U || navigator.webdriver) return;
+  try {
+    if (location.hash === '#nocount') localStorage.setItem('nw-nc', '1');
+    if (location.hash === '#count') localStorage.removeItem('nw-nc');
+    if (localStorage.getItem('nw-nc')) return;
+  } catch (e) {}
+  function t(e, d) {
+    try {
+      var r = ''; try { r = document.referrer ? new URL(document.referrer).hostname : ''; } catch (x) {}
+      if (r === location.hostname) r = '';
+      var b = JSON.stringify({ s: S, e: e || 'view', d: d || null, p: location.pathname + location.hash, r: r, l: navigator.language, w: screen.width + 'x' + screen.height });
+      if (navigator.sendBeacon) navigator.sendBeacon(U, new Blob([b], { type: 'text/plain' }));
+      else fetch(U, { method: 'POST', body: b, keepalive: true, mode: 'no-cors' });
+    } catch (e) {}
+  }
+  window.__t = t;
+  t('view');
+})();
+</script>
+
+</body>
+</html>

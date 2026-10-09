@@ -1397,11 +1397,16 @@ function applyMood(m, scroll){
   const resolved = m==='auto' ? (matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light') : m;
   moodBtns.forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.mood===resolved)));
   if(scroll) window.scrollTo(0,0);
+  if(scroll && m==='nostalgic') window.__t && window.__t('mode','2002');
 }
 applyMood(mood,false);
 moodBtns.forEach(b=>b.addEventListener('click',()=>applyMood(b.dataset.mood,true)));
 ['r-exit','r-exit2'].forEach(id=>document.getElementById(id).addEventListener('click',e=>{ e.preventDefault(); applyMood(lastModern,true); }));
 document.getElementById('r-lang').addEventListener('click',()=>setLang(lang==='es'?'en':'es',true));
+
+/* ---------- estadísticas: clics de contacto ---------- */
+document.addEventListener('click',e=>{ const a=e.target.closest('a,#copy'); if(!a||!window.__t) return; const h=a.href||'';
+  if(a.id==='copy') __t('contact','email'); else if(/CV_/.test(h)) __t('cv'); else if(/wa\.me/.test(h)) __t('contact','whatsapp'); else if(/linkedin\.com/.test(h)) __t('contact','linkedin'); else if(/github\.com/.test(h)) __t('contact','github'); else if(/eternoinstante/.test(h)) __t('contact','eterno'); });
 
 /* ---------- tablero de salidas ---------- */
 const flights = [
@@ -1766,6 +1771,29 @@ const now = ()=> fmtClock.format(new Date());
   });
 })();
 
+})();
+</script>
+
+<script>
+(function(){
+  var U = "", S = "portfolio";
+  if (!U || navigator.webdriver) return;
+  try {
+    if (location.hash === '#nocount') localStorage.setItem('nw-nc', '1');
+    if (location.hash === '#count') localStorage.removeItem('nw-nc');
+    if (localStorage.getItem('nw-nc')) return;
+  } catch (e) {}
+  function t(e, d) {
+    try {
+      var r = ''; try { r = document.referrer ? new URL(document.referrer).hostname : ''; } catch (x) {}
+      if (r === location.hostname) r = '';
+      var b = JSON.stringify({ s: S, e: e || 'view', d: d || null, p: location.pathname + location.hash, r: r, l: navigator.language, w: screen.width + 'x' + screen.height });
+      if (navigator.sendBeacon) navigator.sendBeacon(U, new Blob([b], { type: 'text/plain' }));
+      else fetch(U, { method: 'POST', body: b, keepalive: true, mode: 'no-cors' });
+    } catch (e) {}
+  }
+  window.__t = t;
+  t('view');
 })();
 </script>
 
