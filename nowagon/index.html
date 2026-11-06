@@ -620,6 +620,18 @@ setLang(lang);
   }
   window.__t = t;
   t('view');
+  // "Interactuó": solo después de unos segundos con la página visible y con un gesto real
+  // (scroll, mouse, toque o teclado). Los escáneres de correo y los bots casi nunca lo cumplen.
+  var shownAt = Date.now(), sent = false, evs = ['scroll', 'pointermove', 'touchstart', 'keydown'];
+  if (document.visibilityState === 'hidden') shownAt = 0;
+  document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible' && !shownAt) shownAt = Date.now(); });
+  function engaged(ev) {
+    if (sent || !shownAt || Date.now() - shownAt < 4000 || (ev && ev.isTrusted === false)) return;
+    sent = true;
+    t('engaged', ev ? ev.type : null);
+    evs.forEach(function (n) { removeEventListener(n, engaged, true); });
+  }
+  evs.forEach(function (n) { addEventListener(n, engaged, { capture: true, passive: true }); });
 })();
 </script>
 
